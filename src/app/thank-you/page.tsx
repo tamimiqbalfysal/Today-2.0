@@ -1,59 +1,52 @@
-
 'use client';
 
-import { useState } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useRef } from 'react';
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { verifyGiftCode } from '@/ai/flows/verifyGiftCode';
+import { verifyGiftCode } from './actions';
 import Link from 'next/link';
 
+const initialState = {
+  message: '',
+  success: false,
+};
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending ? 'Verifying...' : 'Submit'}
+    </Button>
+  );
+}
+
 export default function ThankYouPage() {
-  const [giftCode, setGiftCode] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [state, formAction] = useFormState(verifyGiftCode, initialState);
   const { toast } = useToast();
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const handleVerifyCode = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!giftCode.trim()) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Please enter a gift code.',
-      });
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const result = await verifyGiftCode({ code: giftCode });
-      if (result.valid) {
+  useEffect(() => {
+    if (state.message) {
+      if (state.success) {
         toast({
           title: 'Success!',
-          description: result.message,
+          description: state.message,
         });
-        setGiftCode(''); // Clear input on success
+        formRef.current?.reset();
       } else {
         toast({
           variant: 'destructive',
           title: 'Verification Failed',
-          description: result.message,
+          description: state.message,
         });
       }
-    } catch (error) {
-      console.error('Error verifying gift code:', error);
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'An unexpected error occurred. Please try again.',
-      });
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [state, toast]);
 
   return (
     <AuthGuard>
@@ -68,18 +61,15 @@ export default function ThankYouPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <form onSubmit={handleVerifyCode} className="flex w-full items-center space-x-2">
+                    <form ref={formRef} action={formAction} className="flex w-full items-center space-x-2">
                       <Input
                         type="text"
+                        name="code"
                         placeholder="Enter your gift code"
-                        value={giftCode}
-                        onChange={(e) => setGiftCode(e.target.value)}
-                        disabled={isLoading}
+                        disabled={useFormStatus().pending}
                         aria-label="Gift Code"
                       />
-                      <Button type="submit" disabled={isLoading}>
-                        {isLoading ? 'Verifying...' : 'Submit'}
-                      </Button>
+                      <SubmitButton />
                     </form>
                     <Button asChild variant="outline">
                         <Link href="/">Back to Home</Link>
