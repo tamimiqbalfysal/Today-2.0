@@ -84,12 +84,10 @@ export default function TodayPage() {
 
   return (
     <AuthGuard>
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="flex flex-col h-screen bg-gray-100">
           <Header />
-          <main className="container mx-auto max-w-2xl p-4 flex-1">
-            <div className="space-y-6">
-              <PostFeed posts={posts} />
-            </div>
+          <main className="container mx-auto max-w-2xl p-4 flex-1 overflow-hidden">
+            <PostFeed posts={posts} />
           </main>
         </div>
     </AuthGuard>

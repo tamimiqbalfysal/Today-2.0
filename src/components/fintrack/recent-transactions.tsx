@@ -22,7 +22,7 @@ function PostCard({ post, colorTheme }: PostCardProps) {
     const timestamp = post.timestamp?.toDate ? post.timestamp.toDate() : new Date();
 
     return (
-        <div className={`${colorTheme.bg} p-4 rounded-xl shadow-md`}>
+        <div className={`${colorTheme.bg} p-4 rounded-xl shadow-md w-full`}>
             <div className="flex items-center space-x-3 mb-3">
                 <Avatar className={`w-10 h-10 border-2 ${colorTheme.avatar}`}>
                     <AvatarImage src={post.authorPhotoURL} alt={post.authorName} />
@@ -76,9 +76,11 @@ export function PostFeed({ posts }: PostFeedProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="h-full overflow-y-auto snap-y snap-mandatory no-scrollbar">
       {posts.map((post, index) => (
-        <PostCard key={post.id} post={post} colorTheme={postColors[index % postColors.length]} />
+        <div key={post.id} className="h-full w-full snap-center flex items-center justify-center shrink-0">
+          <PostCard post={post} colorTheme={postColors[index % postColors.length]} />
+        </div>
       ))}
     </div>
   );
