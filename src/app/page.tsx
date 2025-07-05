@@ -9,7 +9,6 @@ import { useToast } from "@/hooks/use-toast";
 
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
-import { CreatePostForm } from '@/components/fintrack/add-transaction-dialog';
 import { PostFeed } from '@/components/fintrack/recent-transactions';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -122,10 +121,9 @@ export default function TodayPage() {
   return (
     <AuthGuard>
         <div className="flex flex-col min-h-screen bg-gray-100">
-          <Header />
+          <Header onAddPost={handleAddPost} />
           <main className="container mx-auto max-w-2xl p-4 flex-1">
             <div className="space-y-6">
-              {user && <CreatePostForm user={user} onAddPost={handleAddPost} />}
               <PostFeed posts={posts} />
             </div>
           </main>

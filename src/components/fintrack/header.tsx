@@ -20,8 +20,13 @@ import {
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from '@/contexts/auth-context';
+import { CreatePostDialog } from './add-transaction-dialog';
 
-export function Header() {
+interface HeaderProps {
+    onAddPost: (content: string) => Promise<void>;
+}
+
+export function Header({ onAddPost }: HeaderProps) {
   const { user, logout } = useAuth();
 
   return (
@@ -98,15 +103,11 @@ export function Header() {
                             <SheetTitle className="sr-only">Menu</SheetTitle>
                         </SheetHeader>
                         <div className="flex flex-col gap-2 py-4">
-                            <Button variant="ghost" className="w-full justify-start text-base">
-                                Today
-                            </Button>
-                            <Button variant="ghost" className="w-full justify-start text-base">
-                                Add
-                            </Button>
-                            <Button variant="ghost" className="w-full justify-start text-base">
-                                Remove
-                            </Button>
+                           <CreatePostDialog user={user} onAddPost={onAddPost}>
+                                <Button variant="ghost" className="w-full justify-start text-base">
+                                    Create Post
+                                </Button>
+                            </CreatePostDialog>
                         </div>
                     </SheetContent>
                 </Sheet>
