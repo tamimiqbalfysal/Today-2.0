@@ -22,7 +22,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
 
   return (
     <header className={cn(
-      "bg-yellow-400 p-4 sticky top-0 z-10 shadow-md transition-transform duration-300 ease-in-out",
+      "bg-primary text-primary-foreground p-4 sticky top-0 z-10 shadow-md transition-transform duration-300 ease-in-out",
       !isVisible && "-translate-y-full"
     )}>
       <div className="container mx-auto grid grid-cols-3 items-center">
@@ -32,44 +32,45 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-start">
                 <Sheet open={isNavDrawerOpen} onOpenChange={setIsNavDrawerOpen}>
                     <SheetTrigger asChild>
-                        <Button size="icon" variant="ghost" className="text-neutral-800 hover:bg-white/30 rounded-full">
+                        <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/20 rounded-full">
                             <Menu />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="bg-yellow-50/50 w-72 flex flex-col p-0">
-                      <SheetHeader className="p-4 border-b border-yellow-200 items-center">
+                    <SheetContent side="left" className="bg-background/95 w-72 flex flex-col p-0 backdrop-blur-sm">
+                      <SheetHeader className="p-4 border-b border-border items-center">
                         <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                        <Avatar className="h-16 w-16 border-4 border-pink-300">
+                        <Avatar className="h-16 w-16 border-4 border-primary/50">
                           <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
-                          <AvatarFallback className="text-2xl">{user.displayName?.charAt(0)}</AvatarFallback>
+                          <AvatarFallback className="text-2xl bg-secondary text-secondary-foreground">{user.displayName?.charAt(0)}</AvatarFallback>
                         </Avatar>
                       </SheetHeader>
                       <div className="flex-grow py-4 px-4 space-y-4">
-                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
+                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="default">
                               <Link href="/today" onClick={() => setIsNavDrawerOpen(false)}>
                                   <PenSquare className="mr-4" />
                                   Create Post
                               </Link>
                           </Button>
-                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-blue-100 text-blue-700 hover:bg-blue-200">
+                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="secondary">
                             <Link href="/profile" onClick={() => setIsNavDrawerOpen(false)}>
                                 <User className="mr-4" />
                                 Profile
                             </Link>
                           </Button>
-                           <Button size="lg" className="w-full justify-start text-lg font-bold bg-green-100 text-green-700 hover:bg-green-200">
+                           <Button size="lg" className="w-full justify-start text-lg font-bold" variant="secondary">
                               <PlusCircle className="mr-4" />
                               Add
                           </Button>
                           <Button 
                             size="lg" 
-                            className="w-full justify-start text-lg font-bold bg-red-100 text-red-700 hover:bg-red-200"
+                            variant="destructive"
+                            className="w-full justify-start text-lg font-bold"
                           >
                               <Trash2 className="mr-4" />
                               Remove
                           </Button>
                       </div>
-                      <div className="p-4 border-t border-yellow-200">
+                      <div className="p-4 border-t border-border">
                          <Button 
                             size="lg" 
                             className="w-full justify-start text-lg font-bold"
@@ -90,7 +91,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             {/* Center: Bell */}
             <div className="justify-self-center">
               <Link href="/" aria-label="Home">
-                <Button size="icon" variant="ghost" className="text-neutral-800 hover:bg-white/30 rounded-full">
+                <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/20 rounded-full">
                   <Bell />
                 </Button>
               </Link>
@@ -100,28 +101,29 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-end">
               <Sheet open={isProfileDrawerOpen} onOpenChange={setIsProfileDrawerOpen}>
                 <SheetTrigger asChild>
-                    <Button size="icon" variant="ghost" className="text-neutral-800 hover:bg-white/30 rounded-full">
+                    <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/20 rounded-full">
                         <Menu />
                     </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="bg-yellow-50/50 w-72 flex flex-col p-0">
+                <SheetContent side="right" className="bg-background/95 w-72 flex flex-col p-0 backdrop-blur-sm">
                   <SheetHeader>
                       <SheetTitle className="sr-only">User Menu</SheetTitle>
                   </SheetHeader>
                   <div className="flex-grow py-4 px-4 space-y-4">
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
+                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="default">
                             <Link href="/today" onClick={() => setIsProfileDrawerOpen(false)}>
                                 <PenSquare className="mr-4" />
                                 Today
                             </Link>
                         </Button>
-                        <Button size="lg" className="w-full justify-start text-lg font-bold bg-green-100 text-green-700 hover:bg-green-200">
+                        <Button size="lg" className="w-full justify-start text-lg font-bold" variant="secondary">
                             <PlusCircle className="mr-4" />
                             Add
                         </Button>
                         <Button 
                             size="lg" 
-                            className="w-full justify-start text-lg font-bold bg-red-100 text-red-700 hover:bg-red-200"
+                            variant="destructive"
+                            className="w-full justify-start text-lg font-bold"
                         >
                             <Trash2 className="mr-4" />
                             Remove

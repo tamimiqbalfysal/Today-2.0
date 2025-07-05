@@ -64,10 +64,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl font-headline text-center text-pink-500">Welcome Back!</CardTitle>
+          <CardTitle className="text-2xl font-headline text-center text-primary">Welcome Back!</CardTitle>
           <CardDescription className="text-center">
             Let's continue the fun!
           </CardDescription>
@@ -101,14 +101,14 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full bg-pink-500 hover:bg-pink-600" disabled={form.formState.isSubmitting}>
+              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? "Logging In..." : "Log In"}
               </Button>
             </form>
           </Form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="underline text-pink-500">
+            <Link href="/signup" className="underline text-primary">
               Sign up
             </Link>
           </div>

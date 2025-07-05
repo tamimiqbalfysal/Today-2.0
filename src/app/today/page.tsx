@@ -33,7 +33,7 @@ export default function CreatePostPage() {
       await addDoc(collection(db, 'posts'), {
         authorId: user.uid,
         authorName: user.name,
-        authorPhotoURL: user.photoURL || `https://placehold.co/40x40/FFD700/FFFFFF?text=${user.name.charAt(0)}`,
+        authorPhotoURL: user.photoURL || `https://placehold.co/40x40/FF69B4/FFFFFF?text=${user.name.charAt(0)}`,
         content: content,
         timestamp: Timestamp.now(),
         likes: [],
@@ -62,7 +62,7 @@ export default function CreatePostPage() {
   if (authLoading || !user) {
     return (
         <AuthGuard>
-            <div className="flex flex-col min-h-screen bg-gray-100">
+            <div className="flex flex-col min-h-screen">
                 <Header />
                 <main className="container mx-auto max-w-2xl p-4 flex-1">
                     <Card>
@@ -90,7 +90,7 @@ export default function CreatePostPage() {
 
   return (
     <AuthGuard>
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="flex flex-col min-h-screen">
           <Header />
           <main className="container mx-auto max-w-2xl p-4 flex-1">
             <Card>

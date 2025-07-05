@@ -9,12 +9,9 @@ export default {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'primary-gradient': 'linear-gradient(105deg, hsl(var(--primary-gradient-start)), hsl(var(--primary-gradient-middle)), hsl(var(--primary-gradient-end)))',
-      },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        sans: ['Poppins', 'sans-serif'],
+        headline: ['Poppins', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',

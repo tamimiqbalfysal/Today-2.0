@@ -36,13 +36,13 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex items-start gap-4">
-            <Avatar className="w-10 h-10 border-2 border-yellow-400">
-            <AvatarImage src={user.photoURL ?? `https://placehold.co/40x40/FFD700/FFFFFF?text=${userInitial}`} alt={user.name ?? ""} />
-            <AvatarFallback>{userInitial}</AvatarFallback>
+            <Avatar className="w-10 h-10 border-2 border-primary/50">
+            <AvatarImage src={user.photoURL ?? `https://placehold.co/40x40/FF69B4/FFFFFF?text=${userInitial}`} alt={user.name ?? ""} />
+            <AvatarFallback className="bg-secondary text-secondary-foreground">{userInitial}</AvatarFallback>
             </Avatar>
             <Textarea
             placeholder={`What's happening today, ${user.name}?`}
-            className="flex-1 p-3 rounded-lg bg-yellow-50 border border-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-300 text-yellow-800 placeholder-yellow-500 text-sm h-32"
+            className="flex-1 p-3 rounded-lg bg-secondary border-border focus:outline-none focus:ring-2 focus:ring-primary text-secondary-foreground placeholder:text-muted-foreground text-sm h-32"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             disabled={isSubmitting}
@@ -52,7 +52,7 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
             <Button asChild variant="outline">
                 <Link href="/">Feed</Link>
             </Button>
-            <Button type="submit" className="bg-pink-500 hover:bg-pink-600" disabled={isSubmitting || !content.trim()}>
+            <Button type="submit" disabled={isSubmitting || !content.trim()}>
             {isSubmitting ? "Posting..." : "Post"}
             </Button>
         </div>

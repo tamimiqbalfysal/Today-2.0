@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 
 function ProfileSkeleton() {
     return (
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="flex flex-col min-h-screen">
             <Header />
             <main className="container mx-auto max-w-2xl p-4 flex-1 flex flex-col items-center justify-center">
                 <div className="w-full max-w-sm">
@@ -40,7 +40,7 @@ export default function ProfilePage() {
 
   return (
     <AuthGuard>
-        <div className="flex flex-col min-h-screen bg-gray-100">
+        <div className="flex flex-col min-h-screen">
           <Header />
           <main className="container mx-auto max-w-2xl p-4 flex-1 flex flex-col items-center justify-center">
              <div className="w-full max-w-sm space-y-6">

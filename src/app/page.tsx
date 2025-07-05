@@ -14,13 +14,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 function TodaySkeleton() {
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
-      <header className="bg-pink-500 p-4 sticky top-0 z-10 shadow-md">
+    <div className="flex flex-col min-h-screen">
+      <header className="bg-primary p-4 sticky top-0 z-10 shadow-md">
         <div className="container mx-auto flex items-center justify-between">
-          <Skeleton className="h-10 w-10 rounded-full bg-pink-400" />
+          <Skeleton className="h-10 w-10 rounded-full bg-primary/80" />
           <div className="flex items-center gap-4">
-            <Skeleton className="h-8 w-32 bg-pink-400" />
-            <Skeleton className="h-10 w-10 rounded-full bg-pink-400" />
+            <Skeleton className="h-8 w-32 bg-primary/80" />
+            <Skeleton className="h-10 w-10 rounded-full bg-primary/80" />
           </div>
         </div>
       </header>
@@ -100,7 +100,7 @@ export default function TodayPage() {
 
   return (
     <AuthGuard>
-        <div className="flex flex-col h-screen bg-gray-100">
+        <div className="flex flex-col h-screen">
           <Header isVisible={isHeaderVisible} />
           <main className="container mx-auto max-w-4xl p-4 flex-1 overflow-hidden">
             <PostFeed 
