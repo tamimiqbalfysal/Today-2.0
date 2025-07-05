@@ -120,15 +120,15 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             </Link>
                         </Button>
                         <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
-                            <Link href="/add" onClick={() => setIsProfileDrawerOpen(false)}>
-                                <PlusCircle className="mr-4" />
-                                Add
-                            </Link>
-                        </Button>
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
                             <Link href="/thank-you" onClick={() => setIsProfileDrawerOpen(false)}>
                                 <Heart className="mr-4" />
                                 Thanku G
+                            </Link>
+                        </Button>
+                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                            <Link href="/add" onClick={() => setIsProfileDrawerOpen(false)}>
+                                <PlusCircle className="mr-4" />
+                                Add
                             </Link>
                         </Button>
                         <Button 
