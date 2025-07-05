@@ -7,7 +7,6 @@
  * - SignupWithGiftCodeOutput - The return type for the function.
  */
 
-import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import * as admin from 'firebase-admin';
 
@@ -34,18 +33,8 @@ const SignupWithGiftCodeOutputSchema = z.object({
 });
 export type SignupWithGiftCodeOutput = z.infer<typeof SignupWithGiftCodeOutputSchema>;
 
-// Export a wrapper function for client-side usage
+// This is now a self-contained Server Action
 export async function signupWithGiftCode(input: SignupWithGiftCodeInput): Promise<SignupWithGiftCodeOutput> {
-  return signupWithGiftCodeFlow(input);
-}
-
-const signupWithGiftCodeFlow = ai.defineFlow(
-  {
-    name: 'signupWithGiftCodeFlow',
-    inputSchema: SignupWithGiftCodeInputSchema,
-    outputSchema: SignupWithGiftCodeOutputSchema,
-  },
-  async (input) => {
     const { name, email, password, giftCode } = input;
     const giftCodeRef = adminDb.collection('giftCodes').doc(giftCode);
 
@@ -115,5 +104,4 @@ const signupWithGiftCodeFlow = ai.defineFlow(
       name: newUser.displayName || name,
       email: newUser.email || email,
     };
-  }
-);
+}
