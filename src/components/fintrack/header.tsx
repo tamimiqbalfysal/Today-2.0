@@ -78,12 +78,9 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-end">
               <Sheet open={isProfileDrawerOpen} onOpenChange={setIsProfileDrawerOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-                    <Avatar className="h-10 w-10 border-2 border-pink-300">
-                      <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
-                      <AvatarFallback>{user.displayName?.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                  </Button>
+                    <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
+                        <Menu />
+                    </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="bg-yellow-50/50 w-72 p-4">
                   <SheetHeader className="text-left mb-4 pb-4 border-b">
