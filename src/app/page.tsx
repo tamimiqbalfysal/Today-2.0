@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { collection, addDoc, query, orderBy, onSnapshot, Timestamp } from "firebase/firestore";
+import { useState, useEffect } from 'react';
+import { collection, query, orderBy, onSnapshot, Timestamp } from "firebase/firestore";
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/auth-context';
 import type { Post, User } from '@/lib/types';
@@ -38,13 +38,6 @@ export default function TodayPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const { toast } = useToast();
-
-  const user: User | null = firebaseUser ? {
-    uid: firebaseUser.uid,
-    name: firebaseUser.displayName || "Anonymous User",
-    email: firebaseUser.email || "No email",
-    photoURL: firebaseUser.photoURL
-  } : null;
 
   useEffect(() => {
     if (authLoading || !db) return; 
@@ -85,34 +78,6 @@ export default function TodayPage() {
     return () => unsubscribe();
   }, [firebaseUser, authLoading, toast]);
   
-  const handleAddPost = useCallback(async (content: string) => {
-    if (!user || !db || !content.trim()) return;
-
-    try {
-      await addDoc(collection(db, 'posts'), {
-        authorId: user.uid,
-        authorName: user.name,
-        authorPhotoURL: user.photoURL || `https://placehold.co/40x40/FFD700/FFFFFF?text=${user.name.charAt(0)}`,
-        content: content,
-        timestamp: Timestamp.now(),
-        likes: [],
-        comments: [],
-      });
-    } catch (error: any) {
-       console.error("Error adding post:", error);
-       let description = "An unexpected error occurred while adding the post.";
-       if (error.code === 'permission-denied') {
-           description = "You do not have permission to create a post. Please make sure you have updated the Firestore security rules in the Firebase Console.";
-       }
-       toast({
-        variant: "destructive",
-        title: "Could Not Create Post",
-        description: description,
-      });
-      throw error;
-    }
-  }, [user, toast]);
-  
   if (authLoading || (isDataLoading && firebaseUser)) {
     return <TodaySkeleton />;
   }
@@ -120,7 +85,7 @@ export default function TodayPage() {
   return (
     <AuthGuard>
         <div className="flex flex-col min-h-screen bg-gray-100">
-          <Header onAddPost={handleAddPost} />
+          <Header />
           <main className="container mx-auto max-w-2xl p-4 flex-1">
             <div className="space-y-6">
               <PostFeed posts={posts} />

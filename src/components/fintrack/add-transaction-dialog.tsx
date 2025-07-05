@@ -9,10 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 interface CreatePostFormProps {
   user: User;
   onAddPost: (content: string) => Promise<void>;
-  onPostSuccess?: () => void;
 }
 
-export function CreatePostForm({ user, onAddPost, onPostSuccess }: CreatePostFormProps) {
+export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -24,7 +23,6 @@ export function CreatePostForm({ user, onAddPost, onPostSuccess }: CreatePostFor
     try {
       await onAddPost(content);
       setContent("");
-      onPostSuccess?.();
     } catch (error) {
       console.error("Error submitting post from form:", error);
     } finally {
@@ -35,7 +33,7 @@ export function CreatePostForm({ user, onAddPost, onPostSuccess }: CreatePostFor
   const userInitial = user.name ? user.name.charAt(0) : "🥳";
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex items-start gap-4">
             <Avatar className="w-10 h-10 border-2 border-yellow-400">
             <AvatarImage src={user.photoURL ?? `https://placehold.co/40x40/FFD700/FFFFFF?text=${userInitial}`} alt={user.name ?? ""} />

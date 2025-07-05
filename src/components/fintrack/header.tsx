@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from 'next/link';
 import { Bell, LogOut, Settings, User as UserIcon, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,14 +22,8 @@ import {
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from '@/contexts/auth-context';
-import { CreatePostForm } from './add-transaction-dialog';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 
-interface HeaderProps {
-    onAddPost: (content: string) => Promise<void>;
-}
-
-export function Header({ onAddPost }: HeaderProps) {
+export function Header() {
   const { user, logout } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -105,32 +100,20 @@ export function Header({ onAddPost }: HeaderProps) {
                         <SheetHeader>
                             <SheetTitle className="sr-only">Menu</SheetTitle>
                         </SheetHeader>
-                        <Accordion type="single" collapsible className="w-full py-4">
-                          <AccordionItem value="today">
-                            <AccordionTrigger className="w-full justify-between text-base font-medium">
-                                Today
-                            </AccordionTrigger>
-                            <AccordionContent>
-                              <CreatePostForm user={user} onAddPost={onAddPost} onPostSuccess={() => setIsDrawerOpen(false)} />
-                            </AccordionContent>
-                          </AccordionItem>
-                          <AccordionItem value="add">
-                             <AccordionTrigger className="w-full justify-between text-base font-medium">
+                        <div className="py-4 space-y-2">
+                            <Button asChild variant="ghost" className="w-full justify-start text-base font-medium">
+                                <Link href="/" onClick={() => setIsDrawerOpen(false)}>Feed</Link>
+                            </Button>
+                            <Button asChild variant="ghost" className="w-full justify-start text-base font-medium">
+                                <Link href="/today" onClick={() => setIsDrawerOpen(false)}>Today</Link>
+                            </Button>
+                            <Button variant="ghost" className="w-full justify-start text-base font-medium text-muted-foreground" disabled>
                                 Add
-                            </AccordionTrigger>
-                            <AccordionContent className="text-muted-foreground p-4">
-                              "Add" functionality coming soon.
-                            </AccordionContent>
-                          </AccordionItem>
-                           <AccordionItem value="remove">
-                             <AccordionTrigger className="w-full justify-between text-base font-medium">
+                            </Button>
+                            <Button variant="ghost" className="w-full justify-start text-base font-medium text-muted-foreground" disabled>
                                 Remove
-                            </AccordionTrigger>
-                            <AccordionContent className="text-muted-foreground p-4">
-                              "Remove" functionality coming soon.
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
+                            </Button>
+                        </div>
                     </SheetContent>
                 </Sheet>
             </div>
