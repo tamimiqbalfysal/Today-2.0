@@ -102,8 +102,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         <Menu />
                     </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="bg-yellow-50/50 w-72 p-4">
-                  <SheetHeader className="text-left mb-4 pb-4 border-b border-yellow-200">
+                <SheetContent side="right" className="bg-yellow-50/50 w-72 flex flex-col p-0">
+                  <SheetHeader className="p-4 border-b border-yellow-200">
                       <SheetTitle className="sr-only">User Menu</SheetTitle>
                       <Avatar className="h-16 w-16 border-4 border-pink-300 mb-2">
                         <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
@@ -114,6 +114,25 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                          Welcome to Today! Share what you're up to.
                       </SheetDescription>
                   </SheetHeader>
+                  <div className="flex-grow py-4 px-4 space-y-4">
+                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
+                            <Link href="/today" onClick={() => setIsProfileDrawerOpen(false)}>
+                                <PenSquare className="mr-4" />
+                                Today
+                            </Link>
+                        </Button>
+                        <Button size="lg" className="w-full justify-start text-lg font-bold bg-green-100 text-green-700 hover:bg-green-200">
+                            <PlusCircle className="mr-4" />
+                            Add
+                        </Button>
+                        <Button 
+                            size="lg" 
+                            className="w-full justify-start text-lg font-bold bg-red-100 text-red-700 hover:bg-red-200"
+                        >
+                            <Trash2 className="mr-4" />
+                            Remove
+                        </Button>
+                    </div>
                 </SheetContent>
               </Sheet>
             </div>
