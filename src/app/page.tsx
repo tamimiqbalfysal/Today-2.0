@@ -13,7 +13,6 @@ import { CreatePostForm } from '@/components/fintrack/add-transaction-dialog';
 import { PostFeed } from '@/components/fintrack/recent-transactions';
 import { ProfileCard } from '@/components/fintrack/overview';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AISuggestionCard } from '@/components/fintrack/recommendations';
 
 function TodaySkeleton() {
   return (
@@ -24,7 +23,7 @@ function TodaySkeleton() {
           <Skeleton className="h-10 w-10 rounded-full bg-pink-400" />
         </div>
       </header>
-      <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-4 gap-6 flex-1">
+      <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
         <aside className="hidden md:block md:col-span-1 space-y-6">
           <Skeleton className="h-48 w-full" />
         </aside>
@@ -33,9 +32,6 @@ function TodaySkeleton() {
           <Skeleton className="h-64 w-full" />
           <Skeleton className="h-64 w-full" />
         </section>
-        <aside className="hidden md:block md:col-span-1 space-y-6">
-          <Skeleton className="h-64 w-full" />
-        </aside>
       </main>
     </div>
   );
@@ -130,7 +126,7 @@ export default function TodayPage() {
     <AuthGuard>
         <div className="flex flex-col min-h-screen bg-gray-100">
           <Header />
-          <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-4 gap-6 items-start flex-1">
+          <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6 items-start flex-1">
             <aside className="hidden md:block md:col-span-1 space-y-6">
               {user && <ProfileCard user={user} />}
             </aside>
@@ -138,9 +134,6 @@ export default function TodayPage() {
               {user && <CreatePostForm user={user} onAddPost={handleAddPost} />}
               <PostFeed posts={posts} />
             </section>
-            <aside className="hidden md:block md:col-span-1 space-y-6">
-               <AISuggestionCard />
-            </aside>
           </main>
         </div>
     </AuthGuard>
