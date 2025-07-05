@@ -1,7 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
-import { useEffect, useRef } from 'react';
+import { useFormStatus } from 'react-dom';
+import { useEffect, useRef, useActionState } from 'react';
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
 import { Button } from '@/components/ui/button';
@@ -26,7 +26,7 @@ function SubmitButton() {
 }
 
 export default function ThankYouPage() {
-  const [state, formAction] = useFormState(verifyGiftCode, initialState);
+  const [state, formAction] = useActionState(verifyGiftCode, initialState);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
