@@ -40,7 +40,12 @@ export default function SignupPage() {
     try {
       await signup(data.name, data.email, data.password, data.giftCode);
     } catch (error: any) {
+      const errorCode = error.code;
       let description = error.message || 'An unexpected error occurred. Please try again.';
+
+      if (errorCode === 'auth/network-request-failed') {
+        description = 'Could not connect to Firebase. Please check your network connection and ensure your .env configuration is correct.';
+      }
       
       toast({
         variant: 'destructive',

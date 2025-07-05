@@ -42,6 +42,9 @@ export default function LoginPage() {
         case 'auth/firebase-not-configured':
           message = 'Firebase is not configured. Please add your credentials to the .env file.';
           break;
+        case 'auth/network-request-failed':
+          message = 'Could not connect to Firebase. Please check your network connection and ensure your .env configuration is correct.';
+          break;
         case 'auth/user-not-found':
         case 'auth/wrong-password':
         case 'auth/invalid-credential':
