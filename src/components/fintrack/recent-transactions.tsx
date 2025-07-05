@@ -23,7 +23,7 @@ function PostCard({ post }: PostCardProps) {
 
     return (
         <div 
-            className="bg-card p-6 rounded-2xl w-full border shadow-md transition-shadow hover:shadow-lg"
+            className="bg-card p-6 rounded-2xl w-full border-2 shadow-md transition-shadow hover:shadow-lg"
             style={{ borderColor: borderColor }}
         >
             <div className="flex items-center space-x-4 mb-4">
@@ -41,7 +41,7 @@ function PostCard({ post }: PostCardProps) {
             <p className="font-sans text-card-foreground text-lg mb-4">{post.content}</p>
             
             <div 
-                className="bg-gradient-to-br from-zinc-50 to-zinc-200 dark:from-zinc-800 dark:to-zinc-950 flex flex-col items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video text-muted-foreground relative overflow-hidden border"
+                className="bg-gradient-to-br from-zinc-50 to-zinc-200 dark:from-zinc-800 dark:to-zinc-950 flex flex-col items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video text-muted-foreground relative overflow-hidden border-2"
                 style={{ borderColor: borderColor }}
             >
                 <p className="text-2xl font-bold">Media Placeholder</p>
