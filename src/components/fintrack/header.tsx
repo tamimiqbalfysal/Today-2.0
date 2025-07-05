@@ -32,7 +32,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-start">
                 <Sheet open={isNavDrawerOpen} onOpenChange={setIsNavDrawerOpen}>
                     <SheetTrigger asChild>
-                        <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/20 rounded-full">
+                        <Button size="icon" variant="ghost" className="bg-accent text-primary hover:bg-accent/90 rounded-full">
                             <Menu />
                         </Button>
                     </SheetTrigger>
@@ -91,7 +91,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             {/* Center: Bell */}
             <div className="justify-self-center">
               <Link href="/" aria-label="Home">
-                <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/20 rounded-full">
+                <Button size="icon" variant="ghost" className="bg-accent text-primary hover:bg-accent/90 rounded-full">
                   <Bell />
                 </Button>
               </Link>
@@ -101,7 +101,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-end">
               <Sheet open={isProfileDrawerOpen} onOpenChange={setIsProfileDrawerOpen}>
                 <SheetTrigger asChild>
-                    <Button size="icon" variant="ghost" className="hover:bg-primary-foreground/20 rounded-full">
+                    <Button size="icon" variant="ghost" className="bg-accent text-primary hover:bg-accent/90 rounded-full">
                         <Menu />
                     </Button>
                 </SheetTrigger>

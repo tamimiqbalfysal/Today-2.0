@@ -15,9 +15,9 @@ function PostCard({ post }: PostCardProps) {
     const timestamp = post.timestamp?.toDate ? post.timestamp.toDate() : new Date();
 
     return (
-        <div className="bg-card p-6 rounded-2xl shadow-lg w-full">
+        <div className="bg-card p-6 rounded-2xl w-full border border-border">
             <div className="flex items-center space-x-4 mb-4">
-                <Avatar className="w-12 h-12 border-2 border-primary">
+                <Avatar className="w-12 h-12 border-2 border-border">
                     <AvatarImage src={post.authorPhotoURL} alt={post.authorName} />
                     <AvatarFallback className="text-xl bg-secondary text-secondary-foreground">{post.authorName.charAt(0)}</AvatarFallback>
                 </Avatar>
