@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import Link from 'next/link';
-import { Menu, PenSquare, Bell, Trash2, User, LogOut, Globe2, PlusCircle } from "lucide-react";
+import { Menu, PenSquare, Trash2, User, LogOut, Globe2, PlusCircle, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -125,10 +125,16 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                                 Add
                             </Link>
                         </Button>
+                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                            <Link href="/thank-you" onClick={() => setIsProfileDrawerOpen(false)}>
+                                <Heart className="mr-4" />
+                                Thanku G
+                            </Link>
+                        </Button>
                         <Button 
                             size="lg" 
                             variant="ghost"
-                            className="w-full justify-start text-lg font-bold text-destructive hover:text-destructive"
+                            className="w-full justify-start text-lg font-bold"
                         >
                             <Trash2 className="mr-4" />
                             Remove
