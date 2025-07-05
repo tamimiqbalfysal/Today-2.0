@@ -11,7 +11,6 @@ import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
 import { CreatePostForm } from '@/components/fintrack/add-transaction-dialog';
 import { PostFeed } from '@/components/fintrack/recent-transactions';
-import { ProfileCard } from '@/components/fintrack/overview';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function TodaySkeleton() {
@@ -19,19 +18,17 @@ function TodaySkeleton() {
     <div className="flex flex-col min-h-screen bg-gray-100">
       <header className="bg-pink-500 p-4 sticky top-0 z-10 shadow-md">
         <div className="container mx-auto flex items-center justify-between">
-          <Skeleton className="h-8 w-32 bg-pink-400" />
           <Skeleton className="h-10 w-10 rounded-full bg-pink-400" />
+          <div className="flex items-center gap-4">
+            <Skeleton className="h-8 w-32 bg-pink-400" />
+            <Skeleton className="h-10 w-10 rounded-full bg-pink-400" />
+          </div>
         </div>
       </header>
-      <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
-        <aside className="md:col-span-1 space-y-6">
-          <Skeleton className="h-48 w-full" />
-        </aside>
-        <section className="md:col-span-2 space-y-6">
+      <main className="container mx-auto p-4 max-w-2xl space-y-6 flex-1">
           <Skeleton className="h-32 w-full" />
           <Skeleton className="h-64 w-full" />
           <Skeleton className="h-64 w-full" />
-        </section>
       </main>
     </div>
   );
@@ -126,14 +123,11 @@ export default function TodayPage() {
     <AuthGuard>
         <div className="flex flex-col min-h-screen bg-gray-100">
           <Header />
-          <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6 items-start flex-1">
-            <aside className="md:col-span-1 space-y-6">
-              {user && <ProfileCard user={user} />}
-            </aside>
-            <section className="md:col-span-2 space-y-6">
+          <main className="container mx-auto max-w-2xl p-4 flex-1">
+            <div className="space-y-6">
               {user && <CreatePostForm user={user} onAddPost={handleAddPost} />}
               <PostFeed posts={posts} />
-            </section>
+            </div>
           </main>
         </div>
     </AuthGuard>
