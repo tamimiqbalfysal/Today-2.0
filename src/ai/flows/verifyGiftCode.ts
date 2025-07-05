@@ -57,7 +57,7 @@ const verifyGiftCodeFlow = ai.defineFlow(
         console.error("Error verifying gift code in flow:", error);
         const errorMessage = error.message || '';
         if (errorMessage.includes('Could not refresh access token')) {
-            return { valid: false, message: 'Authentication Error: The server could not get an access token. Please ensure the "Service Account Token Creator" role is added to the App Engine default service account in IAM.' };
+            return { valid: false, message: 'Authentication Error: The server could not get an access token. If you just added the "Service Account Token Creator" role, please wait a minute and try again. Permissions can take a moment to apply.' };
         }
         if (error.code === 7 || errorMessage.toLowerCase().includes('permission denied')) {
              return { valid: false, message: 'Error: The application does not have permission to verify gift codes. Please check server configuration.' };
