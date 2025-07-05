@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from 'next/link';
-import { Bell, Menu, PenSquare, PlusCircle, Trash2, User, LogOut } from "lucide-react";
+import { Menu, PenSquare, PlusCircle, Sparkles, Trash2, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -37,8 +37,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="bg-background/95 w-72 flex flex-col p-0 backdrop-blur-sm">
-                       <SheetHeader className="p-4 border-b border-border items-center">
-                        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                      <SheetHeader className="p-4 border-b border-border items-center">
+                        <SheetTitle className="sr-only">User Menu</SheetTitle>
                         <Avatar className="h-16 w-16 border-4 border-primary/50">
                           <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
                           <AvatarFallback className="text-2xl bg-secondary text-secondary-foreground">{user.displayName?.charAt(0)}</AvatarFallback>
@@ -88,11 +88,11 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                 </Sheet>
             </div>
             
-            {/* Center: Bell */}
+            {/* Center: Sparkles */}
             <div className="justify-self-center">
               <Link href="/" aria-label="Home">
                 <Button size="icon" variant="secondary" className="rounded-full">
-                  <Bell />
+                  <Sparkles />
                 </Button>
               </Link>
             </div>
@@ -107,7 +107,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                 </SheetTrigger>
                 <SheetContent side="right" className="bg-background/95 w-72 flex flex-col p-0 backdrop-blur-sm">
                   <SheetHeader>
-                      <SheetTitle className="sr-only">User Menu</SheetTitle>
+                      <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
                   <div className="flex-grow py-4 px-4 space-y-4">
                         <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="default">

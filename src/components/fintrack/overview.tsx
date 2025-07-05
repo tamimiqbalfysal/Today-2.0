@@ -14,12 +14,12 @@ export function ProfileCard({ user }: ProfileCardProps) {
             <AvatarImage src={user.photoURL ?? undefined} alt={user.name ?? "user"} />
             <AvatarFallback className="text-3xl bg-secondary text-secondary-foreground">{user.name?.charAt(0)}</AvatarFallback>
         </Avatar>
-        <CardTitle className="text-2xl text-primary font-bold">{user.name}</CardTitle>
-        <CardDescription className="text-accent">{user.email}</CardDescription>
+        <CardTitle className="text-2xl text-primary font-headline">{user.name}</CardTitle>
+        <CardDescription className="text-muted-foreground">{user.email}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="text-center text-sm text-muted-foreground">
-            Welcome to Today! Share what you're up to.
+            Welcome to the enchanted forest! Share your magical tales.
         </div>
       </CardContent>
     </Card>

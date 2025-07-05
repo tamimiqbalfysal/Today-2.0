@@ -67,9 +67,9 @@ export default function SignupPage() {
     <div className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-sm mx-auto">
         <CardHeader>
-          <CardTitle className="text-2xl font-headline text-center text-primary">Join the Fun!</CardTitle>
+          <CardTitle className="text-2xl font-headline text-center text-primary">Join the Adventure!</CardTitle>
           <CardDescription className="text-center">
-            Create an account to start playing.
+            Create an account to begin your story.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -82,7 +82,7 @@ export default function SignupPage() {
                   <FormItem>
                     <FormLabel>Your Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Leo the Lion" {...field} />
+                      <Input placeholder="Elara the Brave" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -115,7 +115,7 @@ export default function SignupPage() {
                 )}
               />
               <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Creating Account..." : "Create account"}
+                {form.formState.isSubmitting ? "Forging Account..." : "Create account"}
               </Button>
             </form>
           </Form>

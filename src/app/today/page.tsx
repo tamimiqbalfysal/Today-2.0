@@ -41,7 +41,7 @@ export default function CreatePostPage() {
       });
       toast({
         title: "Post Created!",
-        description: "Your post has been successfully shared.",
+        description: "Your story has been successfully shared.",
       });
       router.push('/');
     } catch (error: any) {
@@ -95,8 +95,8 @@ export default function CreatePostPage() {
           <main className="container mx-auto max-w-2xl p-4 flex-1">
             <Card>
                 <CardHeader>
-                    <CardTitle>Create a New Post</CardTitle>
-                    <CardDescription>Share what's happening today!</CardDescription>
+                    <CardTitle className="font-headline">Share a New Tale</CardTitle>
+                    <CardDescription>What magical things are happening today?</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <CreatePostForm 

@@ -69,7 +69,7 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle className="text-2xl font-headline text-center text-primary">Welcome Back!</CardTitle>
           <CardDescription className="text-center">
-            Let's continue the fun!
+            Let's continue the adventure!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -102,7 +102,7 @@ export default function LoginPage() {
                 )}
               />
               <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Logging In..." : "Log In"}
+                {form.formState.isSubmitting ? "Entering the realm..." : "Log In"}
               </Button>
             </form>
           </Form>

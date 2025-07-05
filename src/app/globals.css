@@ -4,71 +4,71 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 285 60% 97%; /* Light Lavender */
+    --foreground: 285 20% 25%; /* Deep Purple-Gray */
     
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 140 50% 96%; /* Light Mint Green */
+    --card-foreground: 285 20% 25%;
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 140 50% 96%;
+    --popover-foreground: 285 20% 25%;
     
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 285 85% 55%; /* Vibrant Purple */
+    --primary-foreground: 300 100% 98%;
     
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 175 70% 45%; /* Teal */
+    --secondary-foreground: 175 100% 98%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 140 30% 92%;
+    --muted-foreground: 285 10% 45%;
     
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 30 95% 60%; /* Bright Orange */
+    --accent-foreground: 30 100% 10%;
     
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 47.4% 11.2%;
+    --border: 140 25% 88%;
+    --input: 140 25% 90%;
+    --ring: 285 85% 55%;
     
-    --chart-1: 179 71% 44%;
-    --chart-2: 340 77% 64%;
-    --chart-3: 197 57% 54%;
-    --chart-4: 43 84% 66%;
-    --chart-5: 27 97% 67%;
+    --chart-1: 175 70% 45%;
+    --chart-2: 30 95% 60%;
+    --chart-3: 285 85% 55%;
+    --chart-4: 140 60% 50%;
+    --chart-5: 340 77% 64%;
 
     --radius: 1rem;
   }
  
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --background: 285 20% 10%; /* Deep Purple */
+    --foreground: 285 20% 95%;
     
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
+    --card: 285 15% 15%;
+    --card-foreground: 285 20% 95%;
+    
+    --popover: 285 20% 10%;
+    --popover-foreground: 285 20% 95%;
+    
+    --primary: 285 85% 65%;
+    --primary-foreground: 285 20% 10%;
+    
+    --secondary: 175 70% 55%;
+    --secondary-foreground: 175 20% 10%;
+    
+    --muted: 285 15% 20%;
+    --muted-foreground: 285 10% 65%;
+    
+    --accent: 30 95% 70%;
+    --accent-foreground: 30 100% 10%;
+    
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 215 20.2% 65.1%;
+    
+    --border: 285 15% 25%;
+    --input: 285 15% 25%;
+    --ring: 285 85% 65%;
   }
 }
 

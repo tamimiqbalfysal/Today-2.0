@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        sans: ['Lora', 'serif'],
+        headline: ['Pacifico', 'cursive'],
       },
       colors: {
         background: 'hsl(var(--background))',
