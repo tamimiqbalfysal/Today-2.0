@@ -38,8 +38,12 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="bg-yellow-50/50 w-72 flex flex-col p-0">
-                      <SheetHeader>
+                      <SheetHeader className="p-4 border-b border-yellow-200 items-center">
                         <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                        <Avatar className="h-16 w-16 border-4 border-pink-300">
+                          <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
+                          <AvatarFallback className="text-2xl">{user.displayName?.charAt(0)}</AvatarFallback>
+                        </Avatar>
                       </SheetHeader>
                       <div className="flex-grow py-4 px-4 space-y-4">
                           <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
@@ -102,12 +106,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                     </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="bg-yellow-50/50 w-72 flex flex-col p-0">
-                  <SheetHeader className="p-4 border-b border-yellow-200 items-center">
+                  <SheetHeader>
                       <SheetTitle className="sr-only">User Menu</SheetTitle>
-                      <Avatar className="h-16 w-16 border-4 border-pink-300">
-                        <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
-                        <AvatarFallback className="text-2xl">{user.displayName?.charAt(0)}</AvatarFallback>
-                      </Avatar>
                   </SheetHeader>
                   <div className="flex-grow py-4 px-4 space-y-4">
                         <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
