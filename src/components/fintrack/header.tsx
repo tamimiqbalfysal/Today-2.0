@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Bell, LogOut, Settings, User as UserIcon, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +21,8 @@ import {
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from '@/contexts/auth-context';
-import { CreatePostDialog } from './add-transaction-dialog';
+import { CreatePostForm } from './add-transaction-dialog';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 
 interface HeaderProps {
     onAddPost: (content: string) => Promise<void>;
@@ -28,6 +30,7 @@ interface HeaderProps {
 
 export function Header({ onAddPost }: HeaderProps) {
   const { user, logout } = useAuth();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
     <header className="bg-pink-500 p-4 sticky top-0 z-10 shadow-md">
@@ -92,7 +95,7 @@ export function Header({ onAddPost }: HeaderProps) {
                     <span className="text-3xl font-bold">🗓️</span>
                     <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
                 </div>
-                <Sheet>
+                <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
                     <SheetTrigger asChild>
                         <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
                             <Menu />
@@ -102,13 +105,32 @@ export function Header({ onAddPost }: HeaderProps) {
                         <SheetHeader>
                             <SheetTitle className="sr-only">Menu</SheetTitle>
                         </SheetHeader>
-                        <div className="flex flex-col gap-2 py-4">
-                           <CreatePostDialog user={user} onAddPost={onAddPost}>
-                                <Button variant="ghost" className="w-full justify-start text-base">
-                                    Create Post
-                                </Button>
-                            </CreatePostDialog>
-                        </div>
+                        <Accordion type="single" collapsible className="w-full py-4">
+                          <AccordionItem value="today">
+                            <AccordionTrigger className="w-full justify-between text-base font-medium">
+                                Today
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <CreatePostForm user={user} onAddPost={onAddPost} onPostSuccess={() => setIsDrawerOpen(false)} />
+                            </AccordionContent>
+                          </AccordionItem>
+                          <AccordionItem value="add">
+                             <AccordionTrigger className="w-full justify-between text-base font-medium">
+                                Add
+                            </AccordionTrigger>
+                            <AccordionContent className="text-muted-foreground p-4">
+                              "Add" functionality coming soon.
+                            </AccordionContent>
+                          </AccordionItem>
+                           <AccordionItem value="remove">
+                             <AccordionTrigger className="w-full justify-between text-base font-medium">
+                                Remove
+                            </AccordionTrigger>
+                            <AccordionContent className="text-muted-foreground p-4">
+                              "Remove" functionality coming soon.
+                            </AccordionContent>
+                          </AccordionItem>
+                        </Accordion>
                     </SheetContent>
                 </Sheet>
             </div>

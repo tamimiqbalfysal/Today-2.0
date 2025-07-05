@@ -25,7 +25,6 @@ function TodaySkeleton() {
         </div>
       </header>
       <main className="container mx-auto p-4 max-w-2xl space-y-6 flex-1">
-          <Skeleton className="h-32 w-full" />
           <Skeleton className="h-64 w-full" />
           <Skeleton className="h-64 w-full" />
       </main>
