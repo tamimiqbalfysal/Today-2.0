@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from 'next/link';
-import { Menu, PenSquare, Bell, Trash2, User, LogOut, Globe } from "lucide-react";
+import { Menu, PenSquare, Bell, Trash2, User, LogOut, Globe, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -36,7 +36,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             <Menu />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="bg-background w-72 flex flex-col p-0">
+                    <SheetContent side="left" className="bg-white w-72 flex flex-col p-0">
                       <SheetHeader className="p-4 border-b border-border items-center">
                         <SheetTitle className="sr-only">User Menu</SheetTitle>
                         <Avatar className="h-16 w-16 border-4 border-primary/50">
@@ -105,7 +105,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         <Menu />
                     </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="bg-background w-72 flex flex-col p-0">
+                <SheetContent side="right" className="bg-white w-72 flex flex-col p-0">
                   <SheetHeader>
                       <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
@@ -117,8 +117,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             </Link>
                         </Button>
                         <Button size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
-                            <Bell className="mr-4" />
-                            Notifications
+                            <PlusCircle className="mr-4" />
+                            Add
                         </Button>
                         <Button 
                             size="lg" 
