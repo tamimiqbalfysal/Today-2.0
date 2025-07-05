@@ -15,7 +15,7 @@ function PostCard({ post }: PostCardProps) {
 
     return (
         <div 
-            className="bg-card p-6 rounded-2xl w-full shadow-md transition-shadow hover:shadow-lg border-4 border-orange-500"
+            className="bg-card p-6 rounded-2xl w-full shadow-md transition-shadow hover:shadow-lg border-4 border-black"
         >
             <div className="flex items-center space-x-4 mb-4">
                 <Avatar className="w-12 h-12 border-2 border-primary/50">
