@@ -19,68 +19,71 @@ export function Header() {
 
   return (
     <header className="bg-pink-500 p-4 sticky top-0 z-10 shadow-md">
-      <div className="container mx-auto flex items-center justify-between">
+      <div className="container mx-auto grid grid-cols-3 items-center">
         {user ? (
           <>
-            {/* LOGGED IN STATE */}
             {/* Left: User Menu */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-                  <Avatar className="h-10 w-10 border-2 border-pink-300">
-                    <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
-                    <AvatarFallback>{user.displayName?.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="start" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-2">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user.displayName}</p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {user.email}
+            <div className="justify-self-start">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
+                    <Avatar className="h-10 w-10 border-2 border-pink-300">
+                      <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
+                      <AvatarFallback>{user.displayName?.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="start" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">{user.displayName}</p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                          {user.email}
+                        </p>
+                      </div>
+                      <p className="text-xs text-muted-foreground italic">
+                        Welcome to Today! Share what you're up to.
                       </p>
                     </div>
-                    <p className="text-xs text-muted-foreground italic">
-                      Welcome to Today! Share what you're up to.
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <UserIcon className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <UserIcon className="mr-2 h-4 w-4" />
+                      <span>Profile</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Settings className="mr-2 h-4 w-4" />
+                      <span>Settings</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={logout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>Log out</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
             
-            {/* Right: Title + Bell */}
-            <div className="flex items-center gap-4">
-              <div className="flex items-center space-x-2">
-                  <span className="text-3xl font-bold">🗓️</span>
-                  <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
-              </div>
+            {/* Center: Bell */}
+            <div className="justify-self-center">
               <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
                 <Bell />
               </Button>
+            </div>
+
+            {/* Right: Title */}
+            <div className="flex items-center space-x-2 justify-self-end">
+                <span className="text-3xl font-bold">🗓️</span>
+                <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
             </div>
           </>
         ) : (
           <>
             {/* LOGGED OUT STATE */}
-            <div className="flex items-center space-x-2">
+            <div className="col-span-3 flex items-center justify-center space-x-2">
               <span className="text-3xl font-bold">🗓️</span>
               <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
             </div>
