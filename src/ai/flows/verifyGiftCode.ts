@@ -55,12 +55,10 @@ const verifyGiftCodeFlow = ai.defineFlow(
 
     } catch (error: any) {
         console.error("Error verifying gift code in flow:", error);
-        // Handle potential permission errors from Firestore
         if (error.code === 7 || (error.message && error.message.toLowerCase().includes('permission denied'))) {
              return { valid: false, message: 'Error: The application does not have permission to verify gift codes. Please check server configuration.' };
         }
-        return { valid: false, message: 'An unexpected server error occurred while verifying the code.' };
+        return { valid: false, message: `Server Error: ${error.message || 'An unknown error occurred.'}` };
     }
   }
 );
-
