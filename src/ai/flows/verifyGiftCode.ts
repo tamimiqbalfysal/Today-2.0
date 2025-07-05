@@ -55,10 +55,14 @@ const verifyGiftCodeFlow = ai.defineFlow(
 
     } catch (error: any) {
         console.error("Error verifying gift code in flow:", error);
-        if (error.code === 7 || (error.message && error.message.toLowerCase().includes('permission denied'))) {
+        const errorMessage = error.message || '';
+        if (errorMessage.includes('Could not refresh access token')) {
+            return { valid: false, message: 'Authentication Error: The server could not get an access token. Please ensure the "Service Account Token Creator" role is added to the App Engine default service account in IAM.' };
+        }
+        if (error.code === 7 || errorMessage.toLowerCase().includes('permission denied')) {
              return { valid: false, message: 'Error: The application does not have permission to verify gift codes. Please check server configuration.' };
         }
-        return { valid: false, message: `Server Error: ${error.message || 'An unknown error occurred.'}` };
+        return { valid: false, message: `Server Error: ${errorMessage || 'An unknown error occurred.'}` };
     }
   }
 );
