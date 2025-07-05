@@ -47,7 +47,7 @@ const verifyGiftCodeFlow = ai.defineFlow(
       }
       
       const data = doc.data();
-      if (data?.used === true) {
+      if (data?.isUsed === true) {
          return { valid: false, message: 'This gift code has already been used.' };
       }
 
@@ -63,3 +63,4 @@ const verifyGiftCodeFlow = ai.defineFlow(
     }
   }
 );
+
