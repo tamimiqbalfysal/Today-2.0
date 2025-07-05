@@ -10,7 +10,6 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetDescription,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from '@/contexts/auth-context';
@@ -23,7 +22,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
 
   return (
     <header className={cn(
-      "bg-pink-500 p-4 sticky top-0 z-10 shadow-md transition-transform duration-300 ease-in-out",
+      "bg-kids-gradient p-4 sticky top-0 z-10 shadow-md transition-transform duration-300 ease-in-out",
       !isVisible && "-translate-y-full"
     )}>
       <div className="container mx-auto grid grid-cols-3 items-center">
@@ -33,7 +32,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-start">
                 <Sheet open={isNavDrawerOpen} onOpenChange={setIsNavDrawerOpen}>
                     <SheetTrigger asChild>
-                        <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
+                        <Button size="icon" variant="ghost" className="text-neutral-800 hover:bg-white/30 rounded-full">
                             <Menu />
                         </Button>
                     </SheetTrigger>
@@ -91,7 +90,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             {/* Center: Bell */}
             <div className="justify-self-center">
               <Link href="/" aria-label="Home">
-                <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
+                <Button size="icon" variant="ghost" className="text-neutral-800 hover:bg-white/30 rounded-full">
                   <Bell />
                 </Button>
               </Link>
@@ -101,7 +100,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-end">
               <Sheet open={isProfileDrawerOpen} onOpenChange={setIsProfileDrawerOpen}>
                 <SheetTrigger asChild>
-                    <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
+                    <Button size="icon" variant="ghost" className="text-neutral-800 hover:bg-white/30 rounded-full">
                         <Menu />
                     </Button>
                 </SheetTrigger>
