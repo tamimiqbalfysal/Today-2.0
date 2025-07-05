@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from 'next/link';
-import { Bell, LogOut, Settings, User as UserIcon, Menu } from "lucide-react";
+import { Bell, LogOut, Settings, User as UserIcon, Menu, PenSquare, PlusCircle, Trash2, Smile } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -96,18 +96,26 @@ export function Header() {
                             <Menu />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent>
-                        <SheetHeader>
-                            <SheetTitle className="sr-only">Menu</SheetTitle>
+                    <SheetContent className="bg-yellow-50/50">
+                        <SheetHeader className="text-center pb-4 border-b">
+                            <SheetTitle className="text-2xl font-bold text-pink-500 flex items-center justify-center gap-2">
+                                <Smile />
+                                Playground
+                            </SheetTitle>
                         </SheetHeader>
-                        <div className="py-4 space-y-2">
-                            <Button asChild variant="ghost" className="w-full justify-start text-base font-medium">
-                                <Link href="/today" onClick={() => setIsDrawerOpen(false)}>Today</Link>
+                        <div className="py-4 space-y-4">
+                            <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
+                                <Link href="/today" onClick={() => setIsDrawerOpen(false)}>
+                                    <PenSquare className="mr-4" />
+                                    Today
+                                </Link>
                             </Button>
-                            <Button variant="ghost" className="w-full justify-start text-base font-medium text-muted-foreground" disabled>
+                            <Button size="lg" className="w-full justify-start text-lg font-bold bg-green-100 text-green-700 hover:bg-green-200" disabled>
+                                <PlusCircle className="mr-4" />
                                 Add
                             </Button>
-                            <Button variant="ghost" className="w-full justify-start text-base font-medium text-muted-foreground" disabled>
+                            <Button size="lg" className="w-full justify-start text-lg font-bold bg-red-100 text-red-700 hover:bg-red-200" disabled>
+                                <Trash2 className="mr-4" />
                                 Remove
                             </Button>
                         </div>
