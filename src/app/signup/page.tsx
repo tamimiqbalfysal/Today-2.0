@@ -40,10 +40,16 @@ export default function SignupPage() {
     try {
       await signup(data.name, data.email, data.password, data.giftCode);
     } catch (error: any) {
+      let description = error.message || 'An unexpected error occurred. Please try again.';
+
+      if (typeof description === 'string' && description.includes('FAILED_PRECONDITION')) {
+        description = "The server is missing its connection to Google AI. Please ensure the GOOGLE_API_KEY is set in your project's .env file.";
+      }
+      
       toast({
         variant: 'destructive',
         title: 'Sign Up Failed',
-        description: error.message || 'An unexpected error occurred. Please try again.',
+        description: description,
       });
     }
   }
