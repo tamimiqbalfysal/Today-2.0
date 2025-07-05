@@ -19,7 +19,7 @@ export function ProfileCard({ user }: ProfileCardProps) {
       </CardHeader>
       <CardContent>
         <div className="text-center text-sm text-muted-foreground">
-            Welcome to Kidbook! The funnest place on the web.
+            Welcome to Today! Share what you're up to.
         </div>
       </CardContent>
     </Card>

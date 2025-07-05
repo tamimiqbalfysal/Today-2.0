@@ -15,7 +15,7 @@ import { ProfileCard } from '@/components/fintrack/overview';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AISuggestionCard } from '@/components/fintrack/recommendations';
 
-function KidbookSkeleton() {
+function TodaySkeleton() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100">
       <header className="bg-pink-500 p-4 sticky top-0 z-10 shadow-md">
@@ -42,7 +42,7 @@ function KidbookSkeleton() {
 }
 
 
-export default function KidbookPage() {
+export default function TodayPage() {
   const { user: firebaseUser, loading: authLoading } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(true);
@@ -123,7 +123,7 @@ export default function KidbookPage() {
   }, [user, toast]);
   
   if (authLoading || (isDataLoading && firebaseUser)) {
-    return <KidbookSkeleton />;
+    return <TodaySkeleton />;
   }
 
   return (

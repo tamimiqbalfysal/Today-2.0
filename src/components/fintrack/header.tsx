@@ -21,8 +21,8 @@ export function Header() {
     <header className="bg-pink-500 p-4 sticky top-0 z-10 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <span className="text-3xl font-bold">🌈</span>
-          <h1 className="text-white text-2xl font-extrabold tracking-tight">Kidbook</h1>
+          <span className="text-3xl font-bold">🗓️</span>
+          <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
         </div>
         
         {user && (

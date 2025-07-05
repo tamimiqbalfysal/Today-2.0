@@ -41,7 +41,7 @@ export function CreatePostForm({ user, onAddPost }: CreatePostProps) {
         </Avatar>
         <Input 
             type="text" 
-            placeholder="What fun are you having today?" 
+            placeholder="What's happening today?" 
             className="flex-1 p-3 rounded-full bg-yellow-50 border border-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-300 text-yellow-800 placeholder-yellow-500 text-sm h-auto"
             value={content}
             onChange={(e) => setContent(e.target.value)}
