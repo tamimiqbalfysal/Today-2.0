@@ -57,9 +57,11 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                                 Profile
                             </Link>
                           </Button>
-                           <Button size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
-                              <Bell className="mr-4" />
-                              Notifications
+                           <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                              <Link href="/add" onClick={() => setIsNavDrawerOpen(false)}>
+                                  <PlusCircle className="mr-4" />
+                                  Add
+                              </Link>
                           </Button>
                           <Button 
                             size="lg" 
