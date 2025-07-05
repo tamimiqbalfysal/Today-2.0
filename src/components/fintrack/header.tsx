@@ -97,13 +97,7 @@ export function Header() {
                         </Button>
                     </SheetTrigger>
                     <SheetContent className="bg-yellow-50/50">
-                        <SheetHeader className="text-center pb-4 border-b">
-                            <SheetTitle className="text-2xl font-bold text-pink-500 flex items-center justify-center gap-2">
-                                <Smile />
-                                Playground
-                            </SheetTitle>
-                        </SheetHeader>
-                        <div className="py-4 space-y-4">
+                        <div className="py-4 pt-8 space-y-4">
                             <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
                                 <Link href="/today" onClick={() => setIsDrawerOpen(false)}>
                                     <PenSquare className="mr-4" />
