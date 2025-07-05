@@ -5,10 +5,11 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, type User as FirebaseUser } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, onSnapshot } from 'firebase/firestore';
+import type { User as AppUser } from '@/lib/types';
 
 interface AuthContextType {
-  user: FirebaseUser | null;
+  user: AppUser | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -18,21 +19,56 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    if (!auth) {
+    if (!auth || !db) {
       setLoading(false);
       return;
     }
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      setUser(firebaseUser);
-      setLoading(false);
+    const unsubscribeAuth = onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        // User is signed in, listen for their profile changes from Firestore
+        const userDocRef = doc(db, 'users', firebaseUser.uid);
+        const unsubscribeFirestore = onSnapshot(userDocRef, (doc) => {
+          setLoading(true);
+          if (doc.exists()) {
+            const firestoreData = doc.data() as Omit<AppUser, 'uid'>;
+            setUser({
+              uid: firebaseUser.uid,
+              ...firestoreData,
+              name: firebaseUser.displayName || firestoreData.name,
+              email: firebaseUser.email || firestoreData.email,
+              photoURL: firebaseUser.photoURL || firestoreData.photoURL,
+            });
+          } else {
+            // This case might happen if Firestore doc creation fails during signup
+            // Or for users that existed before the users collection was standard.
+            setUser({
+              uid: firebaseUser.uid,
+              name: firebaseUser.displayName || 'Anonymous',
+              email: firebaseUser.email || '',
+              photoURL: firebaseUser.photoURL,
+              isGiftCodeVerified: false, // Default value
+            });
+          }
+          setLoading(false);
+        }, (error) => {
+            console.error("Error fetching user document:", error);
+            setLoading(false);
+        });
+
+        return () => unsubscribeFirestore(); // Cleanup Firestore listener
+      } else {
+        // User is signed out
+        setUser(null);
+        setLoading(false);
+      }
     });
 
-    return () => unsubscribe();
+    return () => unsubscribeAuth(); // Cleanup auth listener
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -70,7 +106,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await setDoc(doc(db, "users", firebaseUser.uid), {
             name: name,
             email: email,
-            photoURL: photoURL
+            photoURL: photoURL,
+            isGiftCodeVerified: false,
         });
     } catch (error) {
         // This is a good place to log a warning, but we don't want to fail the whole signup

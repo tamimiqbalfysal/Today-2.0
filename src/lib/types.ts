@@ -5,6 +5,7 @@ export interface User {
   name: string;
   email: string;
   photoURL?: string | null;
+  isGiftCodeVerified?: boolean;
 }
 
 export interface Post {
@@ -21,7 +22,7 @@ export interface Post {
 export interface Comment {
     id: string;
     authorId: string;
-    authorName: string;
+    authorName:string;
     content: string;
     timestamp: Timestamp;
 }
