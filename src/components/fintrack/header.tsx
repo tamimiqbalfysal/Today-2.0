@@ -22,7 +22,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
 
   return (
     <header className={cn(
-      "bg-kids-gradient p-4 sticky top-0 z-10 shadow-md transition-transform duration-300 ease-in-out",
+      "bg-yellow-400 p-4 sticky top-0 z-10 shadow-md transition-transform duration-300 ease-in-out",
       !isVisible && "-translate-y-full"
     )}>
       <div className="container mx-auto grid grid-cols-3 items-center">

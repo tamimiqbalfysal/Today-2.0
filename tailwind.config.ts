@@ -11,7 +11,6 @@ export default {
     extend: {
       backgroundImage: {
         'primary-gradient': 'linear-gradient(105deg, hsl(var(--primary-gradient-start)), hsl(var(--primary-gradient-middle)), hsl(var(--primary-gradient-end)))',
-        'kids-gradient': 'linear-gradient(to right, #FDE047, #F97316, #EF4444)',
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
