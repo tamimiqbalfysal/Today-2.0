@@ -9,6 +9,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from '@/contexts/auth-context';
@@ -28,9 +29,9 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
       <div className="container mx-auto grid grid-cols-3 items-center">
         {user ? (
           <>
-            {/* Left: Navigation Drawer */}
+            {/* Left: Profile Drawer */}
             <div className="justify-self-start">
-              <Sheet open={isNavDrawerOpen} onOpenChange={setIsNavDrawerOpen}>
+              <Sheet open={isProfileDrawerOpen} onOpenChange={setIsProfileDrawerOpen}>
                 <SheetTrigger asChild>
                   <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
                     <Avatar className="h-10 w-10 border-2 border-pink-300">
@@ -39,26 +40,41 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                     </Avatar>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="bg-yellow-50/50 w-72">
-                    <SheetHeader>
-                        <SheetTitle className="sr-only">Menu</SheetTitle>
-                    </SheetHeader>
-                    <div className="py-4 pt-8 space-y-4">
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
-                            <Link href="/today" onClick={() => setIsNavDrawerOpen(false)}>
-                                <PenSquare className="mr-4" />
-                                Create Post
-                            </Link>
-                        </Button>
-                        <Button size="lg" className="w-full justify-start text-lg font-bold bg-green-100 text-green-700 hover:bg-green-200" disabled>
-                            <PlusCircle className="mr-4" />
-                            Add
-                        </Button>
-                        <Button size="lg" className="w-full justify-start text-lg font-bold bg-red-100 text-red-700 hover:bg-red-200" disabled>
-                            <Trash2 className="mr-4" />
-                            Remove
-                        </Button>
-                    </div>
+                <SheetContent side="left" className="bg-yellow-50/50 w-72 p-4">
+                  <SheetHeader className="text-left mb-4 pb-4 border-b">
+                      <SheetTitle className="sr-only">Profile Menu</SheetTitle>
+                      <Avatar className="h-16 w-16 border-4 border-pink-300 mb-2">
+                      <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
+                      <AvatarFallback className="text-2xl">{user.displayName?.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <SheetTitle className="text-xl">{user.displayName}</SheetTitle>
+                      <p className="text-sm text-muted-foreground">
+                      {user.email}
+                      </p>
+                      <p className="text-sm text-muted-foreground italic pt-2">
+                      Welcome to Today! Share what you're up to.
+                      </p>
+                  </SheetHeader>
+                  <div className="py-4 space-y-2">
+                      <Button variant="ghost" className="w-full justify-start gap-2 text-md">
+                      <UserIcon className="h-5 w-5" />
+                      <span>Profile</span>
+                      </Button>
+                      <Button variant="ghost" className="w-full justify-start gap-2 text-md">
+                      <Settings className="h-5 w-5" />
+                      <span>Settings</span>
+                      </Button>
+                  </div>
+                  <Separator />
+                  <div className="py-4">
+                      <Button variant="ghost" onClick={() => {
+                          logout();
+                          setIsProfileDrawerOpen(false);
+                      }} className="w-full justify-start gap-2 text-md">
+                      <LogOut className="h-5 w-5" />
+                      <span>Log out</span>
+                      </Button>
+                  </div>
                 </SheetContent>
               </Sheet>
             </div>
@@ -70,48 +86,34 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
               </Button>
             </div>
 
-            {/* Right: Profile Drawer */}
+            {/* Right: Navigation Drawer */}
             <div className="justify-self-end">
-                <Sheet open={isProfileDrawerOpen} onOpenChange={setIsProfileDrawerOpen}>
+                <Sheet open={isNavDrawerOpen} onOpenChange={setIsNavDrawerOpen}>
                     <SheetTrigger asChild>
                         <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
                             <Menu />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="right" className="bg-yellow-50/50 w-72 p-4">
-                        <SheetHeader className="text-left mb-4 pb-4 border-b">
-                            <Avatar className="h-16 w-16 border-4 border-pink-300 mb-2">
-                            <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
-                            <AvatarFallback className="text-2xl">{user.displayName?.charAt(0)}</AvatarFallback>
-                            </Avatar>
-                            <SheetTitle className="text-xl">{user.displayName}</SheetTitle>
-                            <p className="text-sm text-muted-foreground">
-                            {user.email}
-                            </p>
-                            <p className="text-sm text-muted-foreground italic pt-2">
-                            Welcome to Today! Share what you're up to.
-                            </p>
-                        </SheetHeader>
-                        <div className="py-4 space-y-2">
-                            <Button variant="ghost" className="w-full justify-start gap-2 text-md">
-                            <UserIcon className="h-5 w-5" />
-                            <span>Profile</span>
-                            </Button>
-                            <Button variant="ghost" className="w-full justify-start gap-2 text-md">
-                            <Settings className="h-5 w-5" />
-                            <span>Settings</span>
-                            </Button>
-                        </div>
-                        <Separator />
-                        <div className="py-4">
-                            <Button variant="ghost" onClick={() => {
-                                logout();
-                                setIsProfileDrawerOpen(false);
-                            }} className="w-full justify-start gap-2 text-md">
-                            <LogOut className="h-5 w-5" />
-                            <span>Log out</span>
-                            </Button>
-                        </div>
+                    <SheetContent side="right" className="bg-yellow-50/50 w-72">
+                      <SheetHeader>
+                          <SheetTitle className="sr-only">Menu</SheetTitle>
+                      </SheetHeader>
+                      <div className="py-4 pt-8 space-y-4">
+                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
+                              <Link href="/today" onClick={() => setIsNavDrawerOpen(false)}>
+                                  <PenSquare className="mr-4" />
+                                  Create Post
+                              </Link>
+                          </Button>
+                          <Button size="lg" className="w-full justify-start text-lg font-bold bg-green-100 text-green-700 hover:bg-green-200" disabled>
+                              <PlusCircle className="mr-4" />
+                              Add
+                          </Button>
+                          <Button size="lg" className="w-full justify-start text-lg font-bold bg-red-100 text-red-700 hover:bg-red-200" disabled>
+                              <Trash2 className="mr-4" />
+                              Remove
+                          </Button>
+                      </div>
                     </SheetContent>
                 </Sheet>
             </div>
