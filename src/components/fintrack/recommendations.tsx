@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { suggestPost } from "@/ai/flows/spending-recommendations"
+import { suggestFunPost } from "@/ai/flows/spending-recommendations"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Wand2, Lightbulb } from "lucide-react"
+import { Wand2, Sparkles } from "lucide-react"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Input } from "../ui/input"
@@ -25,7 +25,7 @@ export function AISuggestionCard() {
     setSuggestion(null);
 
     try {
-      const result = await suggestPost({ topic });
+      const result = await suggestFunPost({ topic });
       setSuggestion(result.suggestion);
     } catch (e) {
       console.error(e);
@@ -40,10 +40,10 @@ export function AISuggestionCard() {
       <CardHeader>
         <CardTitle className="font-headline flex items-center gap-2">
           <Wand2 className="text-primary" />
-          Post Assistant
+          Idea Sparker!
         </CardTitle>
         <CardDescription>
-          Stuck? Get an AI-powered post idea.
+          Need a fun idea for a post?
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -51,11 +51,11 @@ export function AISuggestionCard() {
             <Input 
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
-                placeholder="e.g., My weekend trip"
+                placeholder="e.g., My day at the park"
             />
             <Button onClick={handleGetSuggestion} disabled={loading} className="w-full">
-              <Lightbulb className="mr-2" />
-              {loading ? "Generating..." : "Get Suggestion"}
+              <Sparkles className="mr-2" />
+              {loading ? "Thinking..." : "Get Idea!"}
             </Button>
         </div>
 
@@ -68,7 +68,7 @@ export function AISuggestionCard() {
 
         {suggestion && (
           <Alert>
-            <AlertTitle className="font-semibold">Suggestion:</AlertTitle>
+            <AlertTitle className="font-semibold">Here's an idea:</AlertTitle>
             <AlertDescription>{suggestion}</AlertDescription>
           </Alert>
         )}

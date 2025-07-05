@@ -45,7 +45,7 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
               <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <Textarea
-              placeholder={`What's on your mind, ${user.name}?`}
+              placeholder={`What's something fun you did today, ${user.name}?`}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               className="min-h-[80px] text-base"
@@ -55,7 +55,7 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
           <div className="flex justify-end">
             <Button type="submit" disabled={isSubmitting || !content.trim()}>
               <Send className="mr-2 h-4 w-4" />
-              {isSubmitting ? "Posting..." : "Post"}
+              {isSubmitting ? "Sharing..." : "Share"}
             </Button>
           </div>
         </form>

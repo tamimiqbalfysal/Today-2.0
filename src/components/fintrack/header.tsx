@@ -45,7 +45,7 @@ export function Header() {
                   </AvatarFallback>
                 </Avatar>
                 <h1 className="text-2xl font-bold font-headline text-primary">
-                  FaceLook
+                  KidzConnect
                 </h1>
               </Button>
             </DropdownMenuTrigger>
@@ -84,7 +84,7 @@ export function Header() {
         ) : (
           <Link href="/">
             <h1 className="text-2xl font-bold font-headline text-primary">
-              FaceLook
+              KidzConnect
             </h1>
           </Link>
         )}

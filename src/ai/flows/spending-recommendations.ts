@@ -2,44 +2,44 @@
 /**
  * @fileOverview A flow to generate a social media post suggestion based on a topic.
  *
- * - suggestPost - A function that suggests a post.
- * - SuggestPostInput - The input type for the suggestPost function.
- * - SuggestPostOutput - The return type for the suggestPost function.
+ * - suggestFunPost - A function that suggests a fun post.
+ * - SuggestFunPostInput - The input type for the suggestFunPost function.
+ * - SuggestFunPostOutput - The return type for the suggestFunPost function.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-const SuggestPostInputSchema = z.object({
+const SuggestFunPostInputSchema = z.object({
   topic: z.string().describe('The topic for the post suggestion.'),
 });
-export type SuggestPostInput = z.infer<typeof SuggestPostInputSchema>;
+export type SuggestFunPostInput = z.infer<typeof SuggestFunPostInputSchema>;
 
-const SuggestPostOutputSchema = z.object({
-    suggestion: z.string().describe('The suggested content for the social media post.'),
+const SuggestFunPostOutputSchema = z.object({
+    suggestion: z.string().describe('The suggested fun content for the social media post.'),
 });
-export type SuggestPostOutput = z.infer<typeof SuggestPostOutputSchema>;
+export type SuggestFunPostOutput = z.infer<typeof SuggestFunPostOutputSchema>;
 
-export async function suggestPost(input: SuggestPostInput): Promise<SuggestPostOutput> {
-  return postSuggesterFlow(input);
+export async function suggestFunPost(input: SuggestFunPostInput): Promise<SuggestFunPostOutput> {
+  return funPostSuggesterFlow(input);
 }
 
 const prompt = ai.definePrompt({
-  name: 'postSuggesterPrompt',
-  input: {schema: SuggestPostInputSchema},
-  output: {schema: SuggestPostOutputSchema},
-  prompt: `You are a creative social media assistant.
+  name: 'funPostSuggesterPrompt',
+  input: {schema: SuggestFunPostInputSchema},
+  output: {schema: SuggestFunPostOutputSchema},
+  prompt: `You are a super fun and creative friend who loves coming up with ideas for posts.
   
-  Generate a short, engaging social media post about the following topic: {{{topic}}}.
+  Generate a short, playful, and exciting social media post about the following topic: {{{topic}}}.
   
-  Keep it concise and friendly.`,
+  Use cheerful language and maybe an emoji!`,
 });
 
-const postSuggesterFlow = ai.defineFlow(
+const funPostSuggesterFlow = ai.defineFlow(
   {
-    name: 'postSuggesterFlow',
-    inputSchema: SuggestPostInputSchema,
-    outputSchema: SuggestPostOutputSchema,
+    name: 'funPostSuggesterFlow',
+    inputSchema: SuggestFunPostInputSchema,
+    outputSchema: SuggestFunPostOutputSchema,
   },
   async input => {
     const {output} = await prompt(input);
