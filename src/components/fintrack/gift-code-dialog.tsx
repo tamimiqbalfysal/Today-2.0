@@ -55,11 +55,11 @@ export function GiftCodeDialog({ isOpen, onClose }: GiftCodeDialogProps) {
           description: result.message,
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'An unexpected network error occurred.',
+        description: error.message || 'An unexpected network error occurred.',
       });
     } finally {
       setIsLoading(false);

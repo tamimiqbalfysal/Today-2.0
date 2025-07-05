@@ -60,10 +60,16 @@ export async function verifyGiftCode(input: VerifyGiftCodeInput): Promise<Verify
     return { success: true, message: 'Gift code successfully verified!' };
   } catch (error: any) {
     console.error('Gift code verification error:', error);
-    // Don't expose internal errors to the client
+    
+    // Check for specific permission errors
+    if (error.code === 'permission-denied' || error.code === 7 || (error.message && error.message.toLowerCase().includes('permission denied'))) {
+      return { success: false, message: 'Verification failed. The server does not have permission to access the database. Please check IAM roles.' };
+    }
+
+    // Return other known errors
     const clientMessage = error.message.includes('Invalid gift code') || error.message.includes('already been used')
       ? error.message
-      : 'An unexpected error occurred.';
+      : 'An unexpected error occurred during verification.';
     return { success: false, message: clientMessage };
   }
 }
