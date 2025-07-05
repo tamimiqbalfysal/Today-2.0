@@ -97,6 +97,9 @@ export function Header() {
                         </Button>
                     </SheetTrigger>
                     <SheetContent className="bg-yellow-50/50">
+                        <SheetHeader className="sr-only">
+                            <SheetTitle>Menu</SheetTitle>
+                        </SheetHeader>
                         <div className="py-4 pt-8 space-y-4">
                             <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
                                 <Link href="/today" onClick={() => setIsDrawerOpen(false)}>
