@@ -20,16 +20,10 @@ export function Header() {
   return (
     <header className="bg-pink-500 p-4 sticky top-0 z-10 shadow-md">
       <div className="container mx-auto flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <span className="text-3xl font-bold">🗓️</span>
-          <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
-        </div>
-        
-        {user && (
-          <div className="flex items-center gap-4">
-            <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
-              <Bell />
-            </Button>
+        {user ? (
+          <>
+            {/* LOGGED IN STATE */}
+            {/* Left: User Menu */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
@@ -39,7 +33,7 @@ export function Header() {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
+              <DropdownMenuContent className="w-56" align="start" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">{user.displayName}</p>
@@ -66,7 +60,26 @@ export function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
+            
+            {/* Right: Title + Bell */}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center space-x-2">
+                  <span className="text-3xl font-bold">🗓️</span>
+                  <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
+              </div>
+              <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
+                <Bell />
+              </Button>
+            </div>
+          </>
+        ) : (
+          <>
+            {/* LOGGED OUT STATE */}
+            <div className="flex items-center space-x-2">
+              <span className="text-3xl font-bold">🗓️</span>
+              <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
+            </div>
+          </>
         )}
       </div>
     </header>
