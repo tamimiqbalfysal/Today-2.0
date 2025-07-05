@@ -14,9 +14,6 @@ import {
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -95,12 +92,17 @@ export function Header() {
                         </Button>
                     </SheetTrigger>
                     <SheetContent>
-                        <SheetHeader>
-                            <SheetTitle>Menu</SheetTitle>
-                            <SheetDescription>
-                                More options coming soon!
-                            </SheetDescription>
-                        </SheetHeader>
+                        <div className="flex flex-col gap-2 py-4">
+                            <Button variant="ghost" className="w-full justify-start text-base">
+                                Today
+                            </Button>
+                            <Button variant="ghost" className="w-full justify-start text-base">
+                                Add
+                            </Button>
+                            <Button variant="ghost" className="w-full justify-start text-base">
+                                Remove
+                            </Button>
+                        </div>
                     </SheetContent>
                 </Sheet>
             </div>
