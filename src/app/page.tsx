@@ -24,9 +24,9 @@ function TodaySkeleton() {
           </div>
         </div>
       </header>
-      <main className="container mx-auto p-4 max-w-2xl space-y-6 flex-1">
-          <Skeleton className="h-64 w-full" />
-          <Skeleton className="h-64 w-full" />
+      <main className="container mx-auto p-4 max-w-4xl space-y-6 flex-1">
+          <Skeleton className="h-[450px] w-full" />
+          <Skeleton className="h-[450px] w-full" />
       </main>
     </div>
   );
@@ -102,7 +102,7 @@ export default function TodayPage() {
     <AuthGuard>
         <div className="flex flex-col h-screen bg-gray-100">
           <Header isVisible={isHeaderVisible} />
-          <main className="container mx-auto max-w-2xl p-4 flex-1 overflow-hidden">
+          <main className="container mx-auto max-w-4xl p-4 flex-1 overflow-hidden">
             <PostFeed 
               posts={posts} 
               scrollContainerRef={scrollContainerRef}

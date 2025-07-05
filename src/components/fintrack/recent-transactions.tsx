@@ -22,38 +22,38 @@ function PostCard({ post, colorTheme }: PostCardProps) {
     const timestamp = post.timestamp?.toDate ? post.timestamp.toDate() : new Date();
 
     return (
-        <div className={`${colorTheme.bg} p-4 rounded-xl shadow-md w-full`}>
-            <div className="flex items-center space-x-3 mb-3">
-                <Avatar className={`w-10 h-10 border-2 ${colorTheme.avatar}`}>
+        <div className={`${colorTheme.bg} p-6 rounded-2xl shadow-lg w-full`}>
+            <div className="flex items-center space-x-4 mb-4">
+                <Avatar className={`w-12 h-12 border-2 ${colorTheme.avatar}`}>
                     <AvatarImage src={post.authorPhotoURL} alt={post.authorName} />
-                    <AvatarFallback>{post.authorName.charAt(0)}</AvatarFallback>
+                    <AvatarFallback className="text-xl">{post.authorName.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
-                    <p className={`font-bold ${colorTheme.text}`}>{post.authorName}</p>
-                    <p className={`text-xs ${colorTheme.text}/80`}>
+                    <p className={`font-bold text-lg ${colorTheme.text}`}>{post.authorName}</p>
+                    <p className={`text-sm ${colorTheme.text}/80`}>
                         {formatDistanceToNow(timestamp, { addSuffix: true })}
                     </p>
                 </div>
             </div>
-            <p className={`${colorTheme.text} mb-3`}>{post.content}</p>
+            <p className={`${colorTheme.text} text-lg mb-4`}>{post.content}</p>
             
             <Image 
-                src={`https://placehold.co/350x200.png`} 
+                src={`https://placehold.co/800x450.png`} 
                 alt="Post Image"
                 data-ai-hint="kids drawing"
-                width={350}
-                height={200}
-                className="w-full rounded-lg mb-3 shadow-sm"
+                width={800}
+                height={450}
+                className="w-full rounded-lg mb-4 shadow-md aspect-video object-cover"
             />
             
-            <div className={`flex justify-around items-center pt-2 border-t ${colorTheme.border}`}>
-                <Button variant="ghost" className={`${colorTheme.button} transition duration-200`}>
+            <div className={`flex justify-around items-center pt-3 border-t ${colorTheme.border}`}>
+                <Button variant="ghost" className={`${colorTheme.button} transition duration-200 text-base`}>
                     <Heart className="mr-2" />
-                    <span className="text-sm">Like</span>
+                    <span className="font-semibold">Like</span>
                 </Button>
-                <Button variant="ghost" className={`${colorTheme.button} transition duration-200`}>
+                <Button variant="ghost" className={`${colorTheme.button} transition duration-200 text-base`}>
                     <MessageCircle className="mr-2" />
-                    <span className="text-sm">Comment</span>
+                    <span className="font-semibold">Comment</span>
                 </Button>
             </div>
         </div>
@@ -80,7 +80,7 @@ export function PostFeed({ posts, scrollContainerRef, onScroll }: PostFeedProps)
   return (
     <div ref={scrollContainerRef} onScroll={onScroll} className="h-full overflow-y-auto snap-y snap-mandatory no-scrollbar scroll-smooth">
       {posts.map((post, index) => (
-        <div key={post.id} className="h-full w-full snap-center flex items-center justify-center shrink-0">
+        <div key={post.id} className="h-full w-full snap-center flex items-center justify-center shrink-0 p-4">
           <PostCard post={post} colorTheme={postColors[index % postColors.length]} />
         </div>
       ))}
