@@ -5,7 +5,6 @@ export interface User {
   name: string;
   email: string;
   photoURL?: string | null;
-  isGiftCodeVerified?: boolean;
 }
 
 export interface Post {

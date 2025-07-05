@@ -4,14 +4,13 @@ import { useState, useEffect, useRef } from 'react';
 import { collection, query, orderBy, onSnapshot, Timestamp } from "firebase/firestore";
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/auth-context';
-import type { Post, User } from '@/lib/types';
+import type { Post } from '@/lib/types';
 import { useToast } from "@/hooks/use-toast";
 
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
 import { PostFeed } from '@/components/fintrack/recent-transactions';
 import { Skeleton } from '@/components/ui/skeleton';
-import { GiftCodeDialog } from '@/components/fintrack/gift-code-dialog';
 
 function TodaySkeleton() {
   return (
@@ -42,46 +41,6 @@ export default function TodayPage() {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const [isGiftCodeDialogOpen, setIsGiftCodeDialogOpen] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const startTimer = () => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-    timerRef.current = setTimeout(() => {
-      setIsGiftCodeDialogOpen(true);
-    }, 60 * 1000); // 1 minute
-  };
-
-  useEffect(() => {
-    // This effect manages the gift code dialog timer
-    if (user && user.isGiftCodeVerified === false) {
-      startTimer();
-    } else {
-      // If user is verified, logs out, or status is unknown, clear the timer and close the dialog
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-      setIsGiftCodeDialogOpen(false);
-    }
-    
-    // Cleanup function to clear timer on component unmount or when user/status changes
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [user, user?.isGiftCodeVerified]);
-
-  const handleCloseDialog = () => {
-    setIsGiftCodeDialogOpen(false);
-    // Restart the timer when the user explicitly cancels/closes the dialog
-    if (user && user.isGiftCodeVerified === false) {
-      startTimer();
-    }
-  };
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
@@ -150,7 +109,6 @@ export default function TodayPage() {
               onScroll={handleScroll}
             />
           </main>
-          <GiftCodeDialog isOpen={isGiftCodeDialogOpen} onClose={handleCloseDialog} />
         </div>
     </AuthGuard>
   );
