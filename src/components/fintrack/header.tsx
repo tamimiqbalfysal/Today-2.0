@@ -38,6 +38,9 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="bg-yellow-50/50 w-72 flex flex-col p-0">
+                      <SheetHeader>
+                        <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                      </SheetHeader>
                       <div className="flex-grow py-4 px-4 space-y-4">
                           <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">
                               <Link href="/today" onClick={() => setIsNavDrawerOpen(false)}>
