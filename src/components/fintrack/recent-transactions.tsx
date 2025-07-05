@@ -78,7 +78,7 @@ export function PostFeed({ posts, scrollContainerRef, onScroll }: PostFeedProps)
   }
 
   return (
-    <div ref={scrollContainerRef} onScroll={onScroll} className="h-full overflow-y-auto snap-y snap-mandatory no-scrollbar scroll-smooth">
+    <div ref={scrollContainerRef} onScroll={onScroll} className="h-full overflow-y-auto snap-y snap-proximity no-scrollbar scroll-smooth">
       {posts.map((post, index) => (
         <div key={post.id} className="h-full w-full snap-center flex items-center justify-center shrink-0">
           <PostCard post={post} colorTheme={postColors[index % postColors.length]} />
