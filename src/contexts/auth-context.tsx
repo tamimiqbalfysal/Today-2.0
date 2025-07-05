@@ -3,16 +3,16 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User as FirebaseUser } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
-import { signupWithGiftCode } from '@/ai/flows/signupWithGiftCode';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, type User as FirebaseUser } from 'firebase/auth';
+import { auth, db } from '@/lib/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 interface AuthContextType {
   user: FirebaseUser | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  signup: (name: string, email: string, password: string, giftCode: string) => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,19 +45,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/');
   };
 
-  const signup = async (name: string, email: string, password: string, giftCode: string) => {
-    if (!auth) {
-        const error = new Error("Firebase is not configured.");
+  const signup = async (name: string, email: string, password: string) => {
+    if (!auth || !db) {
+        const error = new Error("Firebase is not configured. Please add your Firebase project configuration to a .env file.");
         (error as any).code = 'auth/firebase-not-configured';
         throw error;
     }
     
-    // Call the server-side flow to handle validation and user creation.
-    // This creates the user in Firebase Auth on the backend.
-    await signupWithGiftCode({ name, email, password, giftCode });
+    // Create user with client SDK
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const firebaseUser = userCredential.user;
+
+    // Set a default photo URL
+    const photoURL = `https://placehold.co/100x100.png?text=${name.charAt(0)}`;
     
-    // Now, sign the newly created user in on the client.
-    await signInWithEmailAndPassword(auth, email, password);
+    // Update the core Firebase Auth profile
+    await updateProfile(firebaseUser, { 
+      displayName: name,
+      photoURL: photoURL
+    });
+
+    // Create the user's document in Firestore
+    try {
+        await setDoc(doc(db, "users", firebaseUser.uid), {
+            name: name,
+            email: email,
+            photoURL: photoURL
+        });
+    } catch (error) {
+        // This is a good place to log a warning, but we don't want to fail the whole signup
+        // if just the firestore doc creation fails. The auth user is already created.
+        console.warn("Could not create user document in Firestore. Check security rules.", error);
+    }
     
     // The onAuthStateChanged listener will pick up the new user state.
     // We just need to redirect.
