@@ -13,8 +13,8 @@ export default {
         'primary-gradient': 'linear-gradient(105deg, hsl(var(--primary-gradient-start)), hsl(var(--primary-gradient-middle)), hsl(var(--primary-gradient-end)))',
       },
       fontFamily: {
-        sans: ['Nunito', 'sans-serif'],
-        headline: ['Nunito', 'sans-serif'],
+        sans: ['Poppins', 'sans-serif'],
+        headline: ['Poppins', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
