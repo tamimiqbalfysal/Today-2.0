@@ -24,7 +24,7 @@ function TodaySkeleton() {
         </div>
       </header>
       <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
-        <aside className="hidden md:block md:col-span-1 space-y-6">
+        <aside className="md:col-span-1 space-y-6">
           <Skeleton className="h-48 w-full" />
         </aside>
         <section className="md:col-span-2 space-y-6">
@@ -127,7 +127,7 @@ export default function TodayPage() {
         <div className="flex flex-col min-h-screen bg-gray-100">
           <Header />
           <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6 items-start flex-1">
-            <aside className="hidden md:block md:col-span-1 space-y-6">
+            <aside className="md:col-span-1 space-y-6">
               {user && <ProfileCard user={user} />}
             </aside>
             <section className="md:col-span-2 space-y-6">
