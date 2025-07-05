@@ -1,8 +1,9 @@
+
 "use client";
 
 import { useState } from "react";
 import Link from 'next/link';
-import { Menu, PenSquare, Bell, Trash2, User, LogOut, Globe, PlusCircle } from "lucide-react";
+import { Menu, PenSquare, Bell, Trash2, User, LogOut, Globe2, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -94,7 +95,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-center">
               <Link href="/" aria-label="Home">
                 <Button size="icon" variant="ghost" className="rounded-full">
-                  <Globe />
+                  <Globe2 />
                 </Button>
               </Link>
             </div>
@@ -118,9 +119,11 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                                 Today
                             </Link>
                         </Button>
-                        <Button size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
-                            <PlusCircle className="mr-4" />
-                            Add
+                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                            <Link href="/add" onClick={() => setIsProfileDrawerOpen(false)}>
+                                <PlusCircle className="mr-4" />
+                                Add
+                            </Link>
                         </Button>
                         <Button 
                             size="lg" 
