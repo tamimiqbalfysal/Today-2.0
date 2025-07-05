@@ -4,8 +4,7 @@ import type { Post } from "@/lib/types";
 import { formatDistanceToNow } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Heart, MessageCircle, Sparkles } from "lucide-react";
-import Image from "next/image";
+import { Heart, MessageCircle } from "lucide-react";
 
 interface PostCardProps {
   post: Post;
@@ -22,7 +21,7 @@ function PostCard({ post }: PostCardProps) {
                     <AvatarFallback className="text-xl bg-secondary text-secondary-foreground">{post.authorName.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
-                    <p className="font-headline text-lg text-card-foreground">{post.authorName}</p>
+                    <p className="font-semibold text-lg text-card-foreground">{post.authorName}</p>
                     <p className="text-sm text-muted-foreground">
                         {formatDistanceToNow(timestamp, { addSuffix: true })}
                     </p>
@@ -30,10 +29,8 @@ function PostCard({ post }: PostCardProps) {
             </div>
             <p className="font-sans text-card-foreground text-lg mb-4">{post.content}</p>
             
-            <div className="bg-gradient-to-br from-secondary/80 to-primary/60 flex flex-col items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video text-primary-foreground relative overflow-hidden">
-                <Sparkles className="w-16 h-16 text-accent/80 absolute top-4 left-4 animate-pulse" />
-                <p className="text-4xl font-bold font-headline text-primary-foreground drop-shadow-lg">Fun Times!</p>
-                <Sparkles className="w-10 h-10 text-accent/60 absolute bottom-6 right-8 animate-pulse [animation-delay:500ms]" />
+            <div className="bg-muted/50 flex flex-col items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video text-muted-foreground relative overflow-hidden">
+                <p className="text-2xl font-bold">Media Placeholder</p>
             </div>
             
             <div className="flex justify-around items-center pt-3 border-t border-border">

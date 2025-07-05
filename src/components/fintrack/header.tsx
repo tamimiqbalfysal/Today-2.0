@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from 'next/link';
-import { Menu, PenSquare, PlusCircle, Sparkles, Trash2, User, LogOut } from "lucide-react";
+import { Menu, PenSquare, Bell, Trash2, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -58,8 +58,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             </Link>
                           </Button>
                            <Button size="lg" className="w-full justify-start text-lg font-bold" variant="secondary">
-                              <PlusCircle className="mr-4" />
-                              Add
+                              <Bell className="mr-4" />
+                              Notifications
                           </Button>
                           <Button 
                             size="lg" 
@@ -88,11 +88,11 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                 </Sheet>
             </div>
             
-            {/* Center: Sparkles */}
+            {/* Center: Home */}
             <div className="justify-self-center">
               <Link href="/" aria-label="Home">
                 <Button size="icon" variant="secondary" className="rounded-full">
-                  <Sparkles />
+                  <User />
                 </Button>
               </Link>
             </div>
@@ -117,8 +117,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             </Link>
                         </Button>
                         <Button size="lg" className="w-full justify-start text-lg font-bold" variant="secondary">
-                            <PlusCircle className="mr-4" />
-                            Add
+                            <Bell className="mr-4" />
+                            Notifications
                         </Button>
                         <Button 
                             size="lg" 
