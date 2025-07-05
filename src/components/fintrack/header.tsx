@@ -102,9 +102,6 @@ export function Header() {
                         </SheetHeader>
                         <div className="py-4 space-y-2">
                             <Button asChild variant="ghost" className="w-full justify-start text-base font-medium">
-                                <Link href="/" onClick={() => setIsDrawerOpen(false)}>Feed</Link>
-                            </Button>
-                            <Button asChild variant="ghost" className="w-full justify-start text-base font-medium">
                                 <Link href="/today" onClick={() => setIsDrawerOpen(false)}>Today</Link>
                             </Button>
                             <Button variant="ghost" className="w-full justify-start text-base font-medium text-muted-foreground" disabled>

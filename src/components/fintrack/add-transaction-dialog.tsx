@@ -5,6 +5,7 @@ import type { User } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 
 interface CreatePostFormProps {
   user: User;
@@ -47,7 +48,10 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
             disabled={isSubmitting}
             />
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
+            <Button asChild variant="outline">
+                <Link href="/">Feed</Link>
+            </Button>
             <Button type="submit" className="bg-pink-500 hover:bg-pink-600" disabled={isSubmitting || !content.trim()}>
             {isSubmitting ? "Posting..." : "Post"}
             </Button>
