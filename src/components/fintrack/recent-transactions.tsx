@@ -2,46 +2,61 @@
 
 import type { Post } from "@/lib/types";
 import { formatDistanceToNow } from 'date-fns';
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { ThumbsUp, MessageSquare } from "lucide-react";
+import { Heart, MessageCircle } from "lucide-react";
+import Image from "next/image";
+
+const postColors = [
+    { bg: "bg-blue-100", text: "text-blue-800", border: "border-blue-200", button: "text-blue-700 hover:text-blue-900", avatar: "border-blue-400" },
+    { bg: "bg-green-100", text: "text-green-800", border: "border-green-200", button: "text-green-700 hover:text-green-900", avatar: "border-green-400" },
+    { bg: "bg-purple-100", text: "text-purple-800", border: "border-purple-200", button: "text-purple-700 hover:text-purple-900", avatar: "border-purple-400" },
+];
 
 interface PostCardProps {
   post: Post;
+  colorTheme: typeof postColors[0];
 }
 
-function PostCard({ post }: PostCardProps) {
+function PostCard({ post, colorTheme }: PostCardProps) {
     const timestamp = post.timestamp?.toDate ? post.timestamp.toDate() : new Date();
 
     return (
-        <Card className="w-full">
-            <CardHeader>
-                <div className="flex items-center gap-3">
-                    <Avatar>
-                        <AvatarImage src={post.authorPhotoURL} alt={post.authorName} data-ai-hint="person portrait" />
-                        <AvatarFallback>{post.authorName.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <p className="font-semibold">{post.authorName}</p>
-                        <p className="text-xs text-muted-foreground">
-                            {formatDistanceToNow(timestamp, { addSuffix: true })}
-                        </p>
-                    </div>
+        <div className={`${colorTheme.bg} p-4 rounded-xl shadow-md`}>
+            <div className="flex items-center space-x-3 mb-3">
+                <Avatar className={`w-10 h-10 border-2 ${colorTheme.avatar}`}>
+                    <AvatarImage src={post.authorPhotoURL} alt={post.authorName} />
+                    <AvatarFallback>{post.authorName.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div>
+                    <p className={`font-bold ${colorTheme.text}`}>{post.authorName}</p>
+                    <p className={`text-xs ${colorTheme.text}/80`}>
+                        {formatDistanceToNow(timestamp, { addSuffix: true })}
+                    </p>
                 </div>
-            </CardHeader>
-            <CardContent>
-                <p className="text-foreground whitespace-pre-wrap">{post.content}</p>
-            </CardContent>
-            <CardFooter className="flex justify-between border-t pt-4">
-                <Button variant="ghost" className="text-muted-foreground">
-                    <ThumbsUp className="mr-2" /> Like
+            </div>
+            <p className={`${colorTheme.text} mb-3`}>{post.content}</p>
+            
+            <Image 
+                src={`https://placehold.co/350x200.png`} 
+                alt="Post Image"
+                data-ai-hint="kids drawing"
+                width={350}
+                height={200}
+                className="w-full rounded-lg mb-3 shadow-sm"
+            />
+            
+            <div className={`flex justify-around items-center pt-2 border-t ${colorTheme.border}`}>
+                <Button variant="ghost" className={`${colorTheme.button} transition duration-200`}>
+                    <Heart className="mr-2" />
+                    <span className="text-sm">Like</span>
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground">
-                    <MessageSquare className="mr-2" /> Comment
+                <Button variant="ghost" className={`${colorTheme.button} transition duration-200`}>
+                    <MessageCircle className="mr-2" />
+                    <span className="text-sm">Comment</span>
                 </Button>
-            </CardFooter>
-        </Card>
+            </div>
+        </div>
     );
 }
 
@@ -53,17 +68,17 @@ interface PostFeedProps {
 export function PostFeed({ posts }: PostFeedProps) {
   if (!posts.length) {
     return (
-      <div className="text-center text-muted-foreground p-8 border-2 border-dashed rounded-lg">
-        <h3 className="text-lg font-semibold">No posts yet</h3>
-        <p className="text-sm">Be the first to share something!</p>
+      <div className="text-center text-gray-500 p-8 border-2 border-dashed rounded-lg">
+        <h3 className="text-lg font-semibold">No posts yet!</h3>
+        <p className="text-sm">Be the first to share something fun!</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      {posts.map((post) => (
-        <PostCard key={post.id} post={post} />
+      {posts.map((post, index) => (
+        <PostCard key={post.id} post={post} colorTheme={postColors[index % postColors.length]} />
       ))}
     </div>
   );

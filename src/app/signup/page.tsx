@@ -64,12 +64,12 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-300 to-purple-300">
       <Card className="w-full max-w-sm mx-auto">
         <CardHeader>
-          <CardTitle className="text-2xl font-headline">Sign Up</CardTitle>
-          <CardDescription>
-            Enter your information to create an account.
+          <CardTitle className="text-2xl font-headline text-center text-pink-500">Join the Fun!</CardTitle>
+          <CardDescription className="text-center">
+            Create an account to start playing.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -80,9 +80,9 @@ export default function SignupPage() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Your Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="John Doe" {...field} />
+                      <Input placeholder="Leo the Lion" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -114,14 +114,14 @@ export default function SignupPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+              <Button type="submit" className="w-full bg-pink-500 hover:bg-pink-600" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? "Creating Account..." : "Create account"}
               </Button>
             </form>
           </Form>
           <div className="mt-4 text-center text-sm">
             Already have an account?{' '}
-            <Link href="/login" className="underline">
+            <Link href="/login" className="underline text-pink-500">
               Log in
             </Link>
           </div>

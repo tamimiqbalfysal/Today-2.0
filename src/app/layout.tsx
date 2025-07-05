@@ -1,10 +1,11 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from '@/contexts/auth-context';
 
 export const metadata: Metadata = {
-  title: 'TipSplit',
-  description: 'A friendly app to split the bill.',
+  title: 'Kidbook',
+  description: 'Fun for Kids!',
 };
 
 export default function RootLayout({
@@ -17,10 +18,16 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-sans antialiased" suppressHydrationWarning>
-        {children}
+      <body className="font-sans antialiased bg-gradient-to-br from-blue-300 to-purple-300" suppressHydrationWarning>
+        <AuthProvider>
+            <div className="flex justify-center items-center min-h-screen">
+                <div className="w-full max-w-md h-[95vh] max-h-[800px] bg-white rounded-3xl shadow-2xl flex flex-col overflow-hidden relative">
+                    {children}
+                </div>
+            </div>
+        </AuthProvider>
         <Toaster />
       </body>
     </html>

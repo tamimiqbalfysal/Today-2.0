@@ -2,18 +2,17 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import type { User } from "@/lib/types"
-import { Send } from "lucide-react";
+import { Image as ImageIcon } from "lucide-react";
 
-interface CreatePostFormProps {
+interface CreatePostProps {
   user: User;
   onAddPost: (content: string) => Promise<void>;
 }
 
-export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
+export function CreatePostForm({ user, onAddPost }: CreatePostProps) {
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -26,40 +25,31 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
       await onAddPost(content);
       setContent("");
     } catch (error) {
-      // The parent component (`page.tsx`) is already handling and toasting the error.
-      // We don't clear the content so the user can try again.
       console.error("Error submitting post from form:", error);
     } finally {
-      // This ensures the submitting state is always reset, even if an error occurs.
       setIsSubmitting(false);
     }
   }
 
+  const userInitial = user.name ? user.name.charAt(0) : "🥳";
+
   return (
-    <Card>
-      <CardContent className="p-4">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex items-start gap-4">
-            <Avatar>
-              <AvatarImage src={user.photoURL ?? undefined} alt={user.name} data-ai-hint="person portrait" />
-              <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <Textarea
-              placeholder={`What's something fun you did today, ${user.name}?`}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="min-h-[80px] text-base"
-              disabled={isSubmitting}
-            />
-          </div>
-          <div className="flex justify-end">
-            <Button type="submit" disabled={isSubmitting || !content.trim()}>
-              <Send className="mr-2 h-4 w-4" />
-              {isSubmitting ? "Sharing..." : "Share"}
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+    <form onSubmit={handleSubmit} className="bg-yellow-100 p-4 rounded-xl shadow-md flex items-center space-x-3">
+        <Avatar className="w-10 h-10 border-2 border-yellow-400">
+            <AvatarImage src={user.photoURL ?? `https://placehold.co/40x40/FFD700/FFFFFF?text=${userInitial}`} alt={user.name ?? ""} />
+            <AvatarFallback>{userInitial}</AvatarFallback>
+        </Avatar>
+        <Input 
+            type="text" 
+            placeholder="What fun are you having today?" 
+            className="flex-1 p-3 rounded-full bg-yellow-50 border border-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-300 text-yellow-800 placeholder-yellow-500 text-sm h-auto"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            disabled={isSubmitting}
+        />
+        <Button type="button" size="icon" className="p-2 bg-yellow-400 rounded-full shadow-md hover:bg-yellow-300 transition duration-200 h-10 w-10">
+            <ImageIcon className="text-yellow-800" />
+        </Button>
+    </form>
   )
 }

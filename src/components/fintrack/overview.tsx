@@ -1,34 +1,25 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import type { User } from "@/lib/types";
-import { Mail, User as UserIcon } from "lucide-react";
+import { Home, Gamepad2, BookOpen, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-interface ProfileCardProps {
-  user: User;
-}
-
-export function ProfileCard({ user }: ProfileCardProps) {
+export function BottomNav() {
   return (
-    <Card>
-      <CardHeader className="items-center">
-        <Avatar className="h-24 w-24 mb-2">
-            <AvatarImage src={user.photoURL ?? undefined} alt={user.name} data-ai-hint="person portrait" />
-            <AvatarFallback className="text-3xl">{user.name.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <CardTitle className="font-headline text-2xl">{user.name}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4 text-center">
-          <div className="flex items-center justify-center gap-2 text-muted-foreground">
-            <UserIcon className="h-4 w-4"/>
-            <p>{user.name}</p>
-          </div>
-          <div className="flex items-center justify-center gap-2 text-muted-foreground">
-            <Mail className="h-4 w-4"/>
-            <p>{user.email}</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <nav className="bg-indigo-500 p-3 flex justify-around items-center shadow-lg shrink-0">
+        <Button variant="ghost" className="flex flex-col items-center text-white hover:text-indigo-200 transition duration-200 h-auto p-1">
+            <Home />
+            <span className="text-xs mt-1 font-semibold">Home</span>
+        </Button>
+        <Button variant="ghost" className="flex flex-col items-center text-white hover:text-indigo-200 transition duration-200 h-auto p-1">
+            <Gamepad2 />
+            <span className="text-xs mt-1 font-semibold">Games</span>
+        </Button>
+        <Button variant="ghost" className="flex flex-col items-center text-white hover:text-indigo-200 transition duration-200 h-auto p-1">
+            <BookOpen />
+            <span className="text-xs mt-1 font-semibold">Learn</span>
+        </Button>
+        <Button variant="ghost" className="flex flex-col items-center text-white hover:text-indigo-200 transition duration-200 h-auto p-1">
+            <User />
+            <span className="text-xs mt-1 font-semibold">Profile</span>
+        </Button>
+    </nav>
   );
 }

@@ -35,7 +35,6 @@ export default function LoginPage() {
     try {
       await login(data.email, data.password);
     } catch (error: any) {
-      // Firebase auth errors have a `code` property
       const errorCode = error.code || 'auth/unknown-error';
       let message = 'An unexpected error occurred. Please try again.';
       
@@ -65,12 +64,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-300 to-purple-300">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle className="text-2xl font-headline">Login</CardTitle>
-          <CardDescription>
-            Enter your email below to login to your account.
+          <CardTitle className="text-2xl font-headline text-center text-pink-500">Welcome Back!</CardTitle>
+          <CardDescription className="text-center">
+            Let's continue the fun!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -102,14 +101,14 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+              <Button type="submit" className="w-full bg-pink-500 hover:bg-pink-600" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting ? "Logging In..." : "Log In"}
               </Button>
             </form>
           </Form>
           <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{' '}
-            <Link href="/signup" className="underline">
+            <Link href="/signup" className="underline text-pink-500">
               Sign up
             </Link>
           </div>
