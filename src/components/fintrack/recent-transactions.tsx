@@ -29,7 +29,7 @@ function PostCard({ post }: PostCardProps) {
             </div>
             <p className="font-sans text-card-foreground text-lg mb-4">{post.content}</p>
             
-            <div className="bg-gradient-to-br from-zinc-100 to-zinc-300 dark:from-zinc-800 dark:to-zinc-950 flex flex-col items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video text-muted-foreground relative overflow-hidden">
+            <div className="bg-gradient-to-br from-zinc-50 to-zinc-200 dark:from-zinc-800 dark:to-zinc-950 flex flex-col items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video text-muted-foreground relative overflow-hidden">
                 <p className="text-2xl font-bold">Media Placeholder</p>
             </div>
             
