@@ -22,7 +22,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
 
   return (
     <header className={cn(
-      "bg-primary text-primary-foreground p-4 sticky top-0 z-10 shadow-md transition-transform duration-300 ease-in-out",
+      "bg-background/80 backdrop-blur-sm border-b p-4 sticky top-0 z-10 transition-transform duration-300 ease-in-out",
       !isVisible && "-translate-y-full"
     )}>
       <div className="container mx-auto grid grid-cols-3 items-center">
@@ -32,12 +32,12 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-start">
                 <Sheet open={isNavDrawerOpen} onOpenChange={setIsNavDrawerOpen}>
                     <SheetTrigger asChild>
-                        <Button size="icon" variant="ghost" className="bg-accent text-primary hover:bg-accent/90 rounded-full">
+                        <Button size="icon" variant="secondary" className="rounded-full">
                             <Menu />
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="left" className="bg-background/95 w-72 flex flex-col p-0 backdrop-blur-sm">
-                      <SheetHeader className="p-4 border-b border-border items-center">
+                       <SheetHeader className="p-4 border-b border-border items-center">
                         <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                         <Avatar className="h-16 w-16 border-4 border-primary/50">
                           <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
@@ -91,7 +91,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             {/* Center: Bell */}
             <div className="justify-self-center">
               <Link href="/" aria-label="Home">
-                <Button size="icon" variant="ghost" className="bg-accent text-primary hover:bg-accent/90 rounded-full">
+                <Button size="icon" variant="secondary" className="rounded-full">
                   <Bell />
                 </Button>
               </Link>
@@ -101,7 +101,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-end">
               <Sheet open={isProfileDrawerOpen} onOpenChange={setIsProfileDrawerOpen}>
                 <SheetTrigger asChild>
-                    <Button size="icon" variant="ghost" className="bg-accent text-primary hover:bg-accent/90 rounded-full">
+                    <Button size="icon" variant="secondary" className="rounded-full">
                         <Menu />
                     </Button>
                 </SheetTrigger>

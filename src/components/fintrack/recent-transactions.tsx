@@ -15,7 +15,7 @@ function PostCard({ post }: PostCardProps) {
     const timestamp = post.timestamp?.toDate ? post.timestamp.toDate() : new Date();
 
     return (
-        <div className="bg-card p-6 rounded-2xl w-full border border-border">
+        <div className="bg-card p-6 rounded-2xl w-full border border-border shadow-md transition-shadow hover:shadow-lg">
             <div className="flex items-center space-x-4 mb-4">
                 <Avatar className="w-12 h-12 border-2 border-border">
                     <AvatarImage src={post.authorPhotoURL} alt={post.authorName} />
@@ -30,16 +30,16 @@ function PostCard({ post }: PostCardProps) {
             </div>
             <p className="text-card-foreground text-lg mb-4">{post.content}</p>
             
-            <div className="bg-secondary flex items-center justify-center w-full rounded-lg mb-4 shadow-md aspect-video">
-                <p className="text-4xl font-bold text-primary-foreground">Fun Times!</p>
+            <div className="bg-gradient-to-br from-secondary to-background flex items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video">
+                <p className="text-4xl font-bold text-primary">Fun Times!</p>
             </div>
             
             <div className="flex justify-around items-center pt-3 border-t border-border">
-                <Button variant="ghost" className="text-muted-foreground hover:text-primary transition duration-200 text-base">
+                <Button variant="secondary" className="text-muted-foreground hover:text-primary transition duration-200 text-base">
                     <Heart className="mr-2" />
                     <span className="font-semibold">Like</span>
                 </Button>
-                <Button variant="ghost" className="text-muted-foreground hover:text-primary transition duration-200 text-base">
+                <Button variant="secondary" className="text-muted-foreground hover:text-primary transition duration-200 text-base">
                     <MessageCircle className="mr-2" />
                     <span className="font-semibold">Comment</span>
                 </Button>
