@@ -63,9 +63,11 @@ function PostCard({ post, colorTheme }: PostCardProps) {
 
 interface PostFeedProps {
   posts: Post[];
+  scrollContainerRef: React.RefObject<HTMLDivElement>;
+  onScroll: () => void;
 }
 
-export function PostFeed({ posts }: PostFeedProps) {
+export function PostFeed({ posts, scrollContainerRef, onScroll }: PostFeedProps) {
   if (!posts.length) {
     return (
       <div className="text-center text-gray-500 p-8 border-2 border-dashed rounded-lg">
@@ -76,7 +78,7 @@ export function PostFeed({ posts }: PostFeedProps) {
   }
 
   return (
-    <div className="h-full overflow-y-auto snap-y snap-mandatory no-scrollbar">
+    <div ref={scrollContainerRef} onScroll={onScroll} className="h-full overflow-y-auto snap-y snap-mandatory no-scrollbar">
       {posts.map((post, index) => (
         <div key={post.id} className="h-full w-full snap-center flex items-center justify-center shrink-0">
           <PostCard post={post} colorTheme={postColors[index % postColors.length]} />

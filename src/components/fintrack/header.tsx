@@ -22,13 +22,17 @@ import {
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from '@/contexts/auth-context';
+import { cn } from "@/lib/utils";
 
-export function Header() {
+export function Header({ isVisible = true }: { isVisible?: boolean }) {
   const { user, logout } = useAuth();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   return (
-    <header className="bg-pink-500 p-4 sticky top-0 z-10 shadow-md">
+    <header className={cn(
+      "bg-pink-500 p-4 sticky top-0 z-10 shadow-md transition-transform duration-300 ease-in-out",
+      !isVisible && "-translate-y-full"
+    )}>
       <div className="container mx-auto grid grid-cols-3 items-center">
         {user ? (
           <>
@@ -93,8 +97,8 @@ export function Header() {
                         </Button>
                     </SheetTrigger>
                     <SheetContent className="bg-yellow-50/50">
-                        <SheetHeader className="sr-only">
-                            <SheetTitle>Menu</SheetTitle>
+                        <SheetHeader>
+                            <SheetTitle className="sr-only">Menu</SheetTitle>
                         </SheetHeader>
                         <div className="py-4 pt-8 space-y-4">
                             <Button asChild size="lg" className="w-full justify-start text-lg font-bold bg-pink-100 text-pink-700 hover:bg-pink-200">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { collection, query, orderBy, onSnapshot, Timestamp } from "firebase/firestore";
 import { db } from '@/lib/firebase';
 import { useAuth } from '@/contexts/auth-context';
@@ -38,6 +38,22 @@ export default function TodayPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isDataLoading, setIsDataLoading] = useState(true);
   const { toast } = useToast();
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const currentScrollY = scrollContainerRef.current.scrollTop;
+
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        setIsHeaderVisible(false);
+      } else {
+        setIsHeaderVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+    }
+  };
 
   useEffect(() => {
     if (authLoading || !db) return; 
@@ -85,9 +101,13 @@ export default function TodayPage() {
   return (
     <AuthGuard>
         <div className="flex flex-col h-screen bg-gray-100">
-          <Header />
+          <Header isVisible={isHeaderVisible} />
           <main className="container mx-auto max-w-2xl p-4 flex-1 overflow-hidden">
-            <PostFeed posts={posts} />
+            <PostFeed 
+              posts={posts} 
+              scrollContainerRef={scrollContainerRef}
+              onScroll={handleScroll}
+            />
           </main>
         </div>
     </AuthGuard>
