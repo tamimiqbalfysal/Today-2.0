@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, LogOut, Settings, User as UserIcon } from "lucide-react";
+import { Bell, LogOut, Settings, User as UserIcon, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +11,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from '@/contexts/auth-context';
 
@@ -74,10 +82,27 @@ export function Header() {
               </Button>
             </div>
 
-            {/* Right: Title */}
+            {/* Right: Title and Drawer */}
             <div className="flex items-center space-x-2 justify-self-end">
-                <span className="text-3xl font-bold">🗓️</span>
-                <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
+                <div className="flex items-center space-x-2">
+                    <span className="text-3xl font-bold">🗓️</span>
+                    <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
+                </div>
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
+                            <Menu />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent>
+                        <SheetHeader>
+                            <SheetTitle>Menu</SheetTitle>
+                            <SheetDescription>
+                                More options coming soon!
+                            </SheetDescription>
+                        </SheetHeader>
+                    </SheetContent>
+                </Sheet>
             </div>
           </>
         ) : (
