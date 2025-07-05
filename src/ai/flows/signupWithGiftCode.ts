@@ -26,7 +26,6 @@ const SignupWithGiftCodeInputSchema = z.object({
 export type SignupWithGiftCodeInput = z.infer<typeof SignupWithGiftCodeInputSchema>;
 
 const SignupWithGiftCodeOutputSchema = z.object({
-  customToken: z.string(),
   uid: z.string(),
   name: z.string(),
   email: z.string(),
@@ -96,19 +95,16 @@ export async function signupWithGiftCode(input: SignupWithGiftCodeInput): Promis
         throw new Error(error.message || 'Could not claim gift code. Your account was not created.');
       }
 
-      // 4. If we got here, everything succeeded. Generate a custom token for client-side sign-in.
-      const customToken = await adminAuth.createCustomToken(newUser.uid);
-
+      // 4. If we got here, everything succeeded. Return the new user's details.
       return {
-        customToken,
         uid: newUser.uid,
         name: newUser.displayName || name,
         email: newUser.email || email,
       };
     } catch (error: any) {
         console.error('Full signup error:', error); // Log the full error on the server for debugging
-        if (error.message && (error.message.includes('Could not refresh access token') || error.message.includes('Getting metadata from plugin failed'))) {
-            throw new Error('Sign-up failed due to a server configuration issue. Please ensure the backend service has the correct Firebase/Google Cloud IAM permissions (e.g., Firebase Admin, Service Account Token Creator roles).');
+        if (error.message && (error.message.includes('Could not refresh access token') || error.message.includes('Getting metadata from plugin failed') || error.message.includes('permission-denied') || error.message.includes('PERMISSION_DENIED'))) {
+            throw new Error('Sign-up failed due to a server configuration issue. Please ensure the backend service has the correct Firebase/Google Cloud IAM permissions (e.g., Firebase Admin, Service Account User roles).');
         }
         // Re-throw other specific errors (like "Invalid gift code") so the user sees them.
         throw error;

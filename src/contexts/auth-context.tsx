@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User as FirebaseUser, signInWithCustomToken } from 'firebase/auth';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User as FirebaseUser } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { signupWithGiftCode } from '@/ai/flows/signupWithGiftCode';
 
@@ -52,11 +52,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw error;
     }
     
-    // Call the server-side flow to handle validation and user creation
-    const result = await signupWithGiftCode({ name, email, password, giftCode });
+    // Call the server-side flow to handle validation and user creation.
+    // This creates the user in Firebase Auth on the backend.
+    await signupWithGiftCode({ name, email, password, giftCode });
     
-    // Sign in the user on the client with the custom token returned from the flow
-    await signInWithCustomToken(auth, result.customToken);
+    // Now, sign the newly created user in on the client.
+    await signInWithEmailAndPassword(auth, email, password);
     
     // The onAuthStateChanged listener will pick up the new user state.
     // We just need to redirect.
