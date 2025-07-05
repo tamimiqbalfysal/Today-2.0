@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from 'next/link';
-import { Menu, PenSquare, Bell, Trash2, User, LogOut } from "lucide-react";
+import { Menu, PenSquare, Bell, Trash2, User, LogOut, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -92,7 +92,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-center">
               <Link href="/" aria-label="Home">
                 <Button size="icon" variant="ghost" className="rounded-full">
-                  <Bell />
+                  <Globe />
                 </Button>
               </Link>
             </div>
