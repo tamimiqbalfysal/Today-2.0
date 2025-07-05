@@ -84,12 +84,8 @@ export function Header() {
               </Button>
             </div>
 
-            {/* Right: Title and Drawer */}
-            <div className="flex items-center space-x-2 justify-self-end">
-                <div className="flex items-center space-x-2">
-                    <span className="text-3xl font-bold">🗓️</span>
-                    <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
-                </div>
+            {/* Right: Drawer */}
+            <div className="justify-self-end">
                 <Sheet open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
                     <SheetTrigger asChild>
                         <Button size="icon" variant="ghost" className="text-white hover:bg-pink-400 rounded-full">
@@ -124,8 +120,6 @@ export function Header() {
           <>
             {/* LOGGED OUT STATE */}
             <div className="col-span-3 flex items-center justify-center space-x-2">
-              <span className="text-3xl font-bold">🗓️</span>
-              <h1 className="text-white text-2xl font-extrabold tracking-tight">Today</h1>
             </div>
           </>
         )}
