@@ -1,6 +1,5 @@
 "use client"
 
-import { useState, useEffect } from "react";
 import type { Post } from "@/lib/types";
 import { formatDistanceToNow } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,29 +12,10 @@ interface PostCardProps {
 
 function PostCard({ post }: PostCardProps) {
     const timestamp = post.timestamp?.toDate ? post.timestamp.toDate() : new Date();
-    const [borderColor, setBorderColor] = useState('transparent');
-
-    useEffect(() => {
-        // Define a list of kid-friendly colors
-        const kidFriendlyColors = [
-            '#FF69B4', // Hot Pink
-            '#87CEEB', // Sky Blue
-            '#FFD700', // Gold
-            '#32CD32', // Lime Green
-            '#FFA500', // Orange
-            '#9370DB', // Medium Purple
-            '#00CED1', // Dark Turquoise
-            '#FF4500', // OrangeRed
-        ];
-        // Select a random color from the list
-        const randomColor = kidFriendlyColors[Math.floor(Math.random() * kidFriendlyColors.length)];
-        setBorderColor(randomColor);
-    }, []); // Empty dependency array ensures this runs once on mount, only on the client
 
     return (
         <div 
-            className="bg-card p-6 rounded-2xl w-full shadow-md transition-shadow hover:shadow-lg"
-            style={{ borderWidth: '4px', borderStyle: 'solid', borderColor: borderColor }}
+            className="bg-card p-6 rounded-2xl w-full shadow-md transition-shadow hover:shadow-lg border-4 border-black"
         >
             <div className="flex items-center space-x-4 mb-4">
                 <Avatar className="w-12 h-12 border-2 border-primary/50">
