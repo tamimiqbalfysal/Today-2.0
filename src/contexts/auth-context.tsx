@@ -3,16 +3,16 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, type User as FirebaseUser } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
-import { auth, db } from '@/lib/firebase';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, type User as FirebaseUser, signInWithCustomToken } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { signupWithGiftCode } from '@/ai/flows/signupWithGiftCode';
 
 interface AuthContextType {
   user: FirebaseUser | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
-  signup: (name: string, email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string, giftCode: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,7 +27,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
       return;
     }
-    // This listener now ONLY cares about the raw auth state. No database calls here.
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setUser(firebaseUser);
       setLoading(false);
@@ -37,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    if (!auth || !db) {
+    if (!auth) {
         const error = new Error("Firebase is not configured. Please add your Firebase project configuration to a .env file.");
         (error as any).code = 'auth/firebase-not-configured';
         throw error;
@@ -46,35 +45,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/');
   };
 
-  const signup = async (name: string, email: string, password: string) => {
-    if (!auth || !db) {
-        const error = new Error("Firebase is not configured. Please add your Firebase project configuration to a .env file.");
+  const signup = async (name: string, email: string, password: string, giftCode: string) => {
+    if (!auth) {
+        const error = new Error("Firebase is not configured.");
         (error as any).code = 'auth/firebase-not-configured';
         throw error;
     }
     
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const firebaseUser = userCredential.user;
+    // Call the server-side flow to handle validation and user creation
+    const result = await signupWithGiftCode({ name, email, password, giftCode });
     
-    // Set a default photo URL
-    const photoURL = `https://placehold.co/100x100.png?text=${name.charAt(0)}`;
+    // Sign in the user on the client with the custom token returned from the flow
+    await signInWithCustomToken(auth, result.customToken);
     
-    // Update the core Firebase Auth profile
-    await updateProfile(firebaseUser, { 
-      displayName: name,
-      photoURL: photoURL
-    });
-
-    // Create the user's document in Firestore. This is a one-time operation
-    // and is less prone to the login race condition.
-    await setDoc(doc(db, 'users', firebaseUser.uid), {
-        name: name,
-        email: email,
-        photoURL: photoURL
-    });
-    
-    // The onAuthStateChanged listener will pick up the new user state,
-    // so we just need to redirect.
+    // The onAuthStateChanged listener will pick up the new user state.
+    // We just need to redirect.
     router.push('/');
   };
 

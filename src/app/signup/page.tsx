@@ -11,11 +11,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
+import { KeyRound } from 'lucide-react';
 
 const signupFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
   email: z.string().email({ message: 'Please enter a valid email.' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
+  giftCode: z.string().min(1, { message: 'A valid gift code is required.' }),
 });
 
 type SignupFormValues = z.infer<typeof signupFormSchema>;
@@ -30,35 +32,18 @@ export default function SignupPage() {
       name: '',
       email: '',
       password: '',
+      giftCode: '',
     },
   });
 
   async function onSubmit(data: SignupFormValues) {
     try {
-      await signup(data.name, data.email, data.password);
+      await signup(data.name, data.email, data.password, data.giftCode);
     } catch (error: any) {
-      const errorCode = error.code || 'auth/unknown-error';
-      let message = 'An unexpected error occurred. Please try again.';
-
-      switch (errorCode) {
-        case 'auth/firebase-not-configured':
-          message = 'Firebase is not configured. Please add your credentials to the .env file.';
-          break;
-        case 'auth/email-already-in-use':
-          message = 'This email address is already in use by another account.';
-          break;
-        case 'auth/invalid-email':
-          message = 'Please enter a valid email address.';
-          break;
-        case 'auth/weak-password':
-          message = 'The password is too weak. Please choose a stronger password.';
-          break;
-      }
-
       toast({
         variant: 'destructive',
         title: 'Sign Up Failed',
-        description: message,
+        description: error.message || 'An unexpected error occurred. Please try again.',
       });
     }
   }
@@ -109,6 +94,22 @@ export default function SignupPage() {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input type="password" placeholder="••••••••" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="giftCode"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Gift Code</FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input placeholder="Your secret gift code" {...field} className="pl-10" />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
