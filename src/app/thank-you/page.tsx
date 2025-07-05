@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef } from 'react';
@@ -68,7 +69,7 @@ export default function ThankYouPage() {
       console.error("Error verifying gift code:", error);
       let description = "An unexpected error occurred.";
       if (error.code === 'permission-denied') {
-        description = "Permission Denied. Please check your Firestore security rules to ensure you can read 'giftCodes'.";
+        description = "Permission Denied. Please check your Firestore security rules to ensure authenticated users can read the 'giftCodes' collection.";
       }
        toast({
         variant: 'destructive',
