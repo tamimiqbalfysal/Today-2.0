@@ -23,7 +23,7 @@ function PostCard({ post }: PostCardProps) {
                     <AvatarFallback className="text-xl bg-secondary text-secondary-foreground">{post.authorName.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
-                    <p className="font-semibold text-lg text-card-foreground">{post.authorName}</p>
+                    <p className="font-semibold text-lg text-orange-500">{post.authorName}</p>
                     <p className="text-sm text-muted-foreground">
                         {formatDistanceToNow(timestamp, { addSuffix: true })}
                     </p>
