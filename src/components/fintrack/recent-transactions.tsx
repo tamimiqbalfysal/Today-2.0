@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react";
 import type { Post } from "@/lib/types";
 import { formatDistanceToNow } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,6 +13,13 @@ interface PostCardProps {
 
 function PostCard({ post }: PostCardProps) {
     const timestamp = post.timestamp?.toDate ? post.timestamp.toDate() : new Date();
+    const [borderColor, setBorderColor] = useState('transparent');
+
+    useEffect(() => {
+        // Generate a random vibrant color for the border
+        const hue = Math.floor(Math.random() * 360);
+        setBorderColor(`hsl(${hue}, 90%, 60%)`);
+    }, []); // Empty dependency array ensures this runs once on mount, only on the client
 
     return (
         <div className="bg-card p-6 rounded-2xl w-full border border-border shadow-md transition-shadow hover:shadow-lg">
@@ -29,7 +37,10 @@ function PostCard({ post }: PostCardProps) {
             </div>
             <p className="font-sans text-card-foreground text-lg mb-4">{post.content}</p>
             
-            <div className="bg-gradient-to-br from-zinc-50 to-zinc-200 dark:from-zinc-800 dark:to-zinc-950 flex flex-col items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video text-muted-foreground relative overflow-hidden">
+            <div 
+                className="bg-gradient-to-br from-zinc-50 to-zinc-200 dark:from-zinc-800 dark:to-zinc-950 flex flex-col items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video text-muted-foreground relative overflow-hidden border-2"
+                style={{ borderColor: borderColor }}
+            >
                 <p className="text-2xl font-bold">Media Placeholder</p>
             </div>
             
