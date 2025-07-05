@@ -63,8 +63,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                           </Button>
                           <Button 
                             size="lg" 
-                            variant="destructive"
-                            className="w-full justify-start text-lg font-bold"
+                            variant="ghost"
+                            className="w-full justify-start text-lg font-bold text-destructive hover:text-destructive"
                           >
                               <Trash2 className="mr-4" />
                               Remove
@@ -122,8 +122,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         </Button>
                         <Button 
                             size="lg" 
-                            variant="destructive"
-                            className="w-full justify-start text-lg font-bold"
+                            variant="ghost"
+                            className="w-full justify-start text-lg font-bold text-destructive hover:text-destructive"
                         >
                             <Trash2 className="mr-4" />
                             Remove
