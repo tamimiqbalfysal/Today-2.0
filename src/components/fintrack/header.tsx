@@ -32,7 +32,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-start">
                 <Sheet open={isNavDrawerOpen} onOpenChange={setIsNavDrawerOpen}>
                     <SheetTrigger asChild>
-                        <Button size="icon" variant="secondary" className="rounded-full">
+                        <Button size="icon" variant="ghost" className="rounded-full">
                             <Menu />
                         </Button>
                     </SheetTrigger>
@@ -91,8 +91,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             {/* Center: Home */}
             <div className="justify-self-center">
               <Link href="/" aria-label="Home">
-                <Button size="icon" variant="secondary" className="rounded-full">
-                  <User />
+                <Button size="icon" variant="ghost" className="rounded-full">
+                  <Bell />
                 </Button>
               </Link>
             </div>
@@ -101,7 +101,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
             <div className="justify-self-end">
               <Sheet open={isProfileDrawerOpen} onOpenChange={setIsProfileDrawerOpen}>
                 <SheetTrigger asChild>
-                    <Button size="icon" variant="secondary" className="rounded-full">
+                    <Button size="icon" variant="ghost" className="rounded-full">
                         <Menu />
                     </Button>
                 </SheetTrigger>
