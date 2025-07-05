@@ -104,7 +104,7 @@ export async function signupWithGiftCode(input: SignupWithGiftCodeInput): Promis
     } catch (error: any) {
         console.error('Full signup error:', error); // Log the full error on the server for debugging
         if (error.message && (error.message.includes('Could not refresh access token') || error.message.includes('Getting metadata from plugin failed') || error.message.includes('permission-denied') || error.message.includes('PERMISSION_DENIED'))) {
-            throw new Error('Sign-up failed due to a server configuration issue. Please ensure the backend service has the correct Firebase/Google Cloud IAM permissions (e.g., Firebase Admin, Service Account User roles).');
+            throw new Error('Sign-up failed due to a server permissions issue. In the Google Cloud Console for your project, go to IAM and grant the "Firebase Admin" role to the "App Engine default service account".');
         }
         // Re-throw other specific errors (like "Invalid gift code") so the user sees them.
         throw error;
