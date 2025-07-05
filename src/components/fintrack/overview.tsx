@@ -1,25 +1,27 @@
-import { Home, Gamepad2, BookOpen, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import type { User } from "@/lib/types";
 
-export function BottomNav() {
+interface ProfileCardProps {
+  user: User;
+}
+
+export function ProfileCard({ user }: ProfileCardProps) {
   return (
-    <nav className="bg-indigo-500 p-3 flex justify-around items-center shadow-lg shrink-0">
-        <Button variant="ghost" className="flex flex-col items-center text-white hover:text-indigo-200 transition duration-200 h-auto p-1">
-            <Home />
-            <span className="text-xs mt-1 font-semibold">Home</span>
-        </Button>
-        <Button variant="ghost" className="flex flex-col items-center text-white hover:text-indigo-200 transition duration-200 h-auto p-1">
-            <Gamepad2 />
-            <span className="text-xs mt-1 font-semibold">Games</span>
-        </Button>
-        <Button variant="ghost" className="flex flex-col items-center text-white hover:text-indigo-200 transition duration-200 h-auto p-1">
-            <BookOpen />
-            <span className="text-xs mt-1 font-semibold">Learn</span>
-        </Button>
-        <Button variant="ghost" className="flex flex-col items-center text-white hover:text-indigo-200 transition duration-200 h-auto p-1">
-            <User />
-            <span className="text-xs mt-1 font-semibold">Profile</span>
-        </Button>
-    </nav>
+    <Card>
+      <CardHeader className="items-center text-center p-6">
+        <Avatar className="h-24 w-24 mb-4 border-4 border-pink-300 shadow-lg">
+            <AvatarImage src={user.photoURL ?? undefined} alt={user.name ?? "user"} />
+            <AvatarFallback className="text-3xl bg-yellow-200 text-yellow-800">{user.name?.charAt(0)}</AvatarFallback>
+        </Avatar>
+        <CardTitle className="text-2xl text-pink-600 font-bold">{user.name}</CardTitle>
+        <CardDescription className="text-indigo-500">{user.email}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="text-center text-sm text-muted-foreground">
+            Welcome to Kidbook! The funnest place on the web.
+        </div>
+      </CardContent>
+    </Card>
   );
 }

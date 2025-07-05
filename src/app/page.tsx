@@ -11,33 +11,32 @@ import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
 import { CreatePostForm } from '@/components/fintrack/add-transaction-dialog';
 import { PostFeed } from '@/components/fintrack/recent-transactions';
-import { BottomNav } from '@/components/fintrack/overview';
+import { ProfileCard } from '@/components/fintrack/overview';
 import { Skeleton } from '@/components/ui/skeleton';
+import { AISuggestionCard } from '@/components/fintrack/recommendations';
 
 function KidbookSkeleton() {
   return (
-    <div className="flex flex-col h-full">
-        <header className="bg-pink-500 p-4 flex items-center justify-between shadow-md shrink-0">
-            <div className="flex items-center space-x-2">
-                <Skeleton className="h-8 w-8 rounded-full bg-pink-400" />
-                <Skeleton className="h-7 w-28 bg-pink-400" />
-            </div>
-            <div className="flex items-center space-x-3">
-                <Skeleton className="h-10 w-10 rounded-full bg-pink-400" />
-                <Skeleton className="h-10 w-10 rounded-full bg-pink-400" />
-            </div>
-        </header>
-        <main className="flex-1 overflow-y-auto p-4 space-y-6">
-            <Skeleton className="h-20 w-full rounded-xl" />
-            <Skeleton className="h-64 w-full rounded-xl" />
-            <Skeleton className="h-64 w-full rounded-xl" />
-        </main>
-        <nav className="bg-indigo-500 p-3 flex justify-around items-center shadow-lg shrink-0">
-            <Skeleton className="h-10 w-12 bg-indigo-400" />
-            <Skeleton className="h-10 w-12 bg-indigo-400" />
-            <Skeleton className="h-10 w-12 bg-indigo-400" />
-            <Skeleton className="h-10 w-12 bg-indigo-400" />
-        </nav>
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <header className="bg-pink-500 p-4 sticky top-0 z-10 shadow-md">
+        <div className="container mx-auto flex items-center justify-between">
+          <Skeleton className="h-8 w-32 bg-pink-400" />
+          <Skeleton className="h-10 w-10 rounded-full bg-pink-400" />
+        </div>
+      </header>
+      <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-4 gap-6 flex-1">
+        <aside className="hidden md:block md:col-span-1 space-y-6">
+          <Skeleton className="h-48 w-full" />
+        </aside>
+        <section className="md:col-span-2 space-y-6">
+          <Skeleton className="h-32 w-full" />
+          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-64 w-full" />
+        </section>
+        <aside className="hidden md:block md:col-span-1 space-y-6">
+          <Skeleton className="h-64 w-full" />
+        </aside>
+      </main>
     </div>
   );
 }
@@ -123,19 +122,26 @@ export default function KidbookPage() {
     }
   }, [user, toast]);
   
-  if (authLoading || (isDataLoading && !posts.length)) {
+  if (authLoading || (isDataLoading && firebaseUser)) {
     return <KidbookSkeleton />;
   }
 
   return (
     <AuthGuard>
-        <div className="flex flex-col h-full bg-gray-50">
+        <div className="flex flex-col min-h-screen bg-gray-100">
           <Header />
-          <main className="flex-1 overflow-y-auto scrollable-content p-4 space-y-6">
-            {user && <CreatePostForm user={user} onAddPost={handleAddPost} />}
-            <PostFeed posts={posts} />
+          <main className="container mx-auto p-4 grid grid-cols-1 md:grid-cols-4 gap-6 items-start flex-1">
+            <aside className="hidden md:block md:col-span-1 space-y-6">
+              {user && <ProfileCard user={user} />}
+            </aside>
+            <section className="md:col-span-2 space-y-6">
+              {user && <CreatePostForm user={user} onAddPost={handleAddPost} />}
+              <PostFeed posts={posts} />
+            </section>
+            <aside className="hidden md:block md:col-span-1 space-y-6">
+               <AISuggestionCard />
+            </aside>
           </main>
-          <BottomNav />
         </div>
     </AuthGuard>
   );
