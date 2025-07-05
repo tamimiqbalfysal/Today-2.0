@@ -30,14 +30,9 @@ function PostCard({ post }: PostCardProps) {
             </div>
             <p className="text-card-foreground text-lg mb-4">{post.content}</p>
             
-            <Image 
-                src={`https://placehold.co/800x450.png`} 
-                alt="Post Image"
-                data-ai-hint="kids drawing"
-                width={800}
-                height={450}
-                className="w-full rounded-lg mb-4 shadow-md aspect-video object-cover"
-            />
+            <div className="bg-secondary flex items-center justify-center w-full rounded-lg mb-4 shadow-md aspect-video">
+                <p className="text-4xl font-bold text-primary-foreground">Fun Times!</p>
+            </div>
             
             <div className="flex justify-around items-center pt-3 border-t border-border">
                 <Button variant="ghost" className="text-muted-foreground hover:text-primary transition duration-200 text-base">
