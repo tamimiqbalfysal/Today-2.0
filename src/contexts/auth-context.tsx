@@ -35,13 +35,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const unsubscribeFirestore = onSnapshot(userDocRef, (doc) => {
           setLoading(true);
           if (doc.exists()) {
-            const firestoreData = doc.data() as Omit<AppUser, 'uid'>;
+            const firestoreData = doc.data();
             setUser({
               uid: firebaseUser.uid,
-              ...firestoreData,
               name: firebaseUser.displayName || firestoreData.name,
               email: firebaseUser.email || firestoreData.email,
               photoURL: firebaseUser.photoURL || firestoreData.photoURL,
+              isGiftCodeVerified: firestoreData.isGiftCodeVerified ?? false,
             });
           } else {
             // This case might happen if Firestore doc creation fails during signup
