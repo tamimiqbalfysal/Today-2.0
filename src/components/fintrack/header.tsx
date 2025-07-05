@@ -110,13 +110,13 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                       <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
                   <div className="flex-grow py-4 px-4 space-y-4">
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="default">
+                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
                             <Link href="/today" onClick={() => setIsProfileDrawerOpen(false)}>
                                 <PenSquare className="mr-4" />
                                 Today
                             </Link>
                         </Button>
-                        <Button size="lg" className="w-full justify-start text-lg font-bold" variant="secondary">
+                        <Button size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
                             <Bell className="mr-4" />
                             Notifications
                         </Button>
