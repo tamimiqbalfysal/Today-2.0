@@ -35,73 +35,82 @@ export type SignupWithGiftCodeOutput = z.infer<typeof SignupWithGiftCodeOutputSc
 
 // This is now a self-contained Server Action
 export async function signupWithGiftCode(input: SignupWithGiftCodeInput): Promise<SignupWithGiftCodeOutput> {
-    const { name, email, password, giftCode } = input;
-    const giftCodeRef = adminDb.collection('giftCodes').doc(giftCode);
-
-    // 1. First, perform a non-transactional read to fail early if code is obviously invalid.
-    const initialGiftCodeDoc = await giftCodeRef.get();
-    if (!initialGiftCodeDoc.exists) {
-      throw new Error('Invalid gift code.');
-    }
-    if (initialGiftCodeDoc.data()?.isUsed) {
-      throw new Error('This gift code has already been used.');
-    }
-
-    // 2. Create the Firebase Auth user.
-    let newUser;
     try {
-      newUser = await adminAuth.createUser({
-        email,
-        password,
-        displayName: name,
-        photoURL: `https://placehold.co/100x100.png?text=${name.charAt(0)}`,
-      });
-    } catch (error: any) {
-      if (error.code === 'auth/email-already-exists') {
-        throw new Error('This email address is already in use by another account.');
+      const { name, email, password, giftCode } = input;
+      const giftCodeRef = adminDb.collection('giftCodes').doc(giftCode);
+
+      // 1. First, perform a non-transactional read to fail early if code is obviously invalid.
+      const initialGiftCodeDoc = await giftCodeRef.get();
+      if (!initialGiftCodeDoc.exists) {
+        throw new Error('Invalid gift code.');
       }
-      console.error('Firebase Auth user creation failed:', error);
-      throw new Error('Could not create user account.');
-    }
+      if (initialGiftCodeDoc.data()?.isUsed) {
+        throw new Error('This gift code has already been used.');
+      }
 
-    // 3. Try to "claim" the gift code and create the user document in a transaction.
-    try {
-      await adminDb.runTransaction(async (transaction) => {
-        const freshGiftCodeDoc = await transaction.get(giftCodeRef);
-        if (!freshGiftCodeDoc.exists || freshGiftCodeDoc.data()?.isUsed) {
-          // This means someone else used the code between our initial check and now.
-          throw new Error('Gift code was just used by someone else. Please try another.');
+      // 2. Create the Firebase Auth user.
+      let newUser;
+      try {
+        newUser = await adminAuth.createUser({
+          email,
+          password,
+          displayName: name,
+          photoURL: `https://placehold.co/100x100.png?text=${name.charAt(0)}`,
+        });
+      } catch (error: any) {
+        if (error.code === 'auth/email-already-exists') {
+          throw new Error('This email address is already in use by another account.');
         }
+        console.error('Firebase Auth user creation failed:', error);
+        throw new Error('Could not create user account.');
+      }
 
-        // Mark the code as used
-        transaction.update(giftCodeRef, {
-          isUsed: true,
-          usedBy: newUser.uid,
-          usedAt: admin.firestore.FieldValue.serverTimestamp(),
+      // 3. Try to "claim" the gift code and create the user document in a transaction.
+      try {
+        await adminDb.runTransaction(async (transaction) => {
+          const freshGiftCodeDoc = await transaction.get(giftCodeRef);
+          if (!freshGiftCodeDoc.exists || freshGiftCodeDoc.data()?.isUsed) {
+            // This means someone else used the code between our initial check and now.
+            throw new Error('Gift code was just used by someone else. Please try another.');
+          }
+
+          // Mark the code as used
+          transaction.update(giftCodeRef, {
+            isUsed: true,
+            usedBy: newUser.uid,
+            usedAt: admin.firestore.FieldValue.serverTimestamp(),
+          });
+          
+          // Also create the user's public profile document in 'users' collection
+          const userDocRef = adminDb.collection('users').doc(newUser.uid);
+          transaction.set(userDocRef, {
+              name: name,
+              email: email,
+              photoURL: newUser.photoURL
+          });
         });
-        
-        // Also create the user's public profile document in 'users' collection
-        const userDocRef = adminDb.collection('users').doc(newUser.uid);
-        transaction.set(userDocRef, {
-            name: name,
-            email: email,
-            photoURL: newUser.photoURL
-        });
-      });
+      } catch (error: any) {
+        // If the transaction failed, we must delete the orphaned Auth user.
+        await adminAuth.deleteUser(newUser.uid);
+        // Re-throw the error to inform the user.
+        throw new Error(error.message || 'Could not claim gift code. Your account was not created.');
+      }
+
+      // 4. If we got here, everything succeeded. Generate a custom token for client-side sign-in.
+      const customToken = await adminAuth.createCustomToken(newUser.uid);
+
+      return {
+        customToken,
+        uid: newUser.uid,
+        name: newUser.displayName || name,
+        email: newUser.email || email,
+      };
     } catch (error: any) {
-      // If the transaction failed, we must delete the orphaned Auth user.
-      await adminAuth.deleteUser(newUser.uid);
-      // Re-throw the error to inform the user.
-      throw new Error(error.message || 'Could not claim gift code. Your account was not created.');
+        console.error('Full signup error:', error); // Log the full error on the server for debugging
+        if (error.message && (error.message.includes('Could not refresh access token') || error.message.includes('Getting metadata from plugin failed'))) {
+            throw new Error('Sign-up failed due to a server configuration issue. Please ensure the backend service has the correct Firebase/Google Cloud IAM permissions (e.g., Firebase Admin, Service Account Token Creator roles).');
+        }
+        // Re-throw other specific errors (like "Invalid gift code") so the user sees them.
+        throw error;
     }
-
-    // 4. If we got here, everything succeeded. Generate a custom token for client-side sign-in.
-    const customToken = await adminAuth.createCustomToken(newUser.uid);
-
-    return {
-      customToken,
-      uid: newUser.uid,
-      name: newUser.displayName || name,
-      email: newUser.email || email,
-    };
 }
