@@ -172,14 +172,14 @@ export default function ThankYouPage() {
                     </p>
                  </div>
                )}
-               {user && (user.redeemedGiftCodes || 0) > 0 && (
+               {user && (
                 <div className="p-3 rounded-md bg-green-100 dark:bg-green-900/50 border border-green-200 dark:border-green-800">
                   <p className="font-semibold text-green-800 dark:text-green-300">
-                    Gift Codes You Have Submitted: {user.redeemedGiftCodes}
+                    Gift Codes You Have Submitted: {redeemedCodes}
                   </p>
                 </div>
               )}
-              {totalGiftCodes !== null && totalGiftCodes > 0 && redeemedCodes > 0 && (
+              {totalGiftCodes !== null && totalGiftCodes > 0 && (
                 <div className="p-3 rounded-md bg-blue-100 dark:bg-blue-900/50 border border-blue-200 dark:border-blue-800">
                   <p className="font-semibold text-blue-800 dark:text-blue-300">
                     Your Redemption Rate: {percentage.toFixed(2)}%
