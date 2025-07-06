@@ -20,8 +20,14 @@ const signupFormSchema = z.object({
 
 type SignupFormValues = z.infer<typeof signupFormSchema>;
 
+const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
+    <svg {...props} aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
+        <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 23.4 172.9 61.9l-76.2 64.5C308.6 102.3 280.9 92 248 92c-73.8 0-134.3 60.3-134.3 134s60.5 134 134.3 134c82.3 0 112.1-61.5 115.8-92.6H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path>
+    </svg>
+);
+
 export default function SignupPage() {
-  const { signup } = useAuth();
+  const { signup, loginWithGoogle } = useAuth();
   const { toast } = useToast();
   
   const form = useForm<SignupFormValues>({
@@ -32,6 +38,18 @@ export default function SignupPage() {
       password: '',
     },
   });
+
+  async function handleGoogleLogin() {
+    try {
+      await loginWithGoogle();
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Google Sign-Up Failed',
+        description: 'An unexpected error occurred during Google sign-up. Please try again.',
+      });
+    }
+  }
 
   async function onSubmit(data: SignupFormValues) {
     try {
@@ -70,52 +88,70 @@ export default function SignupPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-               <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Your Name</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Elara the Brave" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="name@example.com" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••••" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Forging Account..." : "Create account"}
-              </Button>
-            </form>
-          </Form>
+          <div className="space-y-4">
+             <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={form.formState.isSubmitting}>
+              <GoogleIcon className="mr-2 h-4 w-4" />
+              Sign up with Google
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">
+                  Or continue with email
+                </span>
+              </div>
+            </div>
+            
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Your Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Elara the Brave" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="name@example.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="••••••••" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? "Forging Account..." : "Create account"}
+                </Button>
+              </form>
+            </Form>
+          </div>
           <div className="mt-4 text-center text-sm">
             Already have an account?{' '}
             <Link href="/login" className="underline text-primary">

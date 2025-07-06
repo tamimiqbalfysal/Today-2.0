@@ -3,17 +3,18 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, type User as FirebaseUser } from 'firebase/auth';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup, type User as FirebaseUser } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
-import { doc, setDoc, onSnapshot } from 'firebase/firestore';
+import { doc, setDoc, onSnapshot, getDoc } from 'firebase/firestore';
 import type { User as AppUser } from '@/lib/types';
 
 interface AuthContextType {
   user: AppUser | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password:string) => Promise<void>;
   logout: () => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -81,6 +82,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/');
   };
 
+  const loginWithGoogle = async () => {
+    if (!auth || !db) {
+      const error = new Error("Firebase is not configured. Please add your Firebase project configuration to a .env file.");
+      (error as any).code = 'auth/firebase-not-configured';
+      throw error;
+    }
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const firebaseUser = result.user;
+
+      // Check if user document already exists in Firestore
+      const userDocRef = doc(db, 'users', firebaseUser.uid);
+      const docSnap = await getDoc(userDocRef);
+
+      if (!docSnap.exists()) {
+        // This is a new user, so create their document in Firestore
+        await setDoc(userDocRef, {
+          name: firebaseUser.displayName,
+          email: firebaseUser.email,
+          photoURL: firebaseUser.photoURL,
+          hasRedeemedGiftCode: false,
+        });
+      }
+      router.push('/');
+    } catch (error) {
+      console.error("Error during Google sign-in:", error);
+      throw error;
+    }
+  };
+
   const signup = async (name: string, email: string, password: string) => {
     if (!auth || !db) {
         const error = new Error("Firebase is not configured. Please add your Firebase project configuration to a .env file.");
@@ -130,7 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/login');
   };
 
-  const value = { user, loading, login, logout, signup };
+  const value = { user, loading, login, logout, signup, loginWithGoogle };
 
   return (
     <AuthContext.Provider value={value}>
