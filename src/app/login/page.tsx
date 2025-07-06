@@ -40,11 +40,30 @@ export default function LoginPage() {
   async function handleGoogleLogin() {
     try {
       await loginWithGoogle();
-    } catch (error) {
+    } catch (error: any) {
+      let description = 'An unexpected error occurred during Google sign-in. Please try again.';
+      if (error.code) {
+          switch (error.code) {
+              case 'auth/popup-closed-by-user':
+                  description = 'The sign-in pop-up was closed. Please try again.';
+                  break;
+              case 'auth/cancelled-popup-request':
+                  description = 'Multiple sign-in pop-ups were opened. Please try again.';
+                  break;
+              case 'auth/popup-blocked':
+                  description = 'The sign-in pop-up was blocked by your browser. Please allow pop-ups for this site.';
+                  break;
+              case 'auth/unauthorized-domain':
+                   description = "This app's domain is not authorized for Google Sign-In. Please check the Firebase console.";
+                   break;
+              default:
+                  description = `An error occurred: ${error.message}`;
+          }
+      }
       toast({
         variant: 'destructive',
         title: 'Google Sign-In Failed',
-        description: 'An unexpected error occurred during Google sign-in. Please try again.',
+        description: description,
       });
     }
   }
