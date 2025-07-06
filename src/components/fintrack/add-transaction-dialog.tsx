@@ -50,7 +50,7 @@ export function CreatePostForm({ user, onAddPost }: CreatePostFormProps) {
         </div>
         <div className="flex justify-end gap-2">
             <Button asChild variant="outline">
-                <Link href="/">Feed</Link>
+                <Link href="/">Today</Link>
             </Button>
             <Button type="submit" disabled={isSubmitting || !content.trim()}>
             {isSubmitting ? "Posting..." : "Post"}
