@@ -5,6 +5,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Heart, MessageCircle } from "lucide-react";
+import Image from "next/image";
 
 interface PostCardProps {
   post: Post;
@@ -29,13 +30,18 @@ function PostCard({ post }: PostCardProps) {
                     </p>
                 </div>
             </div>
-            <p className="font-sans text-card-foreground text-lg mb-4">{post.content}</p>
+            {post.content && <p className="font-sans text-card-foreground text-lg mb-4 whitespace-pre-wrap">{post.content}</p>}
             
-            <div 
-                className="bg-gradient-to-br from-zinc-50 to-zinc-200 dark:from-zinc-800 dark:to-zinc-950 flex flex-col items-center justify-center w-full rounded-lg mb-4 shadow-inner aspect-video text-muted-foreground relative overflow-hidden"
-            >
-                <p className="text-2xl font-bold">Media Placeholder</p>
-            </div>
+            {post.mediaURL && (
+                <div className="relative w-full rounded-lg mb-4 overflow-hidden aspect-video border">
+                    {post.mediaType === 'image' && (
+                        <Image src={post.mediaURL} alt="Post media" layout="fill" objectFit="cover" />
+                    )}
+                    {post.mediaType === 'video' && (
+                        <video src={post.mediaURL} controls className="w-full h-full object-cover bg-black" />
+                    )}
+                </div>
+            )}
             
             <div className="flex justify-around items-center pt-3 border-t border-border">
                 <Button variant="ghost" className="text-muted-foreground hover:text-primary transition duration-200 text-base">

@@ -2,6 +2,7 @@
 import { initializeApp, getApps, getApp, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore, enableIndexedDbPersistence } from "firebase/firestore";
+import { getStorage, type Storage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,6 +16,7 @@ const firebaseConfig = {
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
 let db: Firestore | null = null;
+let storage: Storage | null = null;
 let isFirebaseConfigured = false;
 
 // This check ensures that Firebase is only initialized on the client side,
@@ -25,6 +27,7 @@ if (typeof window !== "undefined" && Object.values(firebaseConfig).every(Boolean
   app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
+  storage = getStorage(app);
   
   enableIndexedDbPersistence(db)
     .catch((err) => {
@@ -36,4 +39,4 @@ if (typeof window !== "undefined" && Object.values(firebaseConfig).every(Boolean
     });
 }
 
-export { app, auth, db, firebaseConfig, isFirebaseConfigured };
+export { app, auth, db, storage, firebaseConfig, isFirebaseConfigured };

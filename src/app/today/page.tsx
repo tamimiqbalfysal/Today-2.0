@@ -3,7 +3,8 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { collection, addDoc, Timestamp } from "firebase/firestore";
-import { db } from '@/lib/firebase';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db, storage } from '@/lib/firebase';
 import { useAuth } from '@/contexts/auth-context';
 import type { User } from '@/lib/types';
 import { useToast } from "@/hooks/use-toast";
@@ -26,10 +27,24 @@ export default function CreatePostPage() {
     photoURL: firebaseUser.photoURL
   } : null;
   
-  const handleAddPost = useCallback(async (content: string) => {
-    if (!user || !db || !content.trim()) return;
+  const handleAddPost = useCallback(async (content: string, mediaFile: File | null) => {
+    if (!user || !db || (!content.trim() && !mediaFile)) return;
 
     try {
+      let mediaURL: string | undefined = undefined;
+      let mediaType: 'image' | 'video' | undefined = undefined;
+
+      if (mediaFile && storage) {
+        const storageRef = ref(storage, `posts/${user.uid}/${Date.now()}_${mediaFile.name}`);
+        const snapshot = await uploadBytes(storageRef, mediaFile);
+        mediaURL = await getDownloadURL(snapshot.ref);
+        if (mediaFile.type.startsWith('image/')) {
+          mediaType = 'image';
+        } else if (mediaFile.type.startsWith('video/')) {
+          mediaType = 'video';
+        }
+      }
+
       await addDoc(collection(db, 'posts'), {
         authorId: user.uid,
         authorName: user.name,
@@ -38,6 +53,8 @@ export default function CreatePostPage() {
         timestamp: Timestamp.now(),
         likes: [],
         comments: [],
+        ...(mediaURL && { mediaURL }),
+        ...(mediaType && { mediaType }),
       });
       toast({
         title: "Post Created!",
@@ -50,6 +67,9 @@ export default function CreatePostPage() {
        if (error.code === 'permission-denied') {
            description = "You do not have permission to create a post. Please make sure you have updated the Firestore security rules in the Firebase Console.";
        }
+       if (error.code === 'storage/unauthorized') {
+            description = "You don't have permission to upload files. Please check your Storage security rules in the Firebase Console.";
+        }
        toast({
         variant: "destructive",
         title: "Could Not Create Post",

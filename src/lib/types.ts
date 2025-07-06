@@ -17,6 +17,8 @@ export interface Post {
   timestamp: Timestamp;
   likes: string[]; // Array of user UIDs
   comments: Comment[];
+  mediaURL?: string;
+  mediaType?: 'image' | 'video';
 }
 
 export interface Comment {
