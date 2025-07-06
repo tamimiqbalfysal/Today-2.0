@@ -59,8 +59,8 @@ export default function ThankYouPage() {
       // await updateDoc(giftCodeRef, { isUsed: true });
 
       toast({
-        title: 'Success!',
-        description: 'Gift code is valid! Thank you!',
+        title: 'Congratulations!',
+        description: 'Your Gift Code is submitted.',
       });
       formRef.current?.reset();
       setCode('');
