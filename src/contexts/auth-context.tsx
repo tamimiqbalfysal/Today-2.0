@@ -4,9 +4,9 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, deleteUser } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
-import { doc, setDoc, onSnapshot } from 'firebase/firestore';
+import { doc, setDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
 import type { User as AppUser } from '@/lib/types';
 
 interface AuthContextType {
@@ -15,6 +15,7 @@ interface AuthContextType {
   login: (email: string, password:string) => Promise<void>;
   logout: () => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
+  deleteAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -131,7 +132,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/login');
   };
 
-  const value = { user, loading, login, logout, signup };
+  const deleteAccount = async () => {
+    const currentUser = auth?.currentUser;
+    if (!auth || !currentUser || !db) {
+      throw new Error("User not found or Firebase not configured.");
+    }
+    try {
+      // For a complete solution, you would use a Firebase Function to delete all of user's
+      // associated data (posts, likes, etc.). Deleting their user document is a good start.
+      const userDocRef = doc(db, 'users', currentUser.uid);
+      await deleteDoc(userDocRef);
+      
+      // Now delete the user from Firebase Auth
+      await deleteUser(currentUser);
+
+      router.push('/login');
+    } catch (error: any) {
+      console.error("Error deleting account:", error);
+      // Re-throw the error so the component can handle it (e.g., show a toast)
+      throw error;
+    }
+  };
+
+
+  const value = { user, loading, login, logout, signup, deleteAccount };
 
   return (
     <AuthContext.Provider value={value}>

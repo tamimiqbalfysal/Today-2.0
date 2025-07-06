@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -14,11 +15,46 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from '@/contexts/auth-context';
 import { cn } from "@/lib/utils";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
 
 export function Header({ isVisible = true }: { isVisible?: boolean }) {
-  const { user, logout } = useAuth();
+  const { user, logout, deleteAccount } = useAuth();
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
   const [isProfileDrawerOpen, setIsProfileDrawerOpen] = useState(false);
+  const { toast } = useToast();
+
+  const handleDeleteAccount = async () => {
+    if (!deleteAccount) return;
+    try {
+      await deleteAccount();
+      toast({
+        title: "Account Deleted",
+        description: "Your account has been permanently deleted.",
+      });
+      setIsNavDrawerOpen(false); // Close the drawer after action
+    } catch (error: any) {
+      let description = "An unexpected error occurred while deleting your account.";
+      if (error.code === 'auth/requires-recent-login') {
+        description = "This is a sensitive operation. Please log out and log back in before deleting your account.";
+      }
+      toast({
+        variant: "destructive",
+        title: "Deletion Failed",
+        description: description,
+      });
+    }
+  };
 
   return (
     <header className={cn(
@@ -63,14 +99,36 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                                   Add
                               </Link>
                           </Button>
-                          <Button 
-                            size="lg" 
-                            variant="ghost"
-                            className="w-full justify-start text-lg font-bold text-destructive hover:text-destructive"
-                          >
-                              <Trash2 className="mr-4" />
-                              Delete
-                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                size="lg"
+                                variant="ghost"
+                                className="w-full justify-start text-lg font-bold text-destructive hover:text-destructive"
+                              >
+                                <Trash2 className="mr-4" />
+                                Delete
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will permanently delete your
+                                  account and remove your data from our servers.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={handleDeleteAccount}
+                                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                >
+                                  Continue
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                       </div>
                       <div className="p-4 border-t border-border">
                          <Button 
