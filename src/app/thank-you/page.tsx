@@ -1,9 +1,9 @@
 
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { doc, getDoc, updateDoc, increment } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, increment, collection, getDocs } from 'firebase/firestore';
 
 import { db } from '@/lib/firebase';
 import { AuthGuard } from '@/components/auth/auth-guard';
@@ -27,6 +27,7 @@ function ThankYouSkeleton() {
           </CardHeader>
           <CardContent className="space-y-4 pt-6">
             <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
             <div className="flex w-full items-center space-x-2">
               <Skeleton className="h-10 flex-grow" />
               <Skeleton className="h-10 w-24" />
@@ -46,6 +47,35 @@ export default function ThankYouPage() {
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+  const [totalGiftCodes, setTotalGiftCodes] = useState<number | null>(null);
+  const [isTotalCodesLoading, setIsTotalCodesLoading] = useState(true);
+
+  useEffect(() => {
+    if (!db) {
+        setIsTotalCodesLoading(false);
+        return;
+    }
+
+    const fetchTotalCodes = async () => {
+        setIsTotalCodesLoading(true);
+        try {
+            const giftCodesCollection = collection(db, 'giftCodes');
+            const giftCodesSnapshot = await getDocs(giftCodesCollection);
+            setTotalGiftCodes(giftCodesSnapshot.size);
+        } catch (error) {
+            console.error("Error fetching total gift codes count:", error);
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Could not load the total number of gift codes."
+            });
+        } finally {
+            setIsTotalCodesLoading(false);
+        }
+    };
+
+    fetchTotalCodes();
+  }, [toast]);
 
   const handleVerifyCode = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -130,10 +160,19 @@ export default function ThankYouPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+               {isTotalCodesLoading ? (
+                 <Skeleton className="h-12 w-full rounded-md" />
+               ) : totalGiftCodes !== null && (
+                 <div className="p-3 rounded-md bg-indigo-100 dark:bg-indigo-900/50 border border-indigo-200 dark:border-indigo-800">
+                    <p className="font-semibold text-indigo-800 dark:text-indigo-300">
+                        Total Gift Codes in System: {totalGiftCodes}
+                    </p>
+                 </div>
+               )}
                {user && (user.redeemedGiftCodes || 0) > 0 && (
                 <div className="p-3 rounded-md bg-green-100 dark:bg-green-900/50 border border-green-200 dark:border-green-800">
                   <p className="font-semibold text-green-800 dark:text-green-300">
-                    Gift Codes Submitted: {user.redeemedGiftCodes}
+                    Gift Codes You Have Submitted: {user.redeemedGiftCodes}
                   </p>
                 </div>
               )}
