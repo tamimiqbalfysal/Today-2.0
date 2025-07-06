@@ -47,6 +47,8 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
       let description = "An unexpected error occurred while deleting your account.";
       if (error.code === 'auth/requires-recent-login') {
         description = "This is a sensitive operation. Please log out and log back in before deleting your account.";
+      } else if (error.code === 'permission-denied') {
+        description = "Permission Denied. Please check your Firestore security rules to ensure users can delete their own 'users' document.";
       }
       toast({
         variant: "destructive",
