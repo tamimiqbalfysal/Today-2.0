@@ -74,7 +74,7 @@ export function GiftCodeDialog({ open, onOpenChange }: GiftCodeDialogProps) {
       console.error("Error verifying gift code:", error);
       let description = "An unexpected error occurred.";
       if (error.code === 'permission-denied' || error.code === 'PERMISSION_DENIED') {
-        description = "Permission Denied. Please check your Firestore security rules.";
+        description = "Permission Denied. Your security rules must allow 'update' on the 'giftCodes' collection for this to work. Please update your Firestore rules in the Firebase Console.";
       }
       toast({
         variant: 'destructive',
