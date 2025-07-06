@@ -34,7 +34,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
       toast({
         variant: 'destructive',
         title: 'Verification Failed',
-        description: 'Please enter a Think Code.',
+        description: 'Please enter a Gift Code.',
       });
       return;
     }
@@ -50,20 +50,20 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
 
     setIsVerifying(true);
     try {
-      const thinkCodeRef = doc(db, 'thinkCodes', code.trim());
-      const docSnap = await getDoc(thinkCodeRef);
+      const giftCodeRef = doc(db, 'giftCodes', code.trim());
+      const docSnap = await getDoc(giftCodeRef);
 
       if (!docSnap.exists() || docSnap.data()?.isUsed === true) {
         toast({
           variant: 'destructive',
           title: 'Verification Failed',
-          description: 'This Think Code is invalid or has already been used.',
+          description: 'This Gift Code is invalid or has already been used.',
         });
         setIsVerifying(false);
         return;
       }
       
-      await updateDoc(thinkCodeRef, { isUsed: true });
+      await updateDoc(giftCodeRef, { isUsed: true });
 
       if (userId) {
         const userDocRef = doc(db, 'users', userId);
@@ -72,7 +72,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
 
       toast({
         title: 'Success!',
-        description: 'Think Code is valid! Redirecting...',
+        description: 'Gift Code is valid! Redirecting...',
       });
       
       router.push('/thank-you');
@@ -81,10 +81,10 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
 
     } catch (error: any)
       {
-      console.error("Error verifying Think Code:", error);
+      console.error("Error verifying Gift Code:", error);
       let description = "An unexpected error occurred.";
       if (error.code === 'permission-denied' || error.code === 'PERMISSION_DENIED') {
-        description = "Permission Denied. Your security rules must allow 'update' on both the 'thinkCodes' and 'users' collections for this to work. Please check your Firestore rules in the Firebase Console.";
+        description = "Permission Denied. Your security rules must allow 'update' on both the 'giftCodes' and 'users' collections for this to work. Please check your Firestore rules in the Firebase Console.";
       }
       toast({
         variant: 'destructive',
@@ -106,19 +106,19 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
     <Dialog open={open} onOpenChange={handleCloseDialog}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>A Think Code For You!</DialogTitle>
+          <DialogTitle>A Gift Code For You!</DialogTitle>
           <DialogDescription>
-            Have a special Think Code? Enter it below to claim your reward.
+            Have a special Gift Code? Enter it below to claim your reward.
           </DialogDescription>
         </DialogHeader>
         <form id="gift-code-form" onSubmit={handleSubmit} className="grid gap-4 py-4">
           <Input
             id="code"
-            placeholder="Enter your Think Code"
+            placeholder="Enter your Gift Code"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             disabled={isVerifying}
-            aria-label="Think Code"
+            aria-label="Gift Code"
           />
         </form>
         <DialogFooter>
