@@ -18,9 +18,10 @@ import { Input } from '@/components/ui/input';
 interface GiftCodeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  userId?: string | null;
 }
 
-export function GiftCodeDialog({ open, onOpenChange }: GiftCodeDialogProps) {
+export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogProps) {
   const [code, setCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
@@ -62,19 +63,23 @@ export function GiftCodeDialog({ open, onOpenChange }: GiftCodeDialogProps) {
       
       await updateDoc(giftCodeRef, { isUsed: true });
 
+      if (userId) {
+        const userDocRef = doc(db, 'users', userId);
+        await updateDoc(userDocRef, { hasRedeemedGiftCode: true });
+      }
+
       toast({
         title: 'Success!',
         description: 'Gift code is valid! Thank you!',
       });
       
-      sessionStorage.setItem('validGiftCodeSubmitted', 'true');
       onOpenChange(false);
       setCode('');
     } catch (error: any) {
       console.error("Error verifying gift code:", error);
       let description = "An unexpected error occurred.";
       if (error.code === 'permission-denied' || error.code === 'PERMISSION_DENIED') {
-        description = "Permission Denied. Your security rules must allow 'update' on the 'giftCodes' collection for this to work. Please update your Firestore rules in the Firebase Console.";
+        description = "Permission Denied. Your security rules must allow 'update' on both the 'giftCodes' and 'users' collections for this to work. Please check your Firestore rules in the Firebase Console.";
       }
       toast({
         variant: 'destructive',

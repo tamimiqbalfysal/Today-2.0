@@ -42,32 +42,23 @@ export default function TodayPage() {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
   const [isGiftCodeDialogOpen, setIsGiftCodeDialogOpen] = useState(false);
-  const hasSubmittedCode = useRef(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    // Don't run on server or if user data is loading.
+    if (typeof window === 'undefined' || authLoading) return;
     
-    if (sessionStorage.getItem('validGiftCodeSubmitted')) {
-      hasSubmittedCode.current = true;
-    }
-
-    if (hasSubmittedCode.current) {
-      return;
-    }
-
-    const intervalId = setInterval(() => {
-      if (sessionStorage.getItem('validGiftCodeSubmitted')) {
-        hasSubmittedCode.current = true;
-        clearInterval(intervalId);
-      } else {
+    // If user exists and has NOT redeemed a code, start the timer.
+    if (user && !user.hasRedeemedGiftCode) {
+      const intervalId = setInterval(() => {
         setIsGiftCodeDialogOpen(true);
-      }
-    }, 60000);
+      }, 60000); // 1 minute
 
-    return () => clearInterval(intervalId);
-  }, []);
+      // Cleanup function to clear the interval when the component unmounts
+      // or when the user object changes (e.g., after redeeming a code).
+      return () => clearInterval(intervalId);
+    }
+  }, [user, authLoading]);
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
@@ -139,6 +130,7 @@ export default function TodayPage() {
           <GiftCodeDialog
             open={isGiftCodeDialogOpen}
             onOpenChange={setIsGiftCodeDialogOpen}
+            userId={user?.uid}
           />
         </div>
     </AuthGuard>
