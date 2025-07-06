@@ -25,12 +25,6 @@ const signupFormSchema = z.object({
 
 type SignupFormValues = z.infer<typeof signupFormSchema>;
 
-const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
-        <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 23.4 172.9 61.9l-76.2 64.5C308.6 102.3 280.9 92 248 92c-73.8 0-134.3 60.3-134.3 134s60.5 134 134.3 134c82.3 0 112.1-61.5 115.8-92.6H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path>
-    </svg>
-);
-
 function FirebaseConfigurationWarning() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-yellow-50 dark:bg-yellow-950">
@@ -75,16 +69,15 @@ NEXT_PUBLIC_FIREBASE_APP_ID=...`}
 }
 
 export default function SignupPage() {
-  const { signup, loginWithGoogle } = useAuth();
+  const { signup } = useAuth();
   const { toast } = useToast();
   const [showFirebaseWarning, setShowFirebaseWarning] = useState(false);
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && !isFirebaseConfigured) {
-      setShowFirebaseWarning(true);
-    }
+    // This check runs only on the client after the component mounts
+    setShowFirebaseWarning(process.env.NODE_ENV === 'development' && !isFirebaseConfigured);
   }, []);
-  
+
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -93,37 +86,6 @@ export default function SignupPage() {
       password: '',
     },
   });
-
-  async function handleGoogleLogin() {
-    try {
-      await loginWithGoogle();
-    } catch (error: any) {
-      let description = 'An unexpected error occurred during Google sign-up. Please try again.';
-      if (error.code) {
-          switch (error.code) {
-              case 'auth/popup-closed-by-user':
-                  description = 'The sign-up pop-up was closed. Please try again.';
-                  break;
-              case 'auth/cancelled-popup-request':
-                  description = 'Multiple sign-up pop-ups were opened. Please try again.';
-                  break;
-              case 'auth/popup-blocked':
-                  description = 'The sign-up pop-up was blocked by your browser. Please allow pop-ups for this site.';
-                  break;
-              case 'auth/unauthorized-domain':
-                   description = "This app's domain is not authorized for Google Sign-In. Please check the Firebase console.";
-                   break;
-              default:
-                  description = `An error occurred: ${error.message}`;
-          }
-      }
-      toast({
-        variant: 'destructive',
-        title: 'Google Sign-Up Failed',
-        description: description,
-      });
-    }
-  }
 
   async function onSubmit(data: SignupFormValues) {
     try {
@@ -167,22 +129,6 @@ export default function SignupPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-             <Button type="button" variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={form.formState.isSubmitting}>
-              <GoogleIcon className="mr-2 h-4 w-4" />
-              Sign up with Google
-            </Button>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">
-                  Or continue with email
-                </span>
-              </div>
-            </div>
-            
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
