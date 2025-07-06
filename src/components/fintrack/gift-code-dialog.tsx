@@ -50,8 +50,8 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
 
     setIsVerifying(true);
     try {
-      const giftCodeRef = doc(db, 'giftCodes', code.trim());
-      const docSnap = await getDoc(giftCodeRef);
+      const thinkCodeRef = doc(db, 'thinkCodes', code.trim());
+      const docSnap = await getDoc(thinkCodeRef);
 
       if (!docSnap.exists() || docSnap.data()?.isUsed === true) {
         toast({
@@ -63,7 +63,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
         return;
       }
       
-      await updateDoc(giftCodeRef, { isUsed: true });
+      await updateDoc(thinkCodeRef, { isUsed: true });
 
       if (userId) {
         const userDocRef = doc(db, 'users', userId);
@@ -79,11 +79,12 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
       onOpenChange(false);
       setCode('');
 
-    } catch (error: any) {
+    } catch (error: any)
+      {
       console.error("Error verifying Think Code:", error);
       let description = "An unexpected error occurred.";
       if (error.code === 'permission-denied' || error.code === 'PERMISSION_DENIED') {
-        description = "Permission Denied. Your security rules must allow 'update' on both the 'giftCodes' and 'users' collections for this to work. Please check your Firestore rules in the Firebase Console.";
+        description = "Permission Denied. Your security rules must allow 'update' on both the 'thinkCodes' and 'users' collections for this to work. Please check your Firestore rules in the Firebase Console.";
       }
       toast({
         variant: 'destructive',
