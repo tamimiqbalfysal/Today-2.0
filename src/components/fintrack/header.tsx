@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -70,7 +69,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             className="w-full justify-start text-lg font-bold text-destructive hover:text-destructive"
                           >
                               <Trash2 className="mr-4" />
-                              Remove
+                              Delete
                           </Button>
                       </div>
                       <div className="p-4 border-t border-border">
