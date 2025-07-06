@@ -4,7 +4,7 @@
 import type { ReactNode } from 'react';
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, deleteUser } from 'firebase/auth';
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
 import { doc, setDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
 import type { User as AppUser } from '@/lib/types';
@@ -15,7 +15,7 @@ interface AuthContextType {
   login: (email: string, password:string) => Promise<void>;
   logout: () => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
-  deleteAccount: () => Promise<void>;
+  deleteAccount: (password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -132,24 +132,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/login');
   };
 
-  const deleteAccount = async () => {
+  const deleteAccount = async (password: string) => {
     const currentUser = auth?.currentUser;
     if (!auth || !currentUser || !db) {
       throw new Error("User not found or Firebase not configured.");
     }
+    
     try {
-      // For a complete solution, you would use a Firebase Function to delete all of user's
-      // associated data (posts, likes, etc.). Deleting their user document is a good start.
+      if (!currentUser.email) {
+        throw new Error("Cannot re-authenticate user without an email address.");
+      }
+      const credential = EmailAuthProvider.credential(currentUser.email, password);
+      await reauthenticateWithCredential(currentUser, credential);
+
+      // If re-authentication is successful, proceed with deletion.
       const userDocRef = doc(db, 'users', currentUser.uid);
       await deleteDoc(userDocRef);
-      
-      // Now delete the user from Firebase Auth
       await deleteUser(currentUser);
-
       router.push('/login');
     } catch (error: any) {
       console.error("Error deleting account:", error);
-      // Re-throw the error so the component can handle it (e.g., show a toast)
+      if (error.code === 'auth/wrong-password') {
+        throw new Error("The password you entered is incorrect. Please try again.");
+      }
+      // Re-throw the original error or a more generic one
       throw error;
     }
   };

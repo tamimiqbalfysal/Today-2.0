@@ -27,34 +27,33 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function Header({ isVisible = true }: { isVisible?: boolean }) {
   const { user, logout, deleteAccount } = useAuth();
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
   const [isProfileDrawerOpen, setIsProfileDrawerOpen] = useState(false);
+  const [password, setPassword] = useState("");
   const { toast } = useToast();
 
   const handleDeleteAccount = async () => {
     if (!deleteAccount) return;
     try {
-      await deleteAccount();
+      await deleteAccount(password);
       toast({
         title: "Account Deleted",
         description: "Your account has been permanently deleted.",
       });
-      setIsNavDrawerOpen(false); // Close the drawer after action
+      setIsNavDrawerOpen(false);
     } catch (error: any) {
-      let description = "An unexpected error occurred while deleting your account.";
-      if (error.code === 'auth/requires-recent-login') {
-        description = "This is a sensitive operation. Please log out and log back in before deleting your account.";
-      } else if (error.code === 'permission-denied') {
-        description = "Permission Denied. Please check your Firestore security rules to ensure users can delete their own 'users' document.";
-      }
       toast({
         variant: "destructive",
         title: "Deletion Failed",
-        description: description,
+        description: error.message || "An unexpected error occurred while deleting your account.",
       });
+    } finally {
+      setPassword("");
     }
   };
 
@@ -116,17 +115,29 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  This action cannot be undone. This will permanently delete your
-                                  account and remove your data from our servers.
+                                  This action cannot be undone. To confirm, please enter your password. This will permanently delete your account and remove your data.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
+                               <div className="space-y-2">
+                                <Label htmlFor="password-confirm" className="sr-only">
+                                  Password
+                                </Label>
+                                <Input
+                                  id="password-confirm"
+                                  type="password"
+                                  placeholder="Enter your password"
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                />
+                              </div>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel onClick={() => setPassword("")}>Cancel</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={handleDeleteAccount}
+                                  disabled={!password}
                                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 >
-                                  Continue
+                                  Delete Account
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
