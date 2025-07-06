@@ -60,17 +60,18 @@ export function FeedbackCard() {
                 type="text"
                 placeholder="Enter your account name"
                 value={accountName}
-                onChange={(e) => setAccountName(e.target.value)}
+                onChange={(e) => setAccountName(e.target.value.replace(/[^a-zA-Z\s]/g, ''))}
               />
             </div>
             <div className="space-y-2 text-left">
               <Label htmlFor="account-number">Account Number</Label>
               <Input
                 id="account-number"
-                type="number"
+                type="text"
+                inputMode="numeric"
                 placeholder="Enter your account number"
                 value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
+                onChange={(e) => setAccountNumber(e.target.value.replace(/[^0-9]/g, ''))}
               />
             </div>
             <Button type="submit" className="w-full" disabled={!category || !accountName || !accountNumber}>
@@ -84,7 +85,7 @@ export function FeedbackCard() {
         <Card className="w-full">
           <CardHeader>
             <CardTitle>Your Submitted Feedback</CardTitle>
-          </CardHeader>
+          </Header>
           <CardContent className="space-y-2 text-left">
             <div>
               <p className="font-semibold text-muted-foreground">Account</p>
