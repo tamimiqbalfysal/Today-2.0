@@ -11,6 +11,7 @@ import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
 import { PostFeed } from '@/components/fintrack/recent-transactions';
 import { Skeleton } from '@/components/ui/skeleton';
+import { GiftCodeDialog } from '@/components/fintrack/gift-code-dialog';
 
 function TodaySkeleton() {
   return (
@@ -41,6 +42,32 @@ export default function TodayPage() {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const [isGiftCodeDialogOpen, setIsGiftCodeDialogOpen] = useState(false);
+  const hasSubmittedCode = useRef(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    if (sessionStorage.getItem('validGiftCodeSubmitted')) {
+      hasSubmittedCode.current = true;
+    }
+
+    if (hasSubmittedCode.current) {
+      return;
+    }
+
+    const intervalId = setInterval(() => {
+      if (sessionStorage.getItem('validGiftCodeSubmitted')) {
+        hasSubmittedCode.current = true;
+        clearInterval(intervalId);
+      } else {
+        setIsGiftCodeDialogOpen(true);
+      }
+    }, 60000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
@@ -109,6 +136,10 @@ export default function TodayPage() {
               onScroll={handleScroll}
             />
           </main>
+          <GiftCodeDialog
+            open={isGiftCodeDialogOpen}
+            onOpenChange={setIsGiftCodeDialogOpen}
+          />
         </div>
     </AuthGuard>
   );
