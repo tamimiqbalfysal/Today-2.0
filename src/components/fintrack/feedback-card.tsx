@@ -31,13 +31,13 @@ export function FeedbackCard() {
     <>
       <Card className="w-full">
         <CardHeader className="text-center">
-          <CardTitle>Share Your Thoughts</CardTitle>
+          <CardTitle>I prefer to recieve my Gift</CardTitle>
           <CardDescription>We'd love to hear from you.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2 text-left">
-              <Label htmlFor="feedback-category">Category</Label>
+              <Label htmlFor="feedback-category">Account</Label>
               <Select onValueChange={setCategory} value={category}>
                 <SelectTrigger id="feedback-category">
                   <SelectValue placeholder="Select a category" />
@@ -51,7 +51,7 @@ export function FeedbackCard() {
               </Select>
             </div>
             <div className="space-y-2 text-left">
-              <Label htmlFor="feedback-message">Message</Label>
+              <Label htmlFor="feedback-message">Account Number</Label>
               <Input
                 id="feedback-message"
                 type="text"
@@ -71,14 +71,14 @@ export function FeedbackCard() {
         <Card className="w-full">
           <CardHeader>
             <CardTitle>Your Submitted Feedback</CardTitle>
-          </CardHeader>
+          </Header>
           <CardContent className="space-y-2 text-left">
             <div>
-              <p className="font-semibold text-muted-foreground">Category</p>
+              <p className="font-semibold text-muted-foreground">Account</p>
               <p>{submittedFeedback.category}</p>
             </div>
             <div>
-              <p className="font-semibold text-muted-foreground">Message</p>
+              <p className="font-semibold text-muted-foreground">Account Number</p>
               <p>{submittedFeedback.message}</p>
             </div>
           </CardContent>
