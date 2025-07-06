@@ -143,6 +143,9 @@ export default function ThankYouPage() {
     }
   };
 
+  const redeemedCodes = user?.redeemedGiftCodes || 0;
+  const percentage = totalGiftCodes && totalGiftCodes > 0 ? (redeemedCodes / totalGiftCodes) * 100 : 0;
+
   if (authLoading) {
     return <ThankYouSkeleton />;
   }
@@ -174,6 +177,14 @@ export default function ThankYouPage() {
                   <p className="font-semibold text-green-800 dark:text-green-300">
                     Gift Codes You Have Submitted: {user.redeemedGiftCodes}
                   </p>
+                </div>
+              )}
+              {totalGiftCodes !== null && totalGiftCodes > 0 && redeemedCodes > 0 && (
+                <div className="p-3 rounded-md bg-blue-100 dark:bg-blue-900/50 border border-blue-200 dark:border-blue-800">
+                  <p className="font-semibold text-blue-800 dark:text-blue-300">
+                    Your Redemption Rate: {percentage.toFixed(2)}%
+                  </p>
+                  <p className="text-sm text-blue-600 dark:text-blue-400">You've claimed {redeemedCodes} of the {totalGiftCodes} available codes.</p>
                 </div>
               )}
               <form ref={formRef} onSubmit={handleVerifyCode} className="flex w-full items-center space-x-2">
