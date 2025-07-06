@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, increment } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
@@ -67,7 +67,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
 
       if (userId) {
         const userDocRef = doc(db, 'users', userId);
-        await updateDoc(userDocRef, { hasRedeemedGiftCode: true });
+        await updateDoc(userDocRef, { redeemedGiftCodes: increment(1) });
       }
 
       toast({

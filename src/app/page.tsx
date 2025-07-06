@@ -48,8 +48,8 @@ export default function TodayPage() {
     // Don't run on server or if user data is loading.
     if (typeof window === 'undefined' || authLoading) return;
     
-    // If user exists and has NOT redeemed a code, start the timer.
-    if (user && !user.hasRedeemedGiftCode) {
+    // If user exists and has NOT redeemed a code, show the gift code dialog after a delay.
+    if (user && (user.redeemedGiftCodes || 0) === 0) {
       const intervalId = setInterval(() => {
         setIsGiftCodeDialogOpen(true);
       }, 60000); // 1 minute
