@@ -35,7 +35,7 @@ export function FeedbackCard() {
       <Card className="w-full">
         <CardHeader className="text-center">
           <CardTitle>I prefer to recieve my Gift</CardTitle>
-          <CardDescription>We'd love to hear from you.</CardDescription>
+          <CardDescription>To know about Gift Disbursement follow TIF everywhere.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
