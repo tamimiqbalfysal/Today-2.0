@@ -199,7 +199,7 @@ export default function ThankYouPage() {
                     <p className="font-semibold text-blue-800 dark:text-blue-300">
                       Your Redemption Rate: {percentage.toFixed(2)}%
                     </p>
-                    <p className="text-sm text-blue-600 dark:text-blue-400">You've claimed {redeemedCodes} of the {totalGiftCodes} available codes.</p>
+                    <p className="text-sm text-blue-600 dark:text-blue-400">You've claimed {redeemedCodes} of the {totalGiftCodes} Gift Codes.</p>
                   </div>
                 )}
                 <form ref={formRef} onSubmit={handleVerifyCode} className="flex w-full items-center space-x-2">
