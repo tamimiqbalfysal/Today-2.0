@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
@@ -25,6 +26,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
   const [code, setCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -70,11 +72,13 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
 
       toast({
         title: 'Success!',
-        description: 'Gift code is valid! Thank you!',
+        description: 'Gift code is valid! Redirecting...',
       });
       
+      router.push('/thank-you');
       onOpenChange(false);
       setCode('');
+
     } catch (error: any) {
       console.error("Error verifying gift code:", error);
       let description = "An unexpected error occurred.";
