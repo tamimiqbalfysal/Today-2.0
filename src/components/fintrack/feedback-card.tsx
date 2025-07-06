@@ -35,7 +35,7 @@ export function FeedbackCard() {
       <Card className="w-full">
         <CardHeader className="text-center">
           <CardTitle>I prefer to recieve my Gift</CardTitle>
-          <CardDescription>To know about Gift Disbursement follow TIF everywhere.</CardDescription>
+          <CardDescription>When any Gift Disbursement will happen, you will get the Gift automatically to your given account.</CardDescription>
           <div className="flex justify-center gap-4 pt-2">
             <a href="https://x.com/TamimIqbalFysal" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X" className="text-muted-foreground hover:text-primary transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
