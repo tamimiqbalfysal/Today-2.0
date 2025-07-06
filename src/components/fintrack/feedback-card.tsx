@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { X, Facebook, Youtube } from 'lucide-react';
 
 interface SubmittedFeedback {
   category: string;
@@ -36,6 +37,17 @@ export function FeedbackCard() {
         <CardHeader className="text-center">
           <CardTitle>I prefer to recieve my Gift</CardTitle>
           <CardDescription>To know about Gift Disbursement follow TIF everywhere.</CardDescription>
+          <div className="flex justify-center gap-4 pt-2">
+            <a href="#" aria-label="Follow us on X" className="text-muted-foreground hover:text-primary transition-colors">
+              <X className="h-6 w-6" />
+            </a>
+            <a href="#" aria-label="Follow us on Facebook" className="text-muted-foreground hover:text-primary transition-colors">
+              <Facebook className="h-6 w-6" />
+            </a>
+            <a href="#" aria-label="Follow us on Youtube" className="text-muted-foreground hover:text-primary transition-colors">
+              <Youtube className="h-6 w-6" />
+            </a>
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
