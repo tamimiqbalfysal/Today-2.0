@@ -4,11 +4,13 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Link from 'next/link';
+import { Terminal } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
 
@@ -172,6 +174,24 @@ export default function LoginPage() {
           </div>
         </CardContent>
       </Card>
+      
+      {process.env.NODE_ENV === 'development' && (
+        <Alert variant="destructive" className="absolute bottom-4 right-4 max-w-md bg-yellow-50 border-yellow-200 text-yellow-900 dark:bg-yellow-950 dark:border-yellow-800 dark:text-yellow-200 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle className="font-bold">Developer Debug Info</AlertTitle>
+          <AlertDescription>
+            <p>
+              <strong>Current Firebase Project ID:</strong>
+              <code className="ml-2 font-mono bg-yellow-200 dark:bg-yellow-800/50 p-1 rounded">
+                {process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'NOT SET!'}
+              </code>
+            </p>
+            <p className="mt-2 text-xs">
+              This ID must exactly match the Project ID of the Firebase project you are configuring in the console. Check your <strong>.env</strong> file.
+            </p>
+          </AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 }
