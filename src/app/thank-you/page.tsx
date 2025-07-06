@@ -222,7 +222,7 @@ export default function ThankYouPage() {
             <FeedbackCard />
             
             <Button asChild variant="outline" className="w-full">
-              <Link href="/">Back to Home</Link>
+              <Link href="/">Today</Link>
             </Button>
           </div>
         </main>
