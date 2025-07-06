@@ -34,7 +34,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
       toast({
         variant: 'destructive',
         title: 'Verification Failed',
-        description: 'Please enter a gift code.',
+        description: 'Please enter a Think Code.',
       });
       return;
     }
@@ -57,7 +57,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
         toast({
           variant: 'destructive',
           title: 'Verification Failed',
-          description: 'This gift code is invalid or has already been used.',
+          description: 'This Think Code is invalid or has already been used.',
         });
         setIsVerifying(false);
         return;
@@ -72,7 +72,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
 
       toast({
         title: 'Success!',
-        description: 'Gift code is valid! Redirecting...',
+        description: 'Think Code is valid! Redirecting...',
       });
       
       router.push('/thank-you');
@@ -80,7 +80,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
       setCode('');
 
     } catch (error: any) {
-      console.error("Error verifying gift code:", error);
+      console.error("Error verifying Think Code:", error);
       let description = "An unexpected error occurred.";
       if (error.code === 'permission-denied' || error.code === 'PERMISSION_DENIED') {
         description = "Permission Denied. Your security rules must allow 'update' on both the 'giftCodes' and 'users' collections for this to work. Please check your Firestore rules in the Firebase Console.";
@@ -105,19 +105,19 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
     <Dialog open={open} onOpenChange={handleCloseDialog}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>A Gift For You!</DialogTitle>
+          <DialogTitle>A Think Code For You!</DialogTitle>
           <DialogDescription>
-            Have a special gift code? Enter it below to claim your reward.
+            Have a special Think Code? Enter it below to claim your reward.
           </DialogDescription>
         </DialogHeader>
         <form id="gift-code-form" onSubmit={handleSubmit} className="grid gap-4 py-4">
           <Input
             id="code"
-            placeholder="Enter your gift code"
+            placeholder="Enter your Think Code"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             disabled={isVerifying}
-            aria-label="Gift Code"
+            aria-label="Think Code"
           />
         </form>
         <DialogFooter>
