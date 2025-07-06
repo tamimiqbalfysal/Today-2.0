@@ -25,15 +25,8 @@ function ProfileSkeleton() {
 }
 
 export default function ProfilePage() {
-  const { user: firebaseUser, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   
-  const user: User | null = firebaseUser ? {
-    uid: firebaseUser.uid,
-    name: firebaseUser.displayName || "Anonymous User",
-    email: firebaseUser.email || "No email",
-    photoURL: firebaseUser.photoURL
-  } : null;
-
   if (authLoading || !user) {
     return <ProfileSkeleton />;
   }
