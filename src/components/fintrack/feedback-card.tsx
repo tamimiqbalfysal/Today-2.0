@@ -85,7 +85,7 @@ export function FeedbackCard() {
         <Card className="w-full">
           <CardHeader>
             <CardTitle>Your Submitted Feedback</CardTitle>
-          </Header>
+          </CardHeader>
           <CardContent className="space-y-2 text-left">
             <div>
               <p className="font-semibold text-muted-foreground">Account</p>
