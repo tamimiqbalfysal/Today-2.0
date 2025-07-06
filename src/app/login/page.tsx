@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import Link from 'next/link';
-import { Terminal } from 'lucide-react';
+import { Terminal, AlertTriangle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
+import { isFirebaseConfigured, firebaseConfig } from '@/lib/firebase';
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
@@ -27,6 +28,50 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
         <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 126 23.4 172.9 61.9l-76.2 64.5C308.6 102.3 280.9 92 248 92c-73.8 0-134.3 60.3-134.3 134s60.5 134 134.3 134c82.3 0 112.1-61.5 115.8-92.6H248v-85.3h236.1c2.3 12.7 3.9 26.9 3.9 41.4z"></path>
     </svg>
 );
+
+function FirebaseConfigurationWarning() {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-yellow-50 dark:bg-yellow-950">
+      <Card className="w-full max-w-lg m-4 border-destructive">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-destructive">
+            <AlertTriangle /> Action Required: Configure Firebase
+          </CardTitle>
+          <CardDescription>
+            Your app is not connected to Firebase. Please follow these steps.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p>To use authentication and other Firebase features, you need to provide your project's configuration.</p>
+          <div className="p-4 rounded-md bg-muted">
+            <ol className="list-decimal list-inside space-y-2 text-sm">
+                <li>Go to the <a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer" className="underline font-bold">Firebase Console</a>.</li>
+                <li>Select your project, then click the gear icon for <strong>Project settings</strong>.</li>
+                <li>In the "Your apps" card, select the "Web" platform (<code>&lt;/&gt;</code>).</li>
+                <li>Copy the configuration variables (apiKey, authDomain, etc.) into your <strong>.env</strong> file.</li>
+                <li>Restart your development server.</li>
+            </ol>
+          </div>
+           <Alert>
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>Example .env file</AlertTitle>
+              <AlertDescription>
+                <pre className="text-xs whitespace-pre-wrap mt-2 bg-secondary p-2 rounded">
+                    {`NEXT_PUBLIC_FIREBASE_API_KEY=...
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+NEXT_PUBLIC_FIREBASE_APP_ID=...`}
+                </pre>
+              </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 
 export default function LoginPage() {
   const { login, loginWithGoogle } = useAuth();
@@ -57,7 +102,7 @@ export default function LoginPage() {
                   description = 'The sign-in pop-up was blocked by your browser. Please allow pop-ups for this site.';
                   break;
               case 'auth/unauthorized-domain':
-                   description = "This app's domain is not authorized for Google Sign-In. Please check the Firebase console.";
+                   description = "This app's domain is not authorized for Google Sign-In. Please check your Firebase console.";
                    break;
               default:
                   description = `An error occurred: ${error.message}`;
@@ -106,6 +151,10 @@ export default function LoginPage() {
     }
   }
 
+  if (process.env.NODE_ENV === 'development' && !isFirebaseConfigured) {
+    return <FirebaseConfigurationWarning />;
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen">
       <Card className="w-full max-w-sm">
@@ -117,6 +166,24 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
+             {process.env.NODE_ENV === 'development' && (
+              <Alert variant="destructive" className="bg-yellow-50 border-yellow-200 text-yellow-900 dark:bg-yellow-950 dark:border-yellow-800 dark:text-yellow-200 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400">
+                <Terminal className="h-4 w-4" />
+                <AlertTitle className="font-bold">Developer Debug Info</AlertTitle>
+                <AlertDescription>
+                  <p>
+                    <strong>Your app is connecting to Firebase Project:</strong>
+                    <code className="ml-2 font-mono bg-yellow-200 dark:bg-yellow-800/50 p-1 rounded">
+                      {firebaseConfig.projectId || 'NOT SET!'}
+                    </code>
+                  </p>
+                  <p className="mt-2 text-xs">
+                    Please ensure this is the correct project ID and that <strong>localhost</strong> is an "Authorized domain" in that project's Authentication settings in the Firebase Console.
+                  </p>
+                </AlertDescription>
+              </Alert>
+            )}
+
             <Button type="button" variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={form.formState.isSubmitting}>
               <GoogleIcon className="mr-2 h-4 w-4" />
               Log in with Google
@@ -175,24 +242,6 @@ export default function LoginPage() {
           </div>
         </CardContent>
       </Card>
-      
-      {process.env.NODE_ENV === 'development' && (
-        <Alert variant="destructive" className="absolute bottom-4 right-4 max-w-md bg-yellow-50 border-yellow-200 text-yellow-900 dark:bg-yellow-950 dark:border-yellow-800 dark:text-yellow-200 [&>svg]:text-yellow-600 dark:[&>svg]:text-yellow-400">
-          <Terminal className="h-4 w-4" />
-          <AlertTitle className="font-bold">Developer Debug Info</AlertTitle>
-          <AlertDescription>
-            <p>
-              <strong>Current Firebase Project ID:</strong>
-              <code className="ml-2 font-mono bg-yellow-200 dark:bg-yellow-800/50 p-1 rounded">
-                {process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'NOT SET!'}
-              </code>
-            </p>
-            <p className="mt-2 text-xs">
-              This ID must exactly match the Project ID of the Firebase project you are configuring in the console. Check your <strong>.env</strong> file.
-            </p>
-          </AlertDescription>
-        </Alert>
-      )}
     </div>
   );
 }

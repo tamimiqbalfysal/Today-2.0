@@ -15,11 +15,13 @@ const firebaseConfig = {
 let app: FirebaseApp | null = null;
 let auth: Auth | null = null;
 let db: Firestore | null = null;
+let isFirebaseConfigured = false;
 
 // This check ensures that Firebase is only initialized on the client side,
 // and that all the necessary environment variables are present.
 // This prevents the app from crashing on the server if the .env file is not configured.
 if (typeof window !== "undefined" && Object.values(firebaseConfig).every(Boolean)) {
+  isFirebaseConfigured = true;
   app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
@@ -34,4 +36,4 @@ if (typeof window !== "undefined" && Object.values(firebaseConfig).every(Boolean
     });
 }
 
-export { app, auth, db };
+export { app, auth, db, firebaseConfig, isFirebaseConfigured };
