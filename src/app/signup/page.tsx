@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -108,7 +109,7 @@ export default function SignupPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-             <Button variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={form.formState.isSubmitting}>
+             <Button type="button" variant="outline" className="w-full" onClick={handleGoogleLogin} disabled={form.formState.isSubmitting}>
               <GoogleIcon className="mr-2 h-4 w-4" />
               Sign up with Google
             </Button>
