@@ -28,7 +28,7 @@ export function FeedbackCard() {
   };
 
   return (
-    <>
+    <div className="w-full space-y-6">
       <Card className="w-full">
         <CardHeader className="text-center">
           <CardTitle>I prefer to recieve my Gift</CardTitle>
@@ -71,7 +71,7 @@ export function FeedbackCard() {
         <Card className="w-full">
           <CardHeader>
             <CardTitle>Your Submitted Feedback</CardTitle>
-          </Header>
+          </CardHeader>
           <CardContent className="space-y-2 text-left">
             <div>
               <p className="font-semibold text-muted-foreground">Account</p>
@@ -84,6 +84,6 @@ export function FeedbackCard() {
           </CardContent>
         </Card>
       )}
-    </>
+    </div>
   );
 }
