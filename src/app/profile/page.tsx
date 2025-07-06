@@ -39,7 +39,7 @@ export default function ProfilePage() {
              <div className="w-full max-w-sm space-y-6">
                 <ProfileCard user={user} />
                 <Button asChild variant="outline" className="w-full">
-                    <Link href="/">Back to Feed</Link>
+                    <Link href="/">Today</Link>
                 </Button>
             </div>
           </main>
