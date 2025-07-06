@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -76,6 +77,13 @@ NEXT_PUBLIC_FIREBASE_APP_ID=...`}
 export default function LoginPage() {
   const { login, loginWithGoogle } = useAuth();
   const { toast } = useToast();
+  const [showFirebaseWarning, setShowFirebaseWarning] = useState(false);
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === 'development' && !isFirebaseConfigured) {
+      setShowFirebaseWarning(true);
+    }
+  }, []);
   
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -151,7 +159,7 @@ export default function LoginPage() {
     }
   }
 
-  if (process.env.NODE_ENV === 'development' && !isFirebaseConfigured) {
+  if (showFirebaseWarning) {
     return <FirebaseConfigurationWarning />;
   }
 
