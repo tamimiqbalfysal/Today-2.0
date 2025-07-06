@@ -43,10 +43,10 @@ export function FeedbackCard() {
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Suggestion">Suggestion</SelectItem>
-                  <SelectItem value="Bug Report">Bug Report</SelectItem>
-                  <SelectItem value="Praise">Praise</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
+                  <SelectItem value="Bkash">Bkash</SelectItem>
+                  <SelectItem value="Nagad">Nagad</SelectItem>
+                  <SelectItem value="Upay">Upay</SelectItem>
+                  <SelectItem value="Cellfin">Cellfin</SelectItem>
                 </SelectContent>
               </Select>
             </div>
