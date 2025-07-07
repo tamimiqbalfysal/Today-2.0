@@ -197,9 +197,6 @@ export default function ThankYouPage() {
                 >
                   <CardTitle className="text-3xl font-bold bg-primary-gradient bg-clip-text text-transparent">Thank u, G!</CardTitle>
                 </motion.div>
-                <CardDescription>
-                  Your support and guidance are truly appreciated. Have a gift code?
-                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {isTotalCodesLoading ? (
