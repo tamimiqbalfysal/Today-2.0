@@ -82,7 +82,7 @@ export function FeedbackCard() {
               <Label htmlFor="anything-else">Anything Else?</Label>
               <Textarea
                 id="anything-else"
-                placeholder="Let us know if you have other preferences."
+                placeholder="If there’s anything we ought to know, don’t be shy—drop it our way!"
                 value={anythingElse}
                 onChange={(e) => setAnythingElse(e.target.value)}
               />
