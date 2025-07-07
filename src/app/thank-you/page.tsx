@@ -182,22 +182,22 @@ export default function ThankYouPage() {
                 {isTotalCodesLoading ? (
                   <Skeleton className="h-12 w-full rounded-md" />
                 ) : totalGiftCodes !== null && (
-                  <div className="p-3 rounded-md bg-indigo-100 dark:bg-indigo-900/50 border border-indigo-200 dark:border-indigo-800">
-                      <p className="font-semibold text-indigo-800 dark:text-indigo-300">
+                  <div className="p-3 rounded-md bg-secondary border">
+                      <p className="font-semibold text-secondary-foreground">
                           Total Gift Codes: {totalGiftCodes}
                       </p>
                   </div>
                 )}
                 {user && (
-                  <div className="p-3 rounded-md bg-green-100 dark:bg-green-900/50 border border-green-200 dark:border-green-800">
-                    <p className="font-semibold text-green-800 dark:text-green-300">
+                  <div className="p-3 rounded-md bg-secondary border">
+                    <p className="font-semibold text-secondary-foreground">
                       Gift Codes You Have Submitted: {redeemedCodes}
                     </p>
                   </div>
                 )}
                 {totalGiftCodes !== null && totalGiftCodes > 0 && user?.redeemedGiftCodes !== undefined && (
-                  <div className="p-3 rounded-md bg-blue-100 dark:bg-blue-900/50 border border-blue-200 dark:border-blue-800">
-                    <p className="font-semibold text-blue-800 dark:text-blue-300">
+                  <div className="p-3 rounded-md bg-secondary border">
+                    <p className="font-semibold text-secondary-foreground">
                       Your Share: {percentage.toFixed(2)}%
                     </p>
                   </div>
