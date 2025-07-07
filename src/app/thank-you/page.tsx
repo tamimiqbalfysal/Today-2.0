@@ -184,7 +184,7 @@ export default function ThankYouPage() {
                 ) : totalGiftCodes !== null && (
                   <div className="p-3 rounded-md bg-indigo-100 dark:bg-indigo-900/50 border border-indigo-200 dark:border-indigo-800">
                       <p className="font-semibold text-indigo-800 dark:text-indigo-300">
-                          Total Gift Codes in the system: {totalGiftCodes}
+                          Total Gift Codes: {totalGiftCodes}
                       </p>
                   </div>
                 )}
