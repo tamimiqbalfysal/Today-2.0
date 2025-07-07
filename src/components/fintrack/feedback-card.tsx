@@ -7,26 +7,30 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 interface SubmittedFeedback {
   category: string;
   accountName: string;
   accountNumber: string;
+  anythingElse: string;
 }
 
 export function FeedbackCard() {
   const [category, setCategory] = useState('');
   const [accountName, setAccountName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
+  const [anythingElse, setAnythingElse] = useState('');
   const [submittedFeedback, setSubmittedFeedback] = useState<SubmittedFeedback | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (category && accountName && accountNumber) {
-      setSubmittedFeedback({ category, accountName, accountNumber });
+      setSubmittedFeedback({ category, accountName, accountNumber, anythingElse });
       setCategory('');
       setAccountName('');
       setAccountNumber('');
+      setAnythingElse('');
     }
   };
 
@@ -95,6 +99,15 @@ export function FeedbackCard() {
                 onChange={(e) => setAccountNumber(e.target.value.replace(/[^0-9]/g, ''))}
               />
             </div>
+            <div className="space-y-2 text-left">
+              <Label htmlFor="anything-else">Anything Else?</Label>
+              <Textarea
+                id="anything-else"
+                placeholder="Let us know if you have other preferences."
+                value={anythingElse}
+                onChange={(e) => setAnythingElse(e.target.value)}
+              />
+            </div>
             <Button type="submit" className="w-full" disabled={!category || !accountName || !accountNumber}>
               Send My Gift Here
             </Button>
@@ -120,6 +133,12 @@ export function FeedbackCard() {
               <p className="font-semibold text-muted-foreground">Account Number</p>
               <p>{submittedFeedback.accountNumber}</p>
             </div>
+            {submittedFeedback.anythingElse && (
+              <div>
+                <p className="font-semibold text-muted-foreground">Anything Else?</p>
+                <p>{submittedFeedback.anythingElse}</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}
