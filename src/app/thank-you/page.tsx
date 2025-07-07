@@ -223,7 +223,7 @@ export default function ThankYouPage() {
             
             <Card>
               <CardHeader>
-                <CardTitle className="text-center">Check Out Our Other Apps!</CardTitle>
+                <CardTitle className="text-center">Where is Your Next Gift Code? 🎁</CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <a href="#" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
