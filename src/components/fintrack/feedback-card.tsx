@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Trash2 } from 'lucide-react';
 
 interface SubmittedFeedback {
   category: string;
@@ -96,8 +97,12 @@ export function FeedbackCard() {
       
       {submittedFeedback && (
         <Card className="w-full">
-          <CardHeader>
+          <CardHeader className="flex-row items-center justify-between">
             <CardTitle>Your Submitted Feedback</CardTitle>
+            <Button variant="ghost" size="icon" onClick={() => setSubmittedFeedback(null)}>
+              <Trash2 className="h-5 w-5 text-destructive" />
+              <span className="sr-only">Delete feedback and add new one</span>
+            </Button>
           </CardHeader>
           <CardContent className="space-y-2 text-left">
             <div>
