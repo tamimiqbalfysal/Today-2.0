@@ -16,13 +16,13 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 
-interface GiftCodeDialogProps {
+interface ThinkCodeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   userId?: string | null;
 }
 
-export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogProps) {
+export function ThinkCodeDialog({ open, onOpenChange, userId }: ThinkCodeDialogProps) {
   const [code, setCode] = useState('');
   const [isVerifying, setIsVerifying] = useState(false);
   const { toast } = useToast();
@@ -34,7 +34,7 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
       toast({
         variant: 'destructive',
         title: 'Verification Failed',
-        description: 'Please enter a Gift Code.',
+        description: 'Please enter a Think Code.',
       });
       return;
     }
@@ -50,41 +50,40 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
 
     setIsVerifying(true);
     try {
-      const giftCodeRef = doc(db, 'giftCodes', code.trim());
-      const docSnap = await getDoc(giftCodeRef);
+      const thinkCodeRef = doc(db, 'thinkCodes', code.trim());
+      const docSnap = await getDoc(thinkCodeRef);
 
       if (!docSnap.exists() || docSnap.data()?.isUsed === true) {
         toast({
           variant: 'destructive',
           title: 'Verification Failed',
-          description: 'This Gift Code is invalid or has already been used.',
+          description: 'This Think Code is invalid or has already been used.',
         });
         setIsVerifying(false);
         return;
       }
       
-      await updateDoc(giftCodeRef, { isUsed: true });
+      await updateDoc(thinkCodeRef, { isUsed: true });
 
       if (userId) {
         const userDocRef = doc(db, 'users', userId);
-        await updateDoc(userDocRef, { redeemedGiftCodes: increment(1) });
+        await updateDoc(userDocRef, { redeemedThinkCodes: increment(1) });
       }
 
       toast({
         title: 'Success!',
-        description: 'Gift Code is valid! Redirecting...',
+        description: 'Think Code submitted successfully!',
       });
       
-      router.push('/thank-you');
       onOpenChange(false);
       setCode('');
 
     } catch (error: any)
       {
-      console.error("Error verifying Gift Code:", error);
+      console.error("Error verifying Think Code:", error);
       let description = "An unexpected error occurred.";
       if (error.code === 'permission-denied' || error.code === 'PERMISSION_DENIED') {
-        description = "Permission Denied. Your security rules must allow 'update' on both the 'giftCodes' and 'users' collections for this to work. Please check your Firestore rules in the Firebase Console.";
+        description = "Permission Denied. Your security rules must allow 'update' on both the 'thinkCodes' and 'users' collections for this to work. Please check your Firestore rules in the Firebase Console.";
       }
       toast({
         variant: 'destructive',
@@ -106,26 +105,26 @@ export function GiftCodeDialog({ open, onOpenChange, userId }: GiftCodeDialogPro
     <Dialog open={open} onOpenChange={handleCloseDialog}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>A Gift Code For You!</DialogTitle>
+          <DialogTitle>Enter Your Think Code</DialogTitle>
           <DialogDescription>
-            Have a special Gift Code? Enter it below to claim your reward.
+            Have a special Think Code? Enter it below.
           </DialogDescription>
         </DialogHeader>
-        <form id="gift-code-form" onSubmit={handleSubmit} className="grid gap-4 py-4">
+        <form id="think-code-form" onSubmit={handleSubmit} className="grid gap-4 py-4">
           <Input
             id="code"
-            placeholder="Enter your Gift Code"
+            placeholder="Enter your Think Code"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             disabled={isVerifying}
-            aria-label="Gift Code"
+            aria-label="Think Code"
           />
         </form>
         <DialogFooter>
           <Button variant="outline" onClick={handleCloseDialog} disabled={isVerifying}>
             Cancel
           </Button>
-          <Button type="submit" form="gift-code-form" disabled={isVerifying || !code.trim()}>
+          <Button type="submit" form="think-code-form" disabled={isVerifying || !code.trim()}>
             {isVerifying ? 'Verifying...' : 'Submit'}
           </Button>
         </DialogFooter>

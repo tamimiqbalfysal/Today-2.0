@@ -6,6 +6,7 @@ export interface User {
   email: string;
   photoURL?: string | null;
   redeemedGiftCodes?: number;
+  redeemedThinkCodes?: number;
 }
 
 export interface Post {

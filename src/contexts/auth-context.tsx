@@ -44,6 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               email: firebaseUser.email || firestoreData.email,
               photoURL: firebaseUser.photoURL || firestoreData.photoURL,
               redeemedGiftCodes: firestoreData.redeemedGiftCodes || 0,
+              redeemedThinkCodes: firestoreData.redeemedThinkCodes || 0,
             });
           } else {
             // This case might happen if Firestore doc creation fails during signup
@@ -54,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               email: firebaseUser.email || '',
               photoURL: firebaseUser.photoURL,
               redeemedGiftCodes: 0,
+              redeemedThinkCodes: 0,
             });
           }
           setLoading(false);
@@ -110,6 +112,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             email: email,
             photoURL: photoURL,
             redeemedGiftCodes: 0,
+            redeemedThinkCodes: 0,
         });
     } catch (error) {
         // This is a good place to log a warning, but we don't want to fail the whole signup

@@ -11,7 +11,7 @@ import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
 import { PostFeed } from '@/components/fintrack/recent-transactions';
 import { Skeleton } from '@/components/ui/skeleton';
-import { GiftCodeDialog } from '@/components/fintrack/gift-code-dialog';
+import { ThinkCodeDialog } from '@/components/fintrack/gift-code-dialog';
 
 function TodaySkeleton() {
   return (
@@ -42,16 +42,16 @@ export default function TodayPage() {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const lastScrollY = useRef(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isGiftCodeDialogOpen, setIsGiftCodeDialogOpen] = useState(false);
+  const [isThinkCodeDialogOpen, setIsThinkCodeDialogOpen] = useState(false);
 
   useEffect(() => {
     // Don't run on server or if user data is loading.
     if (typeof window === 'undefined' || authLoading) return;
     
     // If user exists and has NOT redeemed a code, show the gift code dialog after a delay.
-    if (user && (user.redeemedGiftCodes || 0) === 0) {
+    if (user && (user.redeemedThinkCodes || 0) === 0) {
       const intervalId = setInterval(() => {
-        setIsGiftCodeDialogOpen(true);
+        setIsThinkCodeDialogOpen(true);
       }, 60000); // 1 minute
 
       // Cleanup function to clear the interval when the component unmounts
@@ -127,9 +127,9 @@ export default function TodayPage() {
               onScroll={handleScroll}
             />
           </main>
-          <GiftCodeDialog
-            open={isGiftCodeDialogOpen}
-            onOpenChange={setIsGiftCodeDialogOpen}
+          <ThinkCodeDialog
+            open={isThinkCodeDialogOpen}
+            onOpenChange={setIsThinkCodeDialogOpen}
             userId={user?.uid}
           />
         </div>
