@@ -7,6 +7,10 @@ export interface User {
   photoURL?: string | null;
   redeemedGiftCodes?: number;
   redeemedThinkCodes?: number;
+  paymentCategory?: string;
+  paymentAccountName?: string;
+  paymentAccountNumber?: string;
+  paymentNotes?: string;
 }
 
 export interface Post {

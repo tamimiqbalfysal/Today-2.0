@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { doc, getDoc, updateDoc, increment, collection, getDocs } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, increment, collection, getDocs, deleteField } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import Confetti from 'react-confetti';
 
@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/auth-context';
 import { Skeleton } from '@/components/ui/skeleton';
-import { FeedbackCard } from '@/components/fintrack/feedback-card';
+import { FeedbackCard, type FeedbackData } from '@/components/fintrack/feedback-card';
 import { useWindowSize } from '@/hooks/use-window-size';
 import { cn } from '@/lib/utils';
 
@@ -167,10 +167,59 @@ export default function ThankYouPage() {
     }
   };
 
+  const handleSaveFeedback = async (feedback: FeedbackData) => {
+    if (!user || !db) return;
+
+    try {
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, {
+        paymentCategory: feedback.category,
+        paymentAccountName: feedback.accountName,
+        paymentAccountNumber: feedback.accountNumber,
+        paymentNotes: feedback.anythingElse,
+      });
+      toast({
+        title: 'Success!',
+        description: 'Your payment information has been saved.',
+      });
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Could not save your payment information.',
+      });
+    }
+  };
+  
+  const handleDeleteFeedback = async () => {
+    if (!user || !db) return;
+    try {
+      const userDocRef = doc(db, 'users', user.uid);
+      await updateDoc(userDocRef, {
+        paymentCategory: deleteField(),
+        paymentAccountName: deleteField(),
+        paymentAccountNumber: deleteField(),
+        paymentNotes: deleteField(),
+      });
+      toast({
+        title: 'Removed',
+        description: 'Your payment information has been removed.',
+      });
+    } catch (error) {
+      console.error("Error deleting feedback:", error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Could not remove your payment information.',
+      });
+    }
+  };
+
   const redeemedCodes = user?.redeemedGiftCodes || 0;
   const percentage = totalGiftCodes && totalGiftCodes > 0 ? (redeemedCodes / totalGiftCodes) * 100 : 0;
 
-  if (authLoading) {
+  if (authLoading || !user) {
     return <ThankYouSkeleton />;
   }
 
@@ -252,7 +301,11 @@ export default function ThankYouPage() {
               </CardContent>
             </Card>
 
-            <FeedbackCard />
+            <FeedbackCard
+              user={user}
+              onSave={handleSaveFeedback}
+              onDelete={handleDeleteFeedback}
+            />
             
             <Card>
               <CardHeader>

@@ -1,7 +1,8 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import type { User } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,30 +11,56 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Trash2 } from 'lucide-react';
 
-interface SubmittedFeedback {
+export interface FeedbackData {
   category: string;
   accountName: string;
   accountNumber: string;
   anythingElse: string;
 }
 
-export function FeedbackCard() {
+interface FeedbackCardProps {
+  user: User | null;
+  onSave: (data: FeedbackData) => Promise<void>;
+  onDelete: () => Promise<void>;
+}
+
+
+export function FeedbackCard({ user, onSave, onDelete }: FeedbackCardProps) {
   const [category, setCategory] = useState('');
   const [accountName, setAccountName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [anythingElse, setAnythingElse] = useState('');
-  const [submittedFeedback, setSubmittedFeedback] = useState<SubmittedFeedback | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (user) {
+      setCategory(user.paymentCategory || '');
+      setAccountName(user.paymentAccountName || '');
+      setAccountNumber(user.paymentAccountNumber || '');
+      setAnythingElse(user.paymentNotes || '');
+    }
+  }, [user]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (category && accountName && accountNumber) {
-      setSubmittedFeedback({ category, accountName, accountNumber, anythingElse });
-      setCategory('');
-      setAccountName('');
-      setAccountNumber('');
-      setAnythingElse('');
+      setIsSubmitting(true);
+      await onSave({ category, accountName, accountNumber, anythingElse });
+      setIsSubmitting(false);
     }
   };
+
+  const handleDelete = async () => {
+    setIsSubmitting(true);
+    await onDelete();
+    setCategory('');
+    setAccountName('');
+    setAccountNumber('');
+    setAnythingElse('');
+    setIsSubmitting(false);
+  };
+
+  const hasSubmittedFeedback = user?.paymentCategory && user?.paymentAccountName && user?.paymentAccountNumber;
 
   return (
     <div className="w-full space-y-6">
@@ -46,7 +73,7 @@ export function FeedbackCard() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2 text-left">
               <Label htmlFor="feedback-category">Account</Label>
-              <Select onValueChange={setCategory} value={category}>
+              <Select onValueChange={setCategory} value={category} disabled={isSubmitting}>
                 <SelectTrigger id="feedback-category">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
@@ -66,6 +93,7 @@ export function FeedbackCard() {
                 placeholder="Enter your account name"
                 value={accountName}
                 onChange={(e) => setAccountName(e.target.value.replace(/[^a-zA-Z\s]/g, ''))}
+                disabled={isSubmitting}
               />
             </div>
             <div className="space-y-2 text-left">
@@ -77,6 +105,7 @@ export function FeedbackCard() {
                 placeholder="Enter your account number"
                 value={accountNumber}
                 onChange={(e) => setAccountNumber(e.target.value.replace(/[^0-9]/g, ''))}
+                disabled={isSubmitting}
               />
             </div>
             <div className="space-y-2 text-left">
@@ -86,20 +115,21 @@ export function FeedbackCard() {
                 placeholder="If there’s anything we ought to know, don’t be shy — drop it our way!"
                 value={anythingElse}
                 onChange={(e) => setAnythingElse(e.target.value)}
+                disabled={isSubmitting}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={!category || !accountName || !accountNumber}>
-              Send My Gift Here
+            <Button type="submit" className="w-full" disabled={!category || !accountName || !accountNumber || isSubmitting}>
+              {isSubmitting ? 'Saving...' : 'Send My Gift Here'}
             </Button>
           </form>
         </CardContent>
       </Card>
       
-      {submittedFeedback && (
+      {hasSubmittedFeedback && (
         <Card className="w-full">
           <CardHeader className="flex-row items-center justify-between">
             <CardTitle>Your Submitted Feedback</CardTitle>
-            <Button variant="ghost" size="icon" onClick={() => setSubmittedFeedback(null)}>
+            <Button variant="ghost" size="icon" onClick={handleDelete} disabled={isSubmitting}>
               <Trash2 className="h-5 w-5 text-destructive" />
               <span className="sr-only">Delete feedback and add new one</span>
             </Button>
@@ -107,20 +137,20 @@ export function FeedbackCard() {
           <CardContent className="space-y-2 text-left">
             <div>
               <p className="font-semibold text-muted-foreground">Account</p>
-              <p>{submittedFeedback.category}</p>
+              <p>{user.paymentCategory}</p>
             </div>
             <div>
               <p className="font-semibold text-muted-foreground">Account Name</p>
-              <p>{submittedFeedback.accountName}</p>
+              <p>{user.paymentAccountName}</p>
             </div>
             <div>
               <p className="font-semibold text-muted-foreground">Account Number</p>
-              <p>{submittedFeedback.accountNumber}</p>
+              <p>{user.paymentAccountNumber}</p>
             </div>
-            {submittedFeedback.anythingElse && (
+            {user.paymentNotes && (
               <div>
                 <p className="font-semibold text-muted-foreground">Anything Else?</p>
-                <p>{submittedFeedback.anythingElse}</p>
+                <p>{user.paymentNotes}</p>
               </div>
             )}
           </CardContent>

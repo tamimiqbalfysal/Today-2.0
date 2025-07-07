@@ -45,6 +45,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               photoURL: firebaseUser.photoURL || firestoreData.photoURL,
               redeemedGiftCodes: firestoreData.redeemedGiftCodes || 0,
               redeemedThinkCodes: firestoreData.redeemedThinkCodes || 0,
+              paymentCategory: firestoreData.paymentCategory,
+              paymentAccountName: firestoreData.paymentAccountName,
+              paymentAccountNumber: firestoreData.paymentAccountNumber,
+              paymentNotes: firestoreData.paymentNotes,
             });
           } else {
             // This case might happen if Firestore doc creation fails during signup
