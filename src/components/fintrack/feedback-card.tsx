@@ -68,9 +68,9 @@ export function FeedbackCard() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Bkash">Bkash</SelectItem>
+                  <SelectItem value="Cellfin">Cellfin</SelectItem>
                   <SelectItem value="Nagad">Nagad</SelectItem>
                   <SelectItem value="Upay">Upay</SelectItem>
-                  <SelectItem value="Cellfin">Cellfin</SelectItem>
                 </SelectContent>
               </Select>
             </div>
