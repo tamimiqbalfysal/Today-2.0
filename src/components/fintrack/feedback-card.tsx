@@ -128,7 +128,7 @@ export function FeedbackCard({ user, onSave, onDelete }: FeedbackCardProps) {
       {hasSubmittedFeedback && (
         <Card className="w-full">
           <CardHeader className="flex-row items-center justify-between">
-            <CardTitle>Your Submitted Feedback</CardTitle>
+            <CardTitle>Your Submitted Account Information</CardTitle>
             <Button variant="ghost" size="icon" onClick={handleDelete} disabled={isSubmitting}>
               <Trash2 className="h-5 w-5 text-destructive" />
               <span className="sr-only">Delete feedback and add new one</span>
