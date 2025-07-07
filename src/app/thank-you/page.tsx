@@ -190,7 +190,13 @@ export default function ThankYouPage() {
           <div className="w-full max-w-md space-y-6">
             <Card className="w-full text-center">
               <CardHeader>
-                <CardTitle className="text-3xl font-bold bg-primary-gradient bg-clip-text text-transparent">Thank u, G!</CardTitle>
+                <motion.div
+                  whileHover={{ rotate: [0, -1, 1, -1, 0], scale: 1.05 }}
+                  transition={{ duration: 0.4 }}
+                  className="cursor-pointer"
+                >
+                  <CardTitle className="text-3xl font-bold bg-primary-gradient bg-clip-text text-transparent">Thank u, G!</CardTitle>
+                </motion.div>
                 <CardDescription>
                   Your support and guidance are truly appreciated. Have a gift code?
                 </CardDescription>
