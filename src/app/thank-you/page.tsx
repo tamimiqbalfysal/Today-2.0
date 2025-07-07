@@ -183,7 +183,7 @@ export default function ThankYouPage() {
                 ) : totalGiftCodes !== null && (
                   <div className="p-3 rounded-md bg-indigo-100 dark:bg-indigo-900/50 border border-indigo-200 dark:border-indigo-800">
                       <p className="font-semibold text-indigo-800 dark:text-indigo-300">
-                          Total Gift Codes in System: {totalGiftCodes}
+                          Total Gift Codes: {totalGiftCodes}
                       </p>
                   </div>
                 )}
@@ -197,7 +197,7 @@ export default function ThankYouPage() {
                 {totalGiftCodes !== null && totalGiftCodes > 0 && user?.redeemedGiftCodes !== undefined && (
                   <div className="p-3 rounded-md bg-blue-100 dark:bg-blue-900/50 border border-blue-200 dark:border-blue-800">
                     <p className="font-semibold text-blue-800 dark:text-blue-300">
-                      Your Redemption Rate: {percentage.toFixed(2)}%
+                      Your Share: {percentage.toFixed(2)}%
                     </p>
                     <p className="text-sm text-blue-600 dark:text-blue-400">You've claimed {redeemedCodes} of the {totalGiftCodes} Gift Codes.</p>
                   </div>
