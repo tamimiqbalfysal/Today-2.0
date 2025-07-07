@@ -249,14 +249,6 @@ export default function ThankYouPage() {
 
             <Card>
               <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
-                <a href="https://x.com/TamimIqbalFysal" target="_blank" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
-                  <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8 text-foreground">
-                      <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932L18.901 1.153Zm-1.61 19.69h2.54l-14.48-16.6H3.34l13.95 16.6Z"></path>
-                    </svg>
-                    <p className="mt-2 font-semibold text-sm">X</p>
-                  </div>
-                </a>
                 <a href="https://www.facebook.com/Tamim.Iqbal.Fysal" target="_blank" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
                   <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8 text-foreground">
@@ -265,6 +257,14 @@ export default function ThankYouPage() {
                       </g>
                     </svg>
                     <p className="mt-2 font-semibold text-sm">Facebook</p>
+                  </div>
+                </a>
+                <a href="https://x.com/TamimIqbalFysal" target="_blank" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
+                  <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8 text-foreground">
+                      <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932L18.901 1.153Zm-1.61 19.69h2.54l-14.48-16.6H3.34l13.95 16.6Z"></path>
+                    </svg>
+                    <p className="mt-2 font-semibold text-sm">X</p>
                   </div>
                 </a>
                 <a href="https://www.youtube.com/@Tamim-Iqbal-Fysal" target="_blank" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
