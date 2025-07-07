@@ -34,7 +34,7 @@ export function FeedbackCard() {
     <div className="w-full space-y-6">
       <Card className="w-full">
         <CardHeader className="text-center">
-          <CardTitle>I prefer to recieve my Gift</CardTitle>
+          <CardTitle>We know you love Gifts! 🎁</CardTitle>
           <CardDescription>Once a gift is disbursed, it will be automatically transferred to the account you specified.</CardDescription>
           <div className="flex justify-center gap-4 pt-2">
             <a href="https://x.com/TamimIqbalFysal" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X" className="text-muted-foreground hover:text-primary transition-colors">
