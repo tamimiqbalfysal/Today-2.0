@@ -190,7 +190,7 @@ export default function ThankYouPage() {
           <div className="w-full max-w-md space-y-6">
             <Card className="w-full text-center">
               <CardHeader>
-                <CardTitle className="text-3xl font-bold text-primary">Thank u, G!</CardTitle>
+                <CardTitle className="text-3xl font-bold bg-primary-gradient bg-clip-text text-transparent">Thank u, G!</CardTitle>
                 <CardDescription>
                   Your support and guidance are truly appreciated. Have a gift code?
                 </CardDescription>
