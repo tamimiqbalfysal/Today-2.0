@@ -96,7 +96,7 @@ export function FeedbackCard() {
               />
             </div>
             <Button type="submit" className="w-full" disabled={!category || !accountName || !accountNumber}>
-              Submit
+              Send My Gift Here
             </Button>
           </form>
         </CardContent>
