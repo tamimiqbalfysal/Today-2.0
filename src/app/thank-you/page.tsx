@@ -248,13 +248,7 @@ export default function ThankYouPage() {
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle className="text-center">Find Gift Codes Here!</CardTitle>
-                <CardDescription className="text-center">
-                  Follow our social channels for new gift codes.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
                 <a href="https://x.com/TamimIqbalFysal" target="_blank" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
                   <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8 text-foreground">
