@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -200,22 +199,22 @@ export default function ThankYouPage() {
                 {isTotalCodesLoading ? (
                   <Skeleton className="h-12 w-full rounded-md" />
                 ) : totalGiftCodes !== null && (
-                  <div className="p-3 rounded-md bg-secondary border">
-                      <p className="font-semibold text-secondary-foreground">
+                  <div className="p-3 rounded-md bg-[hsl(var(--chart-1))]">
+                      <p className="font-semibold text-primary-foreground">
                           Total Gift Codes: {totalGiftCodes}
                       </p>
                   </div>
                 )}
                 {user && (
-                  <div className="p-3 rounded-md bg-secondary border">
-                    <p className="font-semibold text-secondary-foreground">
+                  <div className="p-3 rounded-md bg-[hsl(var(--chart-2))]">
+                    <p className="font-semibold text-primary-foreground">
                       Gift Codes You Have Submitted: {redeemedCodes}
                     </p>
                   </div>
                 )}
                 {totalGiftCodes !== null && totalGiftCodes > 0 && user?.redeemedGiftCodes !== undefined && (
-                  <div className="p-3 rounded-md bg-secondary border">
-                    <p className="font-semibold text-secondary-foreground">
+                  <div className="p-3 rounded-md bg-[hsl(var(--chart-3))]">
+                    <p className="font-semibold text-primary-foreground">
                       Your Share: {percentage.toFixed(2)}%
                     </p>
                   </div>
