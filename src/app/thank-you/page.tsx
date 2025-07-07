@@ -205,7 +205,7 @@ export default function ThankYouPage() {
                   <Input
                     type="text"
                     name="code"
-                    placeholder="Enter your gift code"
+                    placeholder="Enter your Gift Code"
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
                     disabled={isVerifying}
