@@ -77,6 +77,7 @@ export function ThinkCodeDialog({ open, onOpenChange, userId }: ThinkCodeDialogP
       
       onOpenChange(false);
       setCode('');
+      router.push('/thank-you');
 
     } catch (error: any)
       {
