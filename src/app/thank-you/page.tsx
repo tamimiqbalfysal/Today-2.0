@@ -5,17 +5,21 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { doc, getDoc, updateDoc, increment, collection, getDocs } from 'firebase/firestore';
+import { motion } from 'framer-motion';
+import Confetti from 'react-confetti';
 
 import { db } from '@/lib/firebase';
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/auth-context';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FeedbackCard } from '@/components/fintrack/feedback-card';
+import { useWindowSize } from '@/hooks/use-window-size';
+import { cn } from '@/lib/utils';
 
 function ThankYouSkeleton() {
   return (
@@ -64,6 +68,8 @@ export default function ThankYouPage() {
   const formRef = useRef<HTMLFormElement>(null);
   const [totalGiftCodes, setTotalGiftCodes] = useState<number | null>(null);
   const [isTotalCodesLoading, setIsTotalCodesLoading] = useState(true);
+  const [isCelebrating, setIsCelebrating] = useState(false);
+  const { width, height } = useWindowSize();
 
   useEffect(() => {
     if (!db) {
@@ -139,6 +145,10 @@ export default function ThankYouPage() {
         title: 'Congratulations!',
         description: 'Your Gift Code is submitted.',
       });
+
+      setIsCelebrating(true);
+      setTimeout(() => setIsCelebrating(false), 5000); // Celebrate for 5 seconds
+
       formRef.current?.reset();
       setCode('');
 
@@ -167,6 +177,14 @@ export default function ThankYouPage() {
 
   return (
     <AuthGuard>
+      {isCelebrating && width > 0 && height > 0 && (
+        <Confetti
+          width={width}
+          height={height}
+          recycle={false}
+          numberOfPieces={300}
+        />
+      )}
       <div className="flex flex-col min-h-screen">
         <Header />
         <main className="container mx-auto max-w-2xl p-4 flex-1 flex flex-col items-center justify-center">
@@ -209,12 +227,25 @@ export default function ThankYouPage() {
                     placeholder="Enter your Gift Code"
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
-                    disabled={isVerifying}
+                    disabled={isVerifying || isCelebrating}
                     aria-label="Gift Code"
                   />
-                  <Button type="submit" disabled={isVerifying}>
-                    {isVerifying ? 'Verifying...' : 'Submit'}
-                  </Button>
+                  <motion.button
+                    className={cn(buttonVariants())}
+                    type="submit"
+                    disabled={isVerifying || isCelebrating}
+                    animate={isCelebrating ? "celebrate" : "initial"}
+                    variants={{
+                      initial: { scale: 1, rotate: 0 },
+                      celebrate: {
+                        scale: [1, 1.1, 1, 1.1, 1],
+                        rotate: [0, -3, 3, -3, 0],
+                        transition: { duration: 0.5, ease: "easeInOut" },
+                      },
+                    }}
+                  >
+                    {isVerifying ? 'Verifying...' : isCelebrating ? 'Success!' : 'Submit'}
+                  </motion.button>
                 </form>
               </CardContent>
             </Card>
