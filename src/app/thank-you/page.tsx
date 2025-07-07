@@ -3,6 +3,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { doc, getDoc, updateDoc, increment, collection, getDocs } from 'firebase/firestore';
 
 import { db } from '@/lib/firebase';
@@ -227,25 +228,19 @@ export default function ThankYouPage() {
               <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <a href="#" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
                   <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8 text-foreground">
-                      <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/>
-                    </svg>
+                    <Image src="/think-logo.png" alt="Think logo" width={32} height={32} />
                     <p className="mt-2 font-semibold text-sm">Think</p>
                   </div>
                 </a>
                 <a href="#" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
                   <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8 text-foreground">
-                      <path d="m12 2 4.25 10.75L22 12l-10.75 4.25L12 22l-4.25-10.75L2 12l10.75-4.25z"/>
-                    </svg>
+                    <Image src="/findit-logo.png" alt="Findit logo" width={32} height={32} />
                     <p className="mt-2 font-semibold text-sm">Findit</p>
                   </div>
                 </a>
                 <a href="#" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
                   <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-8 w-8 text-foreground">
-                      <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-                    </svg>
+                    <Image src="/mingle-logo.png" alt="Mingle logo" width={32} height={32} />
                     <p className="mt-2 font-semibold text-sm">Mingle</p>
                   </div>
                 </a>
