@@ -31,6 +31,8 @@ import { Label } from "@/components/ui/label";
 import { useDrawer } from "@/contexts/drawer-context";
 import Image from "next/image";
 
+const hoverIndicator = <span className="absolute left-0 top-1/2 -translate-y-1/2 h-1/2 w-1 bg-foreground scale-y-0 group-hover:scale-y-100 transition-transform origin-center rounded-r-full" />;
+
 export function Header({ isVisible = true }: { isVisible?: boolean }) {
   const { user, logout, deleteAccount } = useAuth();
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false);
@@ -75,7 +77,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             <Menu />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="bg-background w-72 flex flex-col p-0">
+                    <SheetContent side="left" className="bg-white dark:bg-card w-72 flex flex-col p-0">
                       <SheetHeader className="p-4 border-b border-border items-center">
                         <SheetTitle className="sr-only">User Menu</SheetTitle>
                         <Avatar className="h-16 w-16 border-4 border-primary/50">
@@ -84,20 +86,23 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         </Avatar>
                       </SheetHeader>
                       <div className="flex-grow py-4 px-4 space-y-4">
-                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
+                          <Button asChild size="lg" className="group relative w-full justify-start text-lg font-bold" variant="ghost">
                               <Link href="/today" onClick={() => setIsNavDrawerOpen(false)}>
+                                  {hoverIndicator}
                                   <PenSquare className="mr-4" />
                                   Create Post
                               </Link>
                           </Button>
-                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
+                          <Button asChild size="lg" className="group relative w-full justify-start text-lg font-bold" variant="ghost">
                             <Link href="/profile" onClick={() => setIsNavDrawerOpen(false)}>
+                                {hoverIndicator}
                                 <User className="mr-4" />
                                 Profile
                             </Link>
                           </Button>
-                           <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
+                           <Button asChild size="lg" className="group relative w-full justify-start text-lg font-bold" variant="ghost">
                               <Link href="/add" onClick={() => setIsNavDrawerOpen(false)}>
+                                  {hoverIndicator}
                                   <PlusCircle className="mr-4" />
                                   Add
                               </Link>
@@ -107,8 +112,9 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                               <Button
                                 size="lg"
                                 variant="ghost"
-                                className="w-full justify-start text-lg font-bold text-destructive hover:text-destructive hover:bg-card"
+                                className="group relative w-full justify-start text-lg font-bold text-destructive hover:text-destructive"
                               >
+                                {hoverIndicator}
                                 <Trash2 className="mr-4" />
                                 Delete
                               </Button>
@@ -148,13 +154,14 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                       <div className="p-4 border-t border-border">
                          <Button 
                             size="lg" 
-                            className="w-full justify-start text-lg font-bold hover:bg-card"
+                            className="group relative w-full justify-start text-lg font-bold"
                             variant="ghost"
                             onClick={() => {
                                 logout();
                                 setIsNavDrawerOpen(false);
                             }}
                           >
+                              {hoverIndicator}
                               <LogOut className="mr-4" />
                               Log Out
                           </Button>
@@ -180,21 +187,23 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         <Menu />
                     </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="bg-background w-72 flex flex-col p-0">
+                <SheetContent side="right" className="bg-white dark:bg-card w-72 flex flex-col p-0">
                   <SheetHeader>
                       <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
                   <div className="flex-grow py-4 px-4 space-y-4">
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
+                        <Button asChild size="lg" className="group relative w-full justify-start text-lg font-bold" variant="ghost">
                             <Link href="/today" onClick={() => setIsProfileDrawerOpen(false)}>
+                                {hoverIndicator}
                                 <PenSquare className="mr-4" />
                                 Today
                             </Link>
                         </Button>
                         
                         {drawerApps.map((app) => (
-                            <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost" key={app.id}>
+                            <Button asChild size="lg" className="group relative w-full justify-start text-lg font-bold" variant="ghost" key={app.id}>
                                 <Link href={app.href} onClick={() => setIsProfileDrawerOpen(false)}>
+                                    {hoverIndicator}
                                     <div className="w-6 h-6 mr-4 relative flex items-center justify-center">
                                         <Image src={app.logo} alt={`${app.name} logo`} fill className="object-contain" />
                                     </div>
@@ -206,15 +215,17 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         <Button 
                             size="lg" 
                             variant="ghost"
-                            className="w-full justify-start text-lg font-bold hover:bg-card"
+                            className="group relative w-full justify-start text-lg font-bold"
                             onClick={removeLastAppFromDrawer}
                             disabled={drawerApps.length === 0}
                         >
+                            {hoverIndicator}
                             <Trash2 className="mr-4" />
                             Remove
                         </Button>
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
+                        <Button asChild size="lg" className="group relative w-full justify-start text-lg font-bold" variant="ghost">
                             <Link href="/add" onClick={() => setIsProfileDrawerOpen(false)}>
+                                {hoverIndicator}
                                 <PlusCircle className="mr-4" />
                                 Add
                             </Link>
