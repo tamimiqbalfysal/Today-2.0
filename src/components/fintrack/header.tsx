@@ -29,7 +29,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDrawer } from "@/contexts/drawer-context";
-import Image from "next/image";
 
 const hoverIndicator = <span className="absolute left-0 top-1/2 -translate-y-1/2 h-1/2 w-1 bg-foreground scale-y-0 group-hover:scale-y-100 transition-transform origin-center rounded-r-full" />;
 
@@ -204,9 +203,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             <Button asChild size="lg" className="group relative w-full justify-start text-lg font-bold" variant="ghost" key={app.id}>
                                 <Link href={app.href} onClick={() => setIsProfileDrawerOpen(false)}>
                                     {hoverIndicator}
-                                    <div className="w-6 h-6 mr-4 relative flex items-center justify-center">
-                                        <Image src={app.logo} alt={`${app.name} logo`} fill className="object-contain" />
-                                    </div>
+                                    <Globe2 className="mr-4" />
                                     {app.name}
                                 </Link>
                             </Button>
