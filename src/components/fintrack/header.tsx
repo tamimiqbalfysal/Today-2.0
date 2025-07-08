@@ -75,7 +75,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             <Menu />
                         </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="bg-white w-72 flex flex-col p-0">
+                    <SheetContent side="left" className="bg-background w-72 flex flex-col p-0">
                       <SheetHeader className="p-4 border-b border-border items-center">
                         <SheetTitle className="sr-only">User Menu</SheetTitle>
                         <Avatar className="h-16 w-16 border-4 border-primary/50">
@@ -84,19 +84,19 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         </Avatar>
                       </SheetHeader>
                       <div className="flex-grow py-4 px-4 space-y-4">
-                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
                               <Link href="/today" onClick={() => setIsNavDrawerOpen(false)}>
                                   <PenSquare className="mr-4" />
                                   Create Post
                               </Link>
                           </Button>
-                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                          <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
                             <Link href="/profile" onClick={() => setIsNavDrawerOpen(false)}>
                                 <User className="mr-4" />
                                 Profile
                             </Link>
                           </Button>
-                           <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                           <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
                               <Link href="/add" onClick={() => setIsNavDrawerOpen(false)}>
                                   <PlusCircle className="mr-4" />
                                   Add
@@ -107,7 +107,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                               <Button
                                 size="lg"
                                 variant="ghost"
-                                className="w-full justify-start text-lg font-bold text-destructive hover:text-destructive"
+                                className="w-full justify-start text-lg font-bold text-destructive hover:text-destructive hover:bg-card"
                               >
                                 <Trash2 className="mr-4" />
                                 Delete
@@ -148,7 +148,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                       <div className="p-4 border-t border-border">
                          <Button 
                             size="lg" 
-                            className="w-full justify-start text-lg font-bold"
+                            className="w-full justify-start text-lg font-bold hover:bg-card"
                             variant="ghost"
                             onClick={() => {
                                 logout();
@@ -180,12 +180,12 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         <Menu />
                     </Button>
                 </SheetTrigger>
-                <SheetContent side="right" className="bg-white w-72 flex flex-col p-0">
+                <SheetContent side="right" className="bg-background w-72 flex flex-col p-0">
                   <SheetHeader>
                       <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
                   <div className="flex-grow py-4 px-4 space-y-4">
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
                             <Link href="/today" onClick={() => setIsProfileDrawerOpen(false)}>
                                 <PenSquare className="mr-4" />
                                 Today
@@ -193,7 +193,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         </Button>
                         
                         {drawerApps.map((app) => (
-                            <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost" key={app.id}>
+                            <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost" key={app.id}>
                                 <Link href={app.href} onClick={() => setIsProfileDrawerOpen(false)}>
                                     <div className="w-6 h-6 mr-4 relative flex items-center justify-center">
                                         <Image src={app.logo} alt={`${app.name} logo`} fill className="object-contain" />
@@ -202,18 +202,18 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                                 </Link>
                             </Button>
                         ))}
-
+                        
                         <Button 
                             size="lg" 
                             variant="ghost"
-                            className="w-full justify-start text-lg font-bold"
+                            className="w-full justify-start text-lg font-bold hover:bg-card"
                             onClick={removeLastAppFromDrawer}
                             disabled={drawerApps.length === 0}
                         >
                             <Trash2 className="mr-4" />
                             Remove
                         </Button>
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold hover:bg-card" variant="ghost">
                             <Link href="/add" onClick={() => setIsProfileDrawerOpen(false)}>
                                 <PlusCircle className="mr-4" />
                                 Add
