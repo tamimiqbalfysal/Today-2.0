@@ -191,14 +191,6 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                       <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   </SheetHeader>
                   <div className="flex-grow py-4 px-4 space-y-4">
-                        <Button asChild size="lg" className="group relative w-full justify-start text-lg font-bold" variant="ghost">
-                            <Link href="/today" onClick={() => setIsProfileDrawerOpen(false)}>
-                                {hoverIndicator}
-                                <PenSquare className="mr-4" />
-                                Today
-                            </Link>
-                        </Button>
-                        
                         {drawerApps.map((app) => (
                             <Button asChild size="lg" className="group relative w-full justify-start text-lg font-bold" variant="ghost" key={app.id}>
                                 <Link href={app.href} onClick={() => setIsProfileDrawerOpen(false)}>
@@ -208,7 +200,6 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                                 </Link>
                             </Button>
                         ))}
-                        
                         <Button 
                             size="lg" 
                             variant="ghost"
