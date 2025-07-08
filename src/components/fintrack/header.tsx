@@ -195,12 +195,6 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                                 Thanku G
                             </Link>
                         </Button>
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
-                            <Link href="/add" onClick={() => setIsProfileDrawerOpen(false)}>
-                                <PlusCircle className="mr-4" />
-                                Add
-                            </Link>
-                        </Button>
                         <Button 
                             size="lg" 
                             variant="ghost"
@@ -208,6 +202,12 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                         >
                             <Trash2 className="mr-4" />
                             Remove
+                        </Button>
+                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
+                            <Link href="/add" onClick={() => setIsProfileDrawerOpen(false)}>
+                                <PlusCircle className="mr-4" />
+                                Add
+                            </Link>
                         </Button>
                     </div>
                 </SheetContent>
