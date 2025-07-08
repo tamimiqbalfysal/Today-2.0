@@ -130,7 +130,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             transaction.set(usernameDocRef, { uid: firebaseUser.uid });
         });
     } catch (error: any) {
-        console.error("CRITICAL: Failed to create user documents in transaction. Rolling back user creation.", error);
+        console.error("CRITICAL: Failed to create user documents in transaction. Original error:", error);
         await deleteUser(firebaseUser).catch(deleteError => {
             console.error("CRITICAL: Failed to roll back user creation. Manual cleanup required for user:", firebaseUser.uid, deleteError);
         });
@@ -140,7 +140,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
              (newError as any).code = 'auth/username-already-in-use';
              throw newError;
         } else {
-            const newError = new Error("Failed to set up your profile in the database. This is often due to Firestore security rule restrictions.");
+            const newError = new Error("Your account was created, but we failed to save your profile. Please check your Firestore security rules to allow writes to the 'users' and 'usernames' collections.");
             (newError as any).code = 'auth/firestore-setup-failed';
             throw newError;
         }
