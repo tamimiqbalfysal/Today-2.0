@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -61,15 +62,20 @@ export default function AddPage() {
                             <Image src={app.logo} alt={`${app.name} logo`} width={48} height={48} />
                             <p className="mt-2 font-semibold text-lg">{app.name}</p>
                           </div>
-                          <Button
-                            onClick={() => addAppToDrawer(app)}
-                            disabled={isAdded}
-                            className="w-full mt-auto"
-                            variant={isAdded ? 'secondary' : 'default'}
-                          >
-                            {isAdded ? <CheckCircle className="mr-2" /> : null}
-                            {isAdded ? 'Added' : 'Add'}
-                          </Button>
+                          <div className="w-full mt-auto space-y-2">
+                            <Button asChild className="w-full" variant="outline">
+                              <Link href={app.href}>View</Link>
+                            </Button>
+                            <Button
+                              onClick={() => addAppToDrawer(app)}
+                              disabled={isAdded}
+                              className="w-full"
+                              variant={isAdded ? 'secondary' : 'default'}
+                            >
+                              {isAdded ? <CheckCircle className="mr-2" /> : null}
+                              {isAdded ? 'Added' : 'Add'}
+                            </Button>
+                          </div>
                         </div>
                       )
                     })}
