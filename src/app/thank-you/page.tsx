@@ -13,6 +13,7 @@ import { Header } from '@/components/fintrack/header';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/auth-context';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -69,6 +70,9 @@ export default function ThankYouPage() {
   const [isTotalCodesLoading, setIsTotalCodesLoading] = useState(true);
   const [isCelebrating, setIsCelebrating] = useState(false);
   const { width, height } = useWindowSize();
+  const [recipientEmail, setRecipientEmail] = useState('');
+  const [transferCode, setTransferCode] = useState('');
+  const [isTransferring, setIsTransferring] = useState(false);
 
   useEffect(() => {
     if (!db) {
@@ -216,6 +220,39 @@ export default function ThankYouPage() {
     }
   };
 
+  const handleTransferCode = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!recipientEmail.trim() || !transferCode.trim()) {
+      toast({
+        variant: 'destructive',
+        title: 'Missing Information',
+        description: 'Please fill out both fields to transfer a code.',
+      });
+      return;
+    }
+    
+    setIsTransferring(true);
+
+    // In a real application, you would add backend logic here to:
+    // 1. Verify the current user owns the `transferCode` and it's valid.
+    // 2. Find the recipient user by `recipientEmail`.
+    // 3. Update Firestore to re-assign the code.
+    
+    console.log(`Transferring code '${transferCode}' to '${recipientEmail}'`);
+    
+    // Simulate API call for demonstration purposes
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    toast({
+      title: 'Transfer Sent!',
+      description: `Your gift code has been successfully sent to ${recipientEmail}.`,
+    });
+    
+    setRecipientEmail('');
+    setTransferCode('');
+    setIsTransferring(false);
+  };
+
   const redeemedCodes = user?.redeemedGiftCodes || 0;
   const percentage = totalGiftCodes && totalGiftCodes > 0 ? (redeemedCodes / totalGiftCodes) * 100 : 0;
 
@@ -309,27 +346,41 @@ export default function ThankYouPage() {
             
             <Card>
               <CardHeader>
-                <CardTitle className="text-center">Where is Your Next Gift Code? 🕵️‍♀️</CardTitle>
+                <CardTitle className="text-center">Share a Gift with a Friend 🎁</CardTitle>
+                <CardDescription className="text-center">
+                  Want to send one of your gift codes to someone else?
+                </CardDescription>
               </CardHeader>
-              <CardContent className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <a href="#" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
-                  <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
-                    <Image src="/think-logo.png" alt="Think logo" width={32} height={32} />
-                    <p className="mt-2 font-semibold text-sm">Think</p>
+              <CardContent>
+                <form onSubmit={handleTransferCode} className="space-y-4">
+                  <div className="space-y-2 text-left">
+                    <Label htmlFor="recipientEmail">Recipient's Email</Label>
+                    <Input
+                      id="recipientEmail"
+                      type="email"
+                      placeholder="friend@example.com"
+                      value={recipientEmail}
+                      onChange={(e) => setRecipientEmail(e.target.value)}
+                      disabled={isTransferring}
+                      required
+                    />
                   </div>
-                </a>
-                <a href="#" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
-                  <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
-                    <Image src="/findit-logo.png" alt="Findit logo" width={32} height={32} />
-                    <p className="mt-2 font-semibold text-sm">Findit</p>
+                  <div className="space-y-2 text-left">
+                    <Label htmlFor="transferCode">Gift Code to Send</Label>
+                    <Input
+                      id="transferCode"
+                      type="text"
+                      placeholder="Enter the gift code"
+                      value={transferCode}
+                      onChange={(e) => setTransferCode(e.target.value)}
+                      disabled={isTransferring}
+                      required
+                    />
                   </div>
-                </a>
-                <a href="#" rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
-                  <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
-                    <Image src="/mingle-logo.png" alt="Mingle logo" width={32} height={32} />
-                    <p className="mt-2 font-semibold text-sm">Mingle</p>
-                  </div>
-                </a>
+                  <Button type="submit" className="w-full" disabled={isTransferring || !recipientEmail || !transferCode}>
+                    {isTransferring ? 'Sending...' : 'Send Gift Code'}
+                  </Button>
+                </form>
               </CardContent>
             </Card>
 
