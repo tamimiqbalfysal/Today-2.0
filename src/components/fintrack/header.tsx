@@ -1,9 +1,8 @@
-
 "use client";
 
 import { useState } from "react";
 import Link from 'next/link';
-import { Menu, PenSquare, Trash2, User, LogOut, Globe2, PlusCircle, Heart } from "lucide-react";
+import { Menu, PenSquare, Trash2, User, LogOut, Globe2, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -190,12 +189,6 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             <Link href="/today" onClick={() => setIsProfileDrawerOpen(false)}>
                                 <PenSquare className="mr-4" />
                                 Today
-                            </Link>
-                        </Button>
-                        <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost">
-                            <Link href="/thank-you" onClick={() => setIsProfileDrawerOpen(false)}>
-                                <Heart className="mr-4" />
-                                Thanku G
                             </Link>
                         </Button>
                         
