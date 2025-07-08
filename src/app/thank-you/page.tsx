@@ -233,7 +233,7 @@ export default function ThankYouPage() {
           numberOfPieces={300}
         />
       )}
-      <div className="flex flex-col min-h-screen">
+      <div className="theme-navy flex flex-col min-h-screen">
         <Header />
         <main className="container mx-auto max-w-2xl p-4 flex-1 flex flex-col items-center justify-center">
           <div className="w-full max-w-md space-y-6">
