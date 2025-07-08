@@ -25,21 +25,24 @@ export function DrawerProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
 
   const addAppToDrawer = useCallback((appToAdd: DrawerApp) => {
-    setDrawerApps(prevApps => {
-      if (prevApps.some(app => app.id === appToAdd.id)) {
-        toast({
-            title: 'Already Added',
-            description: `${appToAdd.name} is already in your drawer.`,
-        });
-        return prevApps;
-      }
+    // Check for duplicates before calling setDrawerApps or toast
+    if (drawerApps.some(app => app.id === appToAdd.id)) {
       toast({
-          title: 'Added to Drawer',
-          description: `Added ${appToAdd.name} to your quick access drawer.`,
+          title: 'Already Added',
+          description: `${appToAdd.name} is already in your drawer.`,
       });
-      return [...prevApps, appToAdd];
+      return; // Exit early
+    }
+
+    // Show the success toast
+    toast({
+        title: 'Added to Drawer',
+        description: `Added ${appToAdd.name} to your quick access drawer.`,
     });
-  }, [toast]);
+    
+    // Then update the state
+    setDrawerApps(prevApps => [...prevApps, appToAdd]);
+  }, [drawerApps, toast]);
 
   const removeLastAppFromDrawer = useCallback(() => {
     if (drawerApps.length > 0) {
