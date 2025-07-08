@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -122,7 +123,11 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  This action cannot be undone. To confirm, please enter your password. This will permanently delete your account and remove your data.
+                                  This action cannot be undone. This will permanently delete your account and remove your data.
+                                  <ul className="list-disc list-inside my-2">
+                                    <li>Deleting your account will delete all Gift Codes.</li>
+                                  </ul>
+                                  To confirm, please enter your password.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                                <div className="space-y-2">
