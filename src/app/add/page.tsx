@@ -15,6 +15,7 @@ const apps: DrawerApp[] = [
   { id: 'think', name: 'Think', logo: '/think-logo.png', href: '#' },
   { id: 'findit', name: 'Findit', logo: '/findit-logo.png', href: '#' },
   { id: 'mingle', name: 'Mingle', logo: '/mingle-logo.png', href: '#' },
+  { id: 'thankug', name: 'Thanku G', logo: '/thankug-logo.png', href: '/thank-you' },
 ];
 
 export default function AddPage() {
