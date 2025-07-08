@@ -122,12 +122,14 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                             <AlertDialogContent>
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This action cannot be undone. This will permanently delete your account and remove your data.
-                                  <ul className="list-disc list-inside my-2">
-                                    <li>Deleting your account will delete all Gift Codes.</li>
-                                  </ul>
-                                  To confirm, please enter your password.
+                                <AlertDialogDescription asChild>
+                                  <div>
+                                    This action cannot be undone. This will permanently delete your account and remove your data.
+                                    <ul className="list-disc list-inside my-2">
+                                      <li>Deleting your account will delete all Gift Codes.</li>
+                                    </ul>
+                                    To confirm, please enter your password.
+                                  </div>
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                                <div className="space-y-2">
