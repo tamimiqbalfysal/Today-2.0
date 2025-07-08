@@ -132,9 +132,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             });
             transaction.set(usernameDocRef, { uid: firebaseUser.uid });
         });
-    } catch (error) {
-        console.error("CRITICAL: Failed to create user documents in transaction.", error);
-        throw new Error("Failed to finalize account creation.");
+    } catch (error: any) {
+        console.error("CRITICAL: Failed to create user documents in transaction. Rolling back user creation.", error);
+        // The user was created in Auth, but Firestore failed. We should delete the Auth user to prevent orphans.
+        await deleteUser(firebaseUser).catch(deleteError => {
+            console.error("CRITICAL: Failed to roll back user creation. Manual cleanup required for user:", firebaseUser.uid, deleteError);
+        });
+
+        // Re-throw an error with a specific code so the UI can be more helpful.
+        const newError = new Error("Failed to set up your profile in the database. This is often due to Firestore security rule restrictions.");
+        (newError as any).code = 'auth/firestore-setup-failed';
+        throw newError;
     }
     
     router.push('/');
@@ -153,7 +161,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const deleteAccount = async (password: string) => {
     const currentUser = auth?.currentUser;
     const currentUserData = user;
-    if (!auth || !currentUser || !db || !currentUserData || !currentUserData.username) {
+    if (!auth || !currentUser || !db || !currentUserData) {
       throw new Error("User not found or Firebase not configured.");
     }
     
@@ -166,9 +174,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       await runTransaction(db, async (transaction) => {
         const userDocRef = doc(db, 'users', currentUser.uid);
-        const usernameDocRef = doc(db, 'usernames', currentUserData.username!.toLowerCase());
         transaction.delete(userDocRef);
-        transaction.delete(usernameDocRef);
+
+        if (currentUserData.username) {
+            const usernameDocRef = doc(db, 'usernames', currentUserData.username.toLowerCase());
+            transaction.delete(usernameDocRef);
+        }
       });
       
       await deleteUser(currentUser);

@@ -112,6 +112,9 @@ export default function SignupPage() {
         case 'auth/network-request-failed':
           description = 'Could not connect to Firebase. Please check your network connection and ensure your .env configuration is correct.';
           break;
+        case 'auth/firestore-setup-failed':
+          description = 'Your account was created, but we failed to save your profile. Please check your Firestore security rules to allow writes to the "users" and "usernames" collections.';
+          break;
       }
       
       toast({
