@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -6,17 +5,21 @@ import { AuthGuard } from '@/components/auth/auth-guard';
 import { Header } from '@/components/fintrack/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Search, CheckCircle } from 'lucide-react';
 import Image from 'next/image';
+import { useDrawer } from '@/contexts/drawer-context';
+import type { DrawerApp } from '@/contexts/drawer-context';
 
-const apps = [
-  { name: 'Think', logo: '/think-logo.png', href: '#' },
-  { name: 'Findit', logo: '/findit-logo.png', href: '#' },
-  { name: 'Mingle', logo: '/mingle-logo.png', href: '#' },
+const apps: DrawerApp[] = [
+  { id: 'think', name: 'Think', logo: '/think-logo.png', href: '#' },
+  { id: 'findit', name: 'Findit', logo: '/findit-logo.png', href: '#' },
+  { id: 'mingle', name: 'Mingle', logo: '/mingle-logo.png', href: '#' },
 ];
 
 export default function AddPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const { addAppToDrawer, isAppInDrawer } = useDrawer();
 
   const filteredApps = apps.filter(app =>
     app.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -48,14 +51,26 @@ export default function AddPage() {
               <CardContent>
                 {filteredApps.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {filteredApps.map((app) => (
-                      <a key={app.name} href={app.href} rel="noopener noreferrer" className="block hover:bg-accent/50 rounded-lg transition-colors">
-                        <div className="flex flex-col items-center justify-center p-4 h-full border rounded-lg">
-                          <Image src={app.logo} alt={`${app.name} logo`} width={48} height={48} />
-                          <p className="mt-2 font-semibold text-lg">{app.name}</p>
+                    {filteredApps.map((app) => {
+                      const isAdded = isAppInDrawer(app.id);
+                      return (
+                        <div key={app.id} className="flex flex-col items-center justify-between p-4 h-full border rounded-lg space-y-4">
+                          <div className="flex flex-col items-center space-y-2 text-center">
+                            <Image src={app.logo} alt={`${app.name} logo`} width={48} height={48} />
+                            <p className="mt-2 font-semibold text-lg">{app.name}</p>
+                          </div>
+                          <Button
+                            onClick={() => addAppToDrawer(app)}
+                            disabled={isAdded}
+                            className="w-full mt-auto"
+                            variant={isAdded ? 'secondary' : 'default'}
+                          >
+                            {isAdded ? <CheckCircle className="mr-2" /> : null}
+                            {isAdded ? 'Added' : 'Add'}
+                          </Button>
                         </div>
-                      </a>
-                    ))}
+                      )
+                    })}
                   </div>
                 ) : (
                   <div className="text-center text-muted-foreground py-8">

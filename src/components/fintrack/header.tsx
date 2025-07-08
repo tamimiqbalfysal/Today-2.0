@@ -29,6 +29,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useDrawer } from "@/contexts/drawer-context";
+import Image from "next/image";
 
 export function Header({ isVisible = true }: { isVisible?: boolean }) {
   const { user, logout, deleteAccount } = useAuth();
@@ -36,6 +38,7 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
   const [isProfileDrawerOpen, setIsProfileDrawerOpen] = useState(false);
   const [password, setPassword] = useState("");
   const { toast } = useToast();
+  const { drawerApps, removeLastAppFromDrawer } = useDrawer();
 
   const handleDeleteAccount = async () => {
     if (!deleteAccount) return;
@@ -195,10 +198,24 @@ export function Header({ isVisible = true }: { isVisible?: boolean }) {
                                 Thanku G
                             </Link>
                         </Button>
+                        
+                        {drawerApps.map((app) => (
+                            <Button asChild size="lg" className="w-full justify-start text-lg font-bold" variant="ghost" key={app.id}>
+                                <Link href={app.href} onClick={() => setIsProfileDrawerOpen(false)}>
+                                    <div className="w-6 h-6 mr-4 relative flex items-center justify-center">
+                                        <Image src={app.logo} alt={`${app.name} logo`} fill className="object-contain" />
+                                    </div>
+                                    {app.name}
+                                </Link>
+                            </Button>
+                        ))}
+
                         <Button 
                             size="lg" 
                             variant="ghost"
                             className="w-full justify-start text-lg font-bold"
+                            onClick={removeLastAppFromDrawer}
+                            disabled={drawerApps.length === 0}
                         >
                             <Trash2 className="mr-4" />
                             Remove
