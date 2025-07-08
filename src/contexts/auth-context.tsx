@@ -6,7 +6,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
-import { doc, setDoc, onSnapshot, deleteDoc } from 'firebase/firestore';
+import { doc, setDoc, onSnapshot, deleteDoc, getDoc, runTransaction } from 'firebase/firestore';
 import type { User as AppUser } from '@/lib/types';
 
 interface AuthContextType {
@@ -14,7 +14,7 @@ interface AuthContextType {
   loading: boolean;
   login: (email: string, password:string) => Promise<void>;
   logout: () => Promise<void>;
-  signup: (name: string, email: string, password: string) => Promise<void>;
+  signup: (name: string, username: string, email: string, password: string) => Promise<void>;
   deleteAccount: (password: string) => Promise<void>;
 }
 
@@ -41,6 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser({
               uid: firebaseUser.uid,
               name: firebaseUser.displayName || firestoreData.name,
+              username: firestoreData.username,
               email: firebaseUser.email || firestoreData.email,
               photoURL: firebaseUser.photoURL || firestoreData.photoURL,
               redeemedGiftCodes: firestoreData.redeemedGiftCodes || 0,
@@ -89,43 +90,53 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     router.push('/');
   };
 
-  const signup = async (name: string, email: string, password: string) => {
+  const signup = async (name: string, username: string, email: string, password: string) => {
     if (!auth || !db) {
         const error = new Error("Firebase is not configured. Please add your Firebase project configuration to a .env file.");
         (error as any).code = 'auth/firebase-not-configured';
         throw error;
     }
     
-    // Create user with client SDK
+    const lowerCaseUsername = username.toLowerCase();
+    const usernameDocRef = doc(db, "usernames", lowerCaseUsername);
+    const usernameDoc = await getDoc(usernameDocRef);
+
+    if (usernameDoc.exists()) {
+      const error = new Error("Username is already taken.");
+      (error as any).code = 'auth/username-already-in-use';
+      throw error;
+    }
+
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const firebaseUser = userCredential.user;
 
-    // Set a default photo URL
     const photoURL = `https://placehold.co/100x100.png?text=${name.charAt(0)}`;
     
-    // Update the core Firebase Auth profile
     await updateProfile(firebaseUser, { 
       displayName: name,
       photoURL: photoURL
     });
 
-    // Create the user's document in Firestore
+    const userDocRef = doc(db, "users", firebaseUser.uid);
+    
     try {
-        await setDoc(doc(db, "users", firebaseUser.uid), {
-            name: name,
-            email: email,
-            photoURL: photoURL,
-            redeemedGiftCodes: 0,
-            redeemedThinkCodes: 0,
+        await runTransaction(db, async (transaction) => {
+            transaction.set(userDocRef, {
+                uid: firebaseUser.uid,
+                name: name,
+                username: lowerCaseUsername,
+                email: email,
+                photoURL: photoURL,
+                redeemedGiftCodes: 0,
+                redeemedThinkCodes: 0,
+            });
+            transaction.set(usernameDocRef, { uid: firebaseUser.uid });
         });
     } catch (error) {
-        // This is a good place to log a warning, but we don't want to fail the whole signup
-        // if just the firestore doc creation fails. The auth user is already created.
-        console.warn("Could not create user document in Firestore. Check security rules.", error);
+        console.error("CRITICAL: Failed to create user documents in transaction.", error);
+        throw new Error("Failed to finalize account creation.");
     }
     
-    // The onAuthStateChanged listener will pick up the new user state.
-    // We just need to redirect.
     router.push('/');
   };
 
@@ -141,7 +152,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const deleteAccount = async (password: string) => {
     const currentUser = auth?.currentUser;
-    if (!auth || !currentUser || !db) {
+    const currentUserData = user;
+    if (!auth || !currentUser || !db || !currentUserData || !currentUserData.username) {
       throw new Error("User not found or Firebase not configured.");
     }
     
@@ -152,9 +164,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const credential = EmailAuthProvider.credential(currentUser.email, password);
       await reauthenticateWithCredential(currentUser, credential);
 
-      // If re-authentication is successful, proceed with deletion.
-      const userDocRef = doc(db, 'users', currentUser.uid);
-      await deleteDoc(userDocRef);
+      await runTransaction(db, async (transaction) => {
+        const userDocRef = doc(db, 'users', currentUser.uid);
+        const usernameDocRef = doc(db, 'usernames', currentUserData.username!.toLowerCase());
+        transaction.delete(userDocRef);
+        transaction.delete(usernameDocRef);
+      });
+      
       await deleteUser(currentUser);
       router.push('/login');
     } catch (error: any) {
@@ -162,7 +178,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (error.code === 'auth/wrong-password') {
         throw new Error("The password you entered is incorrect. Please try again.");
       }
-      // Re-throw the original error or a more generic one
       throw error;
     }
   };

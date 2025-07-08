@@ -19,6 +19,10 @@ import { isFirebaseConfigured } from '@/lib/firebase';
 
 const signupFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
+  username: z.string()
+    .min(3, { message: 'Username must be at least 3 characters.' })
+    .max(20, { message: 'Username must be no more than 20 characters.' })
+    .regex(/^[a-zA-Z0-9_]+$/, { message: 'Username can only contain letters, numbers, and underscores.' }),
   email: z.string().email({ message: 'Please enter a valid email.' }),
   password: z.string().min(8, { message: 'Password must be at least 8 characters.' }),
 });
@@ -82,6 +86,7 @@ export default function SignupPage() {
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
       name: '',
+      username: '',
       email: '',
       password: '',
     },
@@ -89,12 +94,15 @@ export default function SignupPage() {
 
   async function onSubmit(data: SignupFormValues) {
     try {
-      await signup(data.name, data.email, data.password);
+      await signup(data.name, data.username, data.email, data.password);
     } catch (error: any) {
       const errorCode = error.code;
       let description = 'An unexpected error occurred. Please try again.';
 
       switch (errorCode) {
+        case 'auth/username-already-in-use':
+          description = 'This username is already taken. Please choose another one.';
+          break;
         case 'auth/email-already-in-use':
           description = 'This email is already in use by another account.';
           break;
@@ -139,6 +147,19 @@ export default function SignupPage() {
                       <FormLabel>Your Name</FormLabel>
                       <FormControl>
                         <Input placeholder="Elara the Brave" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                 <FormField
+                  control={form.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="elara_the_brave" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

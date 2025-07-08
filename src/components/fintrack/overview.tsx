@@ -15,6 +15,7 @@ export function ProfileCard({ user }: ProfileCardProps) {
             <AvatarFallback className="text-3xl bg-secondary text-secondary-foreground">{user.name?.charAt(0)}</AvatarFallback>
         </Avatar>
         <CardTitle className="text-2xl text-primary font-headline">{user.name}</CardTitle>
+        <CardDescription>@{user.username}</CardDescription>
         <CardDescription className="text-muted-foreground">{user.email}</CardDescription>
       </CardHeader>
       <CardContent>

@@ -3,6 +3,7 @@ import type { Timestamp } from "firebase/firestore";
 export interface User {
   uid: string;
   name: string;
+  username?: string;
   email: string;
   photoURL?: string | null;
   redeemedGiftCodes?: number;
