@@ -6,7 +6,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword, updateProfile, deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { auth, db } from '@/lib/firebase';
-import { doc, setDoc, onSnapshot, deleteDoc, getDoc, runTransaction } from 'firebase/firestore';
+import { doc, setDoc, onSnapshot, getDoc, runTransaction } from 'firebase/firestore';
 import type { User as AppUser } from '@/lib/types';
 
 interface AuthContextType {
@@ -96,16 +96,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         (error as any).code = 'auth/firebase-not-configured';
         throw error;
     }
-    
-    const lowerCaseUsername = username.toLowerCase();
-    const usernameDocRef = doc(db, "usernames", lowerCaseUsername);
-    const usernameDoc = await getDoc(usernameDocRef);
-
-    if (usernameDoc.exists()) {
-      const error = new Error("Username is already taken.");
-      (error as any).code = 'auth/username-already-in-use';
-      throw error;
-    }
 
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const firebaseUser = userCredential.user;
@@ -117,10 +107,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       photoURL: photoURL
     });
 
-    const userDocRef = doc(db, "users", firebaseUser.uid);
-    
     try {
         await runTransaction(db, async (transaction) => {
+            const lowerCaseUsername = username.toLowerCase();
+            const usernameDocRef = doc(db, "usernames", lowerCaseUsername);
+            const usernameDoc = await transaction.get(usernameDocRef);
+
+            if (usernameDoc.exists()) {
+                throw new Error("Username is already taken.");
+            }
+            
+            const userDocRef = doc(db, "users", firebaseUser.uid);
             transaction.set(userDocRef, {
                 uid: firebaseUser.uid,
                 name: name,
@@ -134,15 +131,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         });
     } catch (error: any) {
         console.error("CRITICAL: Failed to create user documents in transaction. Rolling back user creation.", error);
-        // The user was created in Auth, but Firestore failed. We should delete the Auth user to prevent orphans.
         await deleteUser(firebaseUser).catch(deleteError => {
             console.error("CRITICAL: Failed to roll back user creation. Manual cleanup required for user:", firebaseUser.uid, deleteError);
         });
 
-        // Re-throw an error with a specific code so the UI can be more helpful.
-        const newError = new Error("Failed to set up your profile in the database. This is often due to Firestore security rule restrictions.");
-        (newError as any).code = 'auth/firestore-setup-failed';
-        throw newError;
+        if (error.message === "Username is already taken.") {
+             const newError = new Error(error.message);
+             (newError as any).code = 'auth/username-already-in-use';
+             throw newError;
+        } else {
+            const newError = new Error("Failed to set up your profile in the database. This is often due to Firestore security rule restrictions.");
+            (newError as any).code = 'auth/firestore-setup-failed';
+            throw newError;
+        }
     }
     
     router.push('/');
