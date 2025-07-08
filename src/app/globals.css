@@ -56,8 +56,8 @@
   }
 
   .theme-navy {
-    --background: 222 84% 5%;
-    --foreground: 210 40% 98%;
+    --background: 0 0% 98%;
+    --foreground: 240 10% 3.9%;
     --card: 222 84% 10%;
     --card-foreground: 210 40% 98%;
     --popover: 222 84% 10%;
